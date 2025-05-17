@@ -22,29 +22,27 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-          this.addToMap(this.character);
-        this.enemies.forEach(enemy => {
-            this.addToMap(enemy);
-        });
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.clouds);
+        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.backgroundObjects);
 
-
-          this.clouds.forEach(cloud => {
-             this.addToMap(cloud);
-        });
-
-       this.backgroundObjects.forEach((bgo) => {
-        this.addToMap(bgo);
-       });
 
         //draw() wird immer wieder aufgerufen
         let self = this;
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
             self.draw();
-        })
+        });
 
     }
 
+    addObjectsToMap(objects) {
+        objects.forEach(o => {
+            this.addToMap(o);
+        });
+    }
+
     addToMap(mo) {
-     this.ctx.drawImage(mo.img, mo.x, mo.y,mo.width, mo.height);
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
     }
 }
