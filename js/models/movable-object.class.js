@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObject{
+class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -19,15 +19,17 @@ class MovableObject extends DrawableObject{
     }
 
     isAboveGround() {
-        return this.y < 180;
+        if (this instanceof ThrowableObject) { //throwable objekts soll always fall
+            return true;
+        } else { return this.y < 180 };
     }
 
 
- 
 
 
 
- 
+
+
 
 
     isColliding(mo) {
@@ -56,7 +58,7 @@ class MovableObject extends DrawableObject{
         return this.energy == 0;
     }
 
-    
+
 
     playAnimation(images) {
         let i = this.currentImage % images.length;
