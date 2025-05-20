@@ -7,12 +7,14 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
+    coins = [];
 
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.addCoins();
         this.draw();
         this.setWorld();
         this.run();
@@ -23,6 +25,10 @@ class World {
         this.character.world = this;
     }
 
+    addCoins() {
+        this.coins.push(new Coins(800, 100)); // Position der coins
+        this.coins.push(new Coins(1500, 105));
+    }
 
     run() {
         setInterval(() => {
@@ -53,6 +59,7 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.coins); // coins zum Spiel hinzufügen
         this.ctx.translate(-this.camera_x, 0);
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
