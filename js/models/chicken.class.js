@@ -21,10 +21,14 @@ class Chicken extends MovableObject {
 
 
     animate() {
-        this.moveLeft();
 
+        //die Hühnchen bewegen sich, erst wenn das Spiel startet
         setInterval(() => {
-         this.playAnimation(this.IMAGES_WALKING);
+            if (gameStarted) {
+                this.moveLeft();
+
+                this.playAnimation(this.IMAGES_WALKING);
+            }
         }, 200);
     }
 

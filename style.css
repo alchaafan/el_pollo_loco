@@ -1,3 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face { 
+    font-family: "RebellionSquad-ZpprZ"; 
+    src: url("./js/fonts/RebellionSquad-ZpprZ.ttf");
+}
+
+h1 {
+    font-family: "RebellionSquad-ZpprZ", sans-serif;
+    font-size: 120px;
+    font-weight: lighter;
+}
+
+
 body {
     display: flex;
     flex-direction: column;
@@ -8,3 +26,26 @@ body {
 canvas {
     background-color: black;
 }
+
+#startScreen {
+    background-image: url(img/9_intro_outro_screens/start/startscreen_1.png);
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding-top: 50px;
+    
+}
+#startScreen img {
+    width: 100%;
+}
+
+#startScreen button {
+    font-family: "RebellionSquad-ZpprZ", sans-serif;
+    font-weight: lighter;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+}
+
