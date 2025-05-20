@@ -8,6 +8,7 @@ class World {
     statusBar = new StatusBar();
     throwableObjects = [];
     coins = [];
+    statusBarCoins = new StatusBarCoins();
 
 
     constructor(canvas, keyboard) {
@@ -26,8 +27,12 @@ class World {
     }
 
     addCoins() {
-        this.coins.push(new Coins(800, 100)); // Position der coins
-        this.coins.push(new Coins(1500, 105));
+        this.coins.push(new Coins(800, 100)); // Position der coins x, y
+        this.coins.push(new Coins(1500, 150));
+         this.coins.push(new Coins(500, 200)); 
+        this.coins.push(new Coins(1100, 165));
+          this.coins.push(new Coins(700, 240)); 
+        this.coins.push(new Coins(900, 125));
     }
 
     run() {
@@ -35,6 +40,7 @@ class World {
 
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt. 
         }, 200);
     }
 
@@ -55,6 +61,15 @@ class World {
         })
     }
 
+    checkCoinCollisions() {
+        this.coins.forEach((coin, index) => {
+            if(this.character.isColliding(coin)) {
+                this.coins.splice(index, 1); // entfernt Coin aus dem Array
+                this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
+            }
+        });
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -63,6 +78,7 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
+        this.addToMap(this.statusBarCoins); // Coins Statusbar zeichnen
         this.ctx.translate(this.camera_x, 0);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
