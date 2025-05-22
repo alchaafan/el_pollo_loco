@@ -9,7 +9,9 @@ class World {
     throwableObjects = [];
     coins = [];
     statusBarCoins = new StatusBarCoins();
+    StatusBarBottles = new StatusBarBottles();
     bottles = [];
+
 
 
     constructor(canvas, keyboard) {
@@ -38,8 +40,11 @@ class World {
     }
 
     addBottles() {
-        this.bottles.push (new Bottles(700, 350));
+        this.bottles.push (new Bottles(1100, 350));
         this.bottles.push (new Bottles(1650, 350));
+        this.bottles.push (new Bottles(800, 350));
+        this.bottles.push (new Bottles(650, 350));
+         this.bottles.push (new Bottles(1000, 350));
     }
 
     run() {
@@ -47,6 +52,7 @@ class World {
 
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkBottleCollisions();
             this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt. 
         }, 200);
     }
@@ -77,18 +83,29 @@ class World {
         });
     }
 
+    checkBottleCollisions() {
+        this.bottles.forEach((bottle, index) => {
+            if(this.character.isColliding(bottle)) {
+                this.coins.splice(index, 1);
+                this.StatusBarBottles.setPercentage(this.StatusBarBottles.percentage + 20);
+            }
+        })
+    }
+
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addToMap(this.character);
         this.addObjectsToMap(this.coins);
         this.addObjectsToMap(this.bottles);// coins zum Spiel hinzufügen
         this.ctx.translate(-this.camera_x, 0);
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarCoins); // Coins Statusbar zeichnen
+        this.addToMap(this.StatusBarBottles);
         this.ctx.translate(this.camera_x, 0);
-        this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
