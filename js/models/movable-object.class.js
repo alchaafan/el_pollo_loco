@@ -32,12 +32,12 @@ class MovableObject extends DrawableObject {
 
 
 
-    isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
-    }
+   isColliding(mo) {
+    return this.x + this.width > mo.x &&
+           this.y + this.height > mo.y &&
+           this.x < mo.x &&
+           this.y < mo.y + mo.height;
+}
 
     hit() {
         this.energy -= 5;

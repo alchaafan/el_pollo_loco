@@ -9,6 +9,7 @@ class World {
     throwableObjects = [];
     coins = [];
     statusBarCoins = new StatusBarCoins();
+    bottles = [];
 
 
     constructor(canvas, keyboard) {
@@ -16,6 +17,7 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.addCoins();
+        this.addBottles();
         this.draw();
         this.setWorld();
         this.run();
@@ -28,11 +30,16 @@ class World {
 
     addCoins() {
         this.coins.push(new Coins(800, 100)); // Position der coins x, y
-        this.coins.push(new Coins(1500, 150));
-         this.coins.push(new Coins(500, 200)); 
-        this.coins.push(new Coins(1100, 165));
-          this.coins.push(new Coins(700, 240)); 
-        this.coins.push(new Coins(900, 125));
+        this.coins.push(new Coins(1500, 100));
+        this.coins.push(new Coins(500, 100));
+        this.coins.push(new Coins(1100, 100));
+        this.coins.push(new Coins(700, 100));
+        this.coins.push(new Coins(900, 100));
+    }
+
+    addBottles() {
+        this.bottles.push (new Bottles(700, 350));
+        this.bottles.push (new Bottles(1650, 350));
     }
 
     run() {
@@ -45,7 +52,7 @@ class World {
     }
 
     checkThrowObjects() {
-        if(this.keyboard.D) {
+        if (this.keyboard.D) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
         }
@@ -63,7 +70,7 @@ class World {
 
     checkCoinCollisions() {
         this.coins.forEach((coin, index) => {
-            if(this.character.isColliding(coin)) {
+            if (this.character.isColliding(coin)) {
                 this.coins.splice(index, 1); // entfernt Coin aus dem Array
                 this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
             }
@@ -74,7 +81,8 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.coins); // coins zum Spiel hinzufügen
+        this.addObjectsToMap(this.coins);
+        this.addObjectsToMap(this.bottles);// coins zum Spiel hinzufügen
         this.ctx.translate(-this.camera_x, 0);
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
