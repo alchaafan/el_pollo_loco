@@ -54,7 +54,7 @@ class World {
             this.checkThrowObjects();
             this.checkBottleCollisions();
             this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt. 
-        }, 200);
+        }, 100);
     }
 
     checkThrowObjects() {
@@ -86,8 +86,8 @@ class World {
     checkBottleCollisions() {
         this.bottles.forEach((bottle, index) => {
             if(this.character.isColliding(bottle)) {
-                this.coins.splice(index, 1);
-                this.StatusBarBottles.setPercentage(this.StatusBarBottles.percentage + 20);
+                this.bottles.splice(index, 1);
+                this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
             }
         })
     }
