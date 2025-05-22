@@ -1,5 +1,13 @@
 class Character extends MovableObject {
 
+    offset = {
+    top: 100,    // Wie viel Pixel oben vom Bild ignoriert werden
+    bottom: 15,  // Wie viel Pixel unten vom Bild ignoriert werden
+    left: 30,    // Wie viel Pixel links vom Bild ignoriert werden
+    right: 30    // Wie viel Pixel rechts vom Bild ignoriert werden
+};
+
+
     height = 280;
     y = 80;
     speed = 10;
@@ -103,16 +111,23 @@ class Character extends MovableObject {
                     nextAnimation = this.IMAGES_WALKING;
                 } else {
                     //Standanimation
+                    //nextAnimation = [this.IMAGES_WALKING[0]];
                 }
 
 
             }
-            if (nextAnimation) {
+         if (nextAnimation) {
                 if (nextAnimation !== this.currentAnimation) {
-                    this.currentImage = 0;
+                    this.currentImage = 0; // Index zurücksetzen für neue Animation
                     this.currentAnimation = nextAnimation;
                 }
-                this.playAnimation(this.currentAnimation)
+
+                // Hier entscheiden wir, ob die Animation einmalig oder in Schleife abgespielt wird
+                if (this.currentAnimation === this.IMAGES_DEAD || this.currentAnimation === this.IMAGES_HURT) {
+                    this.animateOnce(this.currentAnimation); // Einmalige Animation
+                } else {
+                    this.animateLoop(this.currentAnimation); // Schleifen-Animation
+                }
             }
         }, 50);
     }

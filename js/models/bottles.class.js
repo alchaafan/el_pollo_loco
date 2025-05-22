@@ -1,4 +1,11 @@
 class Bottles extends DrawableObject {
+ offset = {
+        top: 20,    // Beispielwerte, anpassen!
+        bottom: 20,
+        left: 20,
+        right: 20
+    };
+
 
     IMAGES = [
         'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',

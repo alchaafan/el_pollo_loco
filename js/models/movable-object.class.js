@@ -6,13 +6,26 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
 
+    offset = {
+          top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
 
 
     applyGravity() {
         setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
+            if (!this.isDead() && (this.isAboveGround() || this.speedY > 0)) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
+
+            } else if (this.isDead() && this.y < 400) {
+                this.y += 5;
+                this.speedY = 0;
+                if(this.y >= 400) {
+                    this.y = 400;
+                }
 
             }
         }, 1000 / 25);
@@ -21,16 +34,18 @@ class MovableObject extends DrawableObject {
     isAboveGround() {
         if (this instanceof ThrowableObject) { //throwable objekts soll always fall
             return true;
-        } else { return this.y < 180 };
+        } else { return this.y < 180;
+
+        };
     }
 
 
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
+            return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+               this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+               this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+               this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
     hit() {
@@ -44,30 +59,32 @@ class MovableObject extends DrawableObject {
 
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // Differenz in ms
-        timepassed = timepassed / 1000; // Differenz in Sekunden
-        return timepassed < 1;
+        return timepassed < 500;
     }
 
     isDead() {
-        return this.energy == 0;
+        return this.energy === 0;
     }
 
 
 
     playAnimation(images) {
-        if (this.isDead()) {
-            if (this.currentImage < images.length) {
-                let path = images[this.currentImage];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-            }
-        } else {
-            let i = this.currentImage % images.length;
-            let path = images[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+        let path = images[this.currentImage];
+        this.img = this.imageCache[path];
+    }
 
+    animateOnce(images) {
+        if(this.currentImage < images.length -1) {
+            this.currentImage++
         }
+        this.playAnimation(images)
+    }
+
+    animateLoop(images) {
+        let i = this.currentImage % images.length;
+        this.currentImage = i;
+        this.playAnimation(images);
+        this.currentImage++;
     }
 
 

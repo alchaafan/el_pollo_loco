@@ -13,6 +13,7 @@ h1 {
     font-family: "RebellionSquad-ZpprZ", sans-serif;
     font-size: 120px;
     font-weight: lighter;
+    color: rgb(255, 219, 5);
 }
 
 
@@ -20,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url(./img/background.jpg);
 }
 
 
@@ -42,6 +44,8 @@ canvas {
 }
 
 #startScreen button {
+    border: none;
+    color: rgb(252, 149, 2);
     font-family: "RebellionSquad-ZpprZ", sans-serif;
     font-weight: lighter;
     font-size: 24px;
