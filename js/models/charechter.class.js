@@ -56,6 +56,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.applyGravity();
         this.animate();
+        this.currentAnimation = null;
     }
 
     animate() {
@@ -78,23 +79,40 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-
         setInterval(() => {
+            let nextAnimation = null;
 
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+                nextAnimation = this.IMAGES_DEAD;
+                this.speed = 0;
+                this.speedY = 0;
+
+
             } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
+                nextAnimation = this.IMAGES_HURT;
+
             } else if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
+                nextAnimation = this.IMAGES_JUMPING
+
             } else {
 
 
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
 
                     //walk animation
-                    this.playAnimation(this.IMAGES_WALKING);
+                    nextAnimation = this.IMAGES_WALKING;
+                } else {
+                    //Standanimation
                 }
+
+
+            }
+            if (nextAnimation) {
+                if (nextAnimation !== this.currentAnimation) {
+                    this.currentImage = 0;
+                    this.currentAnimation = nextAnimation;
+                }
+                this.playAnimation(this.currentAnimation)
             }
         }, 50);
     }
