@@ -7,8 +7,8 @@ class Bottles extends DrawableObject {
     constructor(x, y) {
         super();
         this.loadImage(this.IMAGES);
-        let randomImage = this.IMAGES[Math.floor(Math.random() * this.IMAGES.length)]; // Zufällige Bilder einblenden
-        this.loadImage(randomImage)
+        let randomImage = this.IMAGES[Math.floor(Math.random() * this.IMAGES.length)];
+        this.loadImage(randomImage); 
         this.x = x;
         this.y = y;
         this.width = 100;
