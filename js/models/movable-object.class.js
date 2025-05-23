@@ -1,4 +1,5 @@
 class MovableObject extends DrawableObject {
+    
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -13,28 +14,37 @@ class MovableObject extends DrawableObject {
         right: 0
     };
 
+    GRAVITY_GROUND_Y = 440;
 
-    applyGravity() {
+
+  applyGravity() {
         setInterval(() => {
-            if (!this.isDead() && (this.isAboveGround() || this.speedY > 0)) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-
-            } else if (this.isDead() && this.y < 400) {
-                this.y += 5;
-                this.speedY = 0;
-                if(this.y >= 400) {
-                    this.y = 400;
+            if (!this.isDead()) { // Nur Schwerkraft anwenden, wenn das Objekt NICHT tot ist
+                if (this.isAboveGround() || this.speedY > 0) { // Wenn über dem Boden ODER gerade springt (speedY > 0)
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                } else { // Wenn auf dem Boden oder fallend und den Boden erreicht hat (isAboveGround ist false und speedY <= 0)
+                    // Setze die Y-Position exakt auf die Bodenlinie
+                    this.y = this.GRAVITY_GROUND_Y - this.height;
+                    this.speedY = 0; // Stoppe die vertikale Bewegung
                 }
-
+            } else if (this.isDead() && this.y < this.GRAVITY_GROUND_Y) {
+                // Logik für toten Charakter, der zu Boden fällt
+                this.y += 5; // Fällt mit einer konstanten Geschwindigkeit von 5 Pixeln pro Frame
+                this.speedY = 0; // Setzt speedY zurück, damit es nicht weiter fällt nach dem Aufprall
+                if (this.y >= this.GRAVITY_GROUND_Y) { // Wenn es den Boden erreicht hat, stoppe das Fallen
+                    this.y = this.GRAVITY_GROUND_Y;
+                }
             }
         }, 1000 / 25);
     }
 
+
     isAboveGround() {
         if (this instanceof ThrowableObject) { //throwable objekts soll always fall
             return true;
-        } else { return this.y < 180;
+        } else {
+             return this.y + this.height < this.GRAVITY_GROUND_Y; 
 
         };
     }

@@ -1,6 +1,6 @@
 class Bottles extends DrawableObject {
  offset = {
-        top: 20,    // Beispielwerte, anpassen!
+        top: 20,  
         bottom: 20,
         left: 20,
         right: 20
