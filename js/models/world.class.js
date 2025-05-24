@@ -66,13 +66,30 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
-
+        this.level.enemies.forEach((enemy, index) => { 
+           
+            if (!this.character.isDead() && !enemy.isDead() && this.character.isColliding(enemy)) {
+                if (this.character.speedY < 0 && // Charakter fällt abwärts
+                    (this.character.y + this.character.height - this.character.offset.bottom) < (enemy.y + enemy.height - enemy.offset.bottom) // Unterer Rand des Charakters ist über dem unteren Rand des Gegners
+                ) {
+                    if (enemy instanceof Chicken) { 
+                        enemy.hit(); 
+                        
+                        this.level.enemies.splice(index, 1); 
+                        
+                        
+                        this.character.jump(15); // Kleinerer Sprung als normal
+                    }
+                } else {
+                    // Fall 2: Charakter kollidiert seitlich oder von unten (nimmt Schaden)
+                    // Nur Schaden nehmen, wenn nicht schon verletzt oder tot
+                    if (!this.character.isHurt()) {
+                        this.character.hit(); // Charakter nimmt Schaden
+                        this.statusBar.setPercentage(this.character.energy); // Statusbar aktualisieren
+                    }
+                }
             }
-        })
+        });
     }
 
     checkCoinCollisions() {

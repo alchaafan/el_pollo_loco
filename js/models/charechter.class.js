@@ -5,9 +5,9 @@ class Character extends MovableObject {
 
     offset = {
         top: 100,    // Wie viel Pixel oben vom Bild ignoriert werden
-        bottom: 15,  
-        left: 30,   
-        right: 30    
+        bottom: 15,
+        left: 30,
+        right: 30
     };
 
 
@@ -66,8 +66,22 @@ class Character extends MovableObject {
 
     ];
 
+    IMAGES_LONGIDLE = [
+        'img/2_character_pepe/1_idle/long_idle/I-11.png',
+        'img/2_character_pepe/1_idle/long_idle/I-12.png',
+        'img/2_character_pepe/1_idle/long_idle/I-13.png',
+        'img/2_character_pepe/1_idle/long_idle/I-14.png',
+        'img/2_character_pepe/1_idle/long_idle/I-15.png',
+        'img/2_character_pepe/1_idle/long_idle/I-16.png',
+        'img/2_character_pepe/1_idle/long_idle/I-17.png',
+        'img/2_character_pepe/1_idle/long_idle/I-18.png',
+        'img/2_character_pepe/1_idle/long_idle/I-19.png',
+        'img/2_character_pepe/1_idle/long_idle/I-20.png'
+    ];
+
 
     world;
+    lastActionTime = 0; // speichert die Aktivität
 
 
 
@@ -78,33 +92,47 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONGIDLE);
         this.applyGravity();
         this.animate();
         this.currentAnimation = null;
+        this.lastActionTime = new Date().getTime();
     }
 
     animate() {
 
-        setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
-                this.otherDirection = false;
-            }
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.x -= this.speed;
-                this.otherDirection = true;
-            }
+        //Intervall für Bewegung und Kamera
+            setInterval(() => {
+           
+            if (!this.isDead()) {
+                let moved = false;
 
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                    this.x += this.speed;
+                    this.otherDirection = false;
+                    moved = true;
+                }
+                if (this.world.keyboard.LEFT && this.x > 0) {
+                    this.x -= this.speed;
+                    this.otherDirection = true;
+                    moved = true;
+                }
+
+                if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                    this.jump();
+                    moved = true;
+                }
+
+                if (moved) {
+                    this.lastActionTime = new Date().getTime();
+                }
             }
-
-
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
             let nextAnimation = null;
+            let timepassedSinceLastAction = new Date().getTime() - this.lastActionTime;
 
             if (this.isDead()) {
                 nextAnimation = this.IMAGES_DEAD;
@@ -114,9 +142,11 @@ class Character extends MovableObject {
 
             } else if (this.isHurt()) {
                 nextAnimation = this.IMAGES_HURT;
+                this.lastActionTime = new Date().getTime();
 
             } else if (this.isAboveGround()) {
-                nextAnimation = this.IMAGES_JUMPING
+                nextAnimation = this.IMAGES_JUMPING;
+                this.lastActionTime = new Date().getTime();
 
             } else {
 
@@ -126,8 +156,11 @@ class Character extends MovableObject {
                     //walk animation
                     nextAnimation = this.IMAGES_WALKING;
                 } else {
-                    //Standanimation
-                    nextAnimation = this.IMAGES_IDLE;
+                    if (timepassedSinceLastAction > 15000) {
+                        nextAnimation = this.IMAGES_LONGIDLE;
+                    } else {
+                        nextAnimation = this.IMAGES_IDLE;
+                    }
                 }
 
 
@@ -146,6 +179,7 @@ class Character extends MovableObject {
                 }
             }
         }, 50);
+
     }
 
 

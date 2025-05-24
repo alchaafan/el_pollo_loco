@@ -1,5 +1,5 @@
 class MovableObject extends DrawableObject {
-    
+
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -8,7 +8,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
     offset = {
-          top: 0,
+        top: 0,
         bottom: 0,
         left: 0,
         right: 0
@@ -17,22 +17,22 @@ class MovableObject extends DrawableObject {
     GRAVITY_GROUND_Y = 440;
 
 
-  applyGravity() {
+    applyGravity() {
         setInterval(() => {
-            if (!this.isDead()) { // Nur Schwerkraft anwenden, wenn das Objekt NICHT tot ist
-                if (this.isAboveGround() || this.speedY > 0) { // Wenn über dem Boden ODER gerade springt (speedY > 0)
+            if (!this.isDead()) {
+                if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
-                } else { // Wenn auf dem Boden oder fallend und den Boden erreicht hat (isAboveGround ist false und speedY <= 0)
-                    // Setze die Y-Position exakt auf die Bodenlinie
+                } else {
+
                     this.y = this.GRAVITY_GROUND_Y - this.height;
-                    this.speedY = 0; // Stoppe die vertikale Bewegung
+                    this.speedY = 0;
                 }
             } else if (this.isDead() && this.y < this.GRAVITY_GROUND_Y) {
-                // Logik für toten Charakter, der zu Boden fällt
-                this.y += 5; // Fällt mit einer konstanten Geschwindigkeit von 5 Pixeln pro Frame
-                this.speedY = 0; // Setzt speedY zurück, damit es nicht weiter fällt nach dem Aufprall
-                if (this.y >= this.GRAVITY_GROUND_Y) { // Wenn es den Boden erreicht hat, stoppe das Fallen
+
+                this.y += 5;
+                this.speedY = 0;
+                if (this.y >= this.GRAVITY_GROUND_Y) {
                     this.y = this.GRAVITY_GROUND_Y;
                 }
             }
@@ -44,7 +44,7 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) { //throwable objekts soll always fall
             return true;
         } else {
-             return this.y + this.height < this.GRAVITY_GROUND_Y; 
+            return this.y + this.height < this.GRAVITY_GROUND_Y;
 
         };
     }
@@ -52,10 +52,10 @@ class MovableObject extends DrawableObject {
 
 
     isColliding(mo) {
-            return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-               this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-               this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-               this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
     hit() {
@@ -84,7 +84,7 @@ class MovableObject extends DrawableObject {
     }
 
     animateOnce(images) {
-        if(this.currentImage < images.length -1) {
+        if (this.currentImage < images.length - 1) {
             this.currentImage++
         }
         this.playAnimation(images)
