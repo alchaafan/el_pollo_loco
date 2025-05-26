@@ -48,7 +48,7 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        setStoppableInterval(() => {
 
             this.checkCollisions();
             this.checkThrowObjects();
@@ -67,7 +67,7 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy, index) => {
+        this.level.enemies.forEach((enemy) => {
 
             if (!this.character.isDead() && !enemy.isDead() && this.character.isColliding(enemy)) {
 

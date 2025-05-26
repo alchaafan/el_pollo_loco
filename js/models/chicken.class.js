@@ -31,13 +31,13 @@ class Chicken extends MovableObject {
 
     animate() {
         // Intervall für die Bewegung des Huhns 
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (gameStarted && !this.isDead()) {
                 this.moveLeft();
             }
         }, 1000 / 60);
 
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (this.isDead()) {
                 this.animateOnce(this.IMAGES_DEAD, 1000); // Spiele die Sterbeanimation für 1 Sekunde ab
             } else {

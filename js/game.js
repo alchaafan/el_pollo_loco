@@ -1,10 +1,25 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard;
 let startScreen;
 let gameStarted = false;
 
+let intervalIDS = []; 
+
+function setStoppableInterval(fn, time) { 
+    let id = setInterval(fn, time); 
+    intervalIDS.push(id); 
+} 
+
+function stopGame() { 
+    intervalIDS.forEach(clearInterval); 
+    intervalIDS = []; // Optional: Array leeren, wenn du das Spiel neu starten möchtest
+    console.log("All intervals stopped!"); // Zur Überprüfung
+}
+
+
 function init() {
+      keyboard = new Keyboard()
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 
@@ -19,11 +34,11 @@ function startGame() {
     init();
 }
 
-setInterval(() => {
-    if (gameStarted) {  // Prüft, ob das Spiel gestartet wurde
-        this.x -= this.speed; // Bewegung nur, wenn das Spiel läuft
-    }
-}, 1000 / 60);
+// setInterval(() => {
+//     if (gameStarted) {  // Prüft, ob das Spiel gestartet wurde
+//         this.x -= this.speed; // Bewegung nur, wenn das Spiel läuft
+//     }
+// }, 1000 / 60);
 
 
 
@@ -83,5 +98,3 @@ window.addEventListener('keyup', (e) => {
     }
 
 });
-
-

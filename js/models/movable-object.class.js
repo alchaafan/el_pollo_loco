@@ -22,7 +22,7 @@ class MovableObject extends DrawableObject {
 
 
     applyGravity() {
-        setInterval(() => {
+         setStoppableInterval(() => { 
             if (!this.isDead()) {
                 if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
@@ -87,37 +87,32 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-    animateOnce(images, duration = 1000) { // Standarddauer 1 Sekunde
+     animateOnce(images, duration = 1000) {
         if (this.currentAnimation !== images) {
             this.currentAnimation = images;
             this.currentImage = 0;
             this.animationFinishTime = new Date().getTime() + duration;
-            this.playAnimation(images);
-        } else if (new Date().getTime() < this.animationFinishTime) {
+        }
 
-            if (images.length === 1) {
-                this.playAnimation(images);
-            } else {
-                if (this.currentImage < images.length - 1) {
-                    this.currentImage++;
-                }
-                this.playAnimation(images);
+        this.playAnimation(images);
+
+        if (new Date().getTime() < this.animationFinishTime) {
+            if (images.length > 1 && this.currentImage < images.length - 1) {
+                this.currentImage++;
             }
         } else {
-            // Animation beendet
             this.isRemovable = true;
-            this.currentAnimation = null;
+            this.currentAnimation = null; 
+            this.currentImage = images.length - 1; 
         }
     }
-
 
     animateLoop(images) {
         let i = this.currentImage % images.length;
         this.currentImage = i;
         this.playAnimation(images);
-        this.currentImage++;
+        this.currentImage++; 
     }
-
 
 
     moveRight() {
@@ -125,9 +120,9 @@ class MovableObject extends DrawableObject {
     }
 
     moveLeft() {
-        setInterval(() => {
+        setStoppableInterval(() => {
             this.x -= this.speed;
-        }, 1000 / 60); // Frequenz angepasst
+        }, 1000 / 60); 
     }
 
     jump() {

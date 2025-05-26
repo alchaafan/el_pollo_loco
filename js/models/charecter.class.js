@@ -95,6 +95,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_LONGIDLE);
         this.applyGravity();
         this.animate();
+        // this.gameStopped() = false;
         this.currentAnimation = null;
         this.lastActionTime = new Date().getTime();
     }
@@ -102,7 +103,7 @@ class Character extends MovableObject {
     animate() {
 
         //Intervall für Bewegung und Kamera
-            setInterval(() => {
+            setStoppableInterval(() => {
            
             if (!this.isDead()) {
                 let moved = false;
@@ -126,11 +127,11 @@ class Character extends MovableObject {
                 if (moved) {
                     this.lastActionTime = new Date().getTime();
                 }
-            }
+            } 
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {
+        setStoppableInterval(() => {
             let nextAnimation = null;
             let timepassedSinceLastAction = new Date().getTime() - this.lastActionTime;
 
