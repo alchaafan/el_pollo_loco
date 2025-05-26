@@ -40,11 +40,11 @@ class World {
     }
 
     addBottles() {
-        this.bottles.push (new Bottles(1100, 350));
-        this.bottles.push (new Bottles(1650, 350));
-        this.bottles.push (new Bottles(800, 350));
-        this.bottles.push (new Bottles(650, 350));
-         this.bottles.push (new Bottles(1000, 350));
+        this.bottles.push(new Bottles(1100, 350));
+        this.bottles.push(new Bottles(1650, 350));
+        this.bottles.push(new Bottles(800, 350));
+        this.bottles.push(new Bottles(650, 350));
+        this.bottles.push(new Bottles(1000, 350));
     }
 
     run() {
@@ -53,7 +53,8 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkBottleCollisions();
-            this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt. 
+            this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt.
+            this.removeDeadEnemies(); // Füge diese Methode hinzu, um tote Hühner zu entfernen
         }, 100);
     }
 
@@ -66,31 +67,34 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy, index) => { 
-           
+        this.level.enemies.forEach((enemy, index) => {
+
             if (!this.character.isDead() && !enemy.isDead() && this.character.isColliding(enemy)) {
-                if (this.character.speedY < 0 && // Charakter fällt abwärts
-                    (this.character.y + this.character.height - this.character.offset.bottom) < (enemy.y + enemy.height - enemy.offset.bottom) // Unterer Rand des Charakters ist über dem unteren Rand des Gegners
+
+                if (this.character.speedY < 0 &&
+                    (this.character.y + this.character.height - this.character.offset.bottom) < (enemy.y + enemy.height - enemy.offset.bottom)
                 ) {
-                    if (enemy instanceof Chicken) { 
-                        enemy.hit(); 
-                        
-                        this.level.enemies.splice(index, 1); 
-                        
-                        
+                    if (enemy instanceof Chicken) {
+                        enemy.hit(); // Das Huhn stirbt
                         this.character.jump(15); // Kleinerer Sprung als normal
                     }
                 } else {
-                    // Fall 2: Charakter kollidiert seitlich oder von unten (nimmt Schaden)
-                    // Nur Schaden nehmen, wenn nicht schon verletzt oder tot
+
                     if (!this.character.isHurt()) {
-                        this.character.hit(); // Charakter nimmt Schaden
-                        this.statusBar.setPercentage(this.character.energy); // Statusbar aktualisieren
+                        this.character.hit();
+                        this.statusBar.setPercentage(this.character.energy);
                     }
                 }
             }
         });
     }
+
+    // Neue Methode zum Entfernen von toten Feinden
+    removeDeadEnemies() {
+        // Filtere alle Feinde heraus, die als entfernbar markiert sind
+        this.level.enemies = this.level.enemies.filter(enemy => !enemy.isRemovable);
+    }
+
 
     checkCoinCollisions() {
         this.coins.forEach((coin, index) => {
@@ -103,7 +107,7 @@ class World {
 
     checkBottleCollisions() {
         this.bottles.forEach((bottle, index) => {
-            if(this.character.isColliding(bottle)) {
+            if (this.character.isColliding(bottle)) {
                 this.bottles.splice(index, 1);
                 this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
             }
@@ -149,7 +153,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-       
+
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);

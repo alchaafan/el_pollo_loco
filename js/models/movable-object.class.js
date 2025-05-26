@@ -6,6 +6,10 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    animationFinishTime = 0;
+    isRemovable = false;
+    currentAnimation = null;
+
 
     offset = {
         top: 0,
@@ -83,12 +87,29 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-    animateOnce(images) {
-        if (this.currentImage < images.length - 1) {
-            this.currentImage++
+    animateOnce(images, duration = 1000) { // Standarddauer 1 Sekunde
+        if (this.currentAnimation !== images) {
+            this.currentAnimation = images;
+            this.currentImage = 0;
+            this.animationFinishTime = new Date().getTime() + duration;
+            this.playAnimation(images);
+        } else if (new Date().getTime() < this.animationFinishTime) {
+
+            if (images.length === 1) {
+                this.playAnimation(images);
+            } else {
+                if (this.currentImage < images.length - 1) {
+                    this.currentImage++;
+                }
+                this.playAnimation(images);
+            }
+        } else {
+            // Animation beendet
+            this.isRemovable = true;
+            this.currentAnimation = null;
         }
-        this.playAnimation(images)
     }
+
 
     animateLoop(images) {
         let i = this.currentImage % images.length;
@@ -106,8 +127,7 @@ class MovableObject extends DrawableObject {
     moveLeft() {
         setInterval(() => {
             this.x -= this.speed;
-        }, 1000 / 60);
-
+        }, 1000 / 60); // Frequenz angepasst
     }
 
     jump() {

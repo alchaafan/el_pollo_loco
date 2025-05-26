@@ -4,7 +4,7 @@ class Character extends MovableObject {
     speed = 10;
 
     offset = {
-        top: 100,    // Wie viel Pixel oben vom Bild ignoriert werden
+        top: 100, 
         bottom: 15,
         left: 30,
         right: 30
@@ -81,7 +81,7 @@ class Character extends MovableObject {
 
 
     world;
-    lastActionTime = 0; // speichert die Aktivität
+    lastActionTime = 0;
 
 
 

@@ -8,7 +8,7 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
 
-     IMAGES_DEAD = [
+    IMAGES_DEAD = [
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ];
 
@@ -24,24 +24,24 @@ class Chicken extends MovableObject {
 
     hit() {
         this.energy = 0;
+        this.speed = 0; // Huhn stoppt sich zu bewegen, sobald es getroffen wird
+        this.currentImage = 0;
+        this.animationFinishTime = 0;
     }
 
-
     animate() {
-        
+        // Intervall für die Bewegung des Huhns 
         setInterval(() => {
-            if (gameStarted && !this.isDead()) { 
+            if (gameStarted && !this.isDead()) {
                 this.moveLeft();
             }
-        }, 1000 / 60); 
+        }, 1000 / 60);
 
-        
         setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD); // Zeige das tote Bild an
-                 this.speed = 0;
+                this.animateOnce(this.IMAGES_DEAD, 1000); // Spiele die Sterbeanimation für 1 Sekunde ab
             } else {
-                this.animateLoop(this.IMAGES_WALKING); // Spiele die Laufanimation ab
+                this.animateLoop(this.IMAGES_WALKING);
             }
         }, 200); // Animationsgeschwindigkeit für Laufen
     }
