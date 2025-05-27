@@ -11,7 +11,8 @@ class World {
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
     bottles = [];
-    endboss = this.level.enemies.find(e => e instanceof Endboss);
+   statusBarEndboss;
+    endboss;
 
 
     constructor(canvas, keyboard) {
@@ -20,9 +21,15 @@ class World {
         this.keyboard = keyboard;
         this.addCoins();
         this.addBottles();
-        this.draw();
+        //this.draw();
         this.setWorld();
+        this.statusBarEndboss = new StatusBarEndboss();
         this.run();
+         this.endboss = this.level.enemies.find(e => e instanceof Endboss); //
+        if (this.endboss) {
+            this.endboss.world = this; //
+        }
+        this.draw();
 
     }
 
@@ -56,16 +63,29 @@ class World {
             this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt.
             this.removeDeadEnemies(); // Füge diese Methode hinzu, um tote Hühner zu entfernen
             this.checkEndbossContact();
+
+            // Aktualisiere die Endboss-Statusleiste
+            if (this.endboss && this.endboss.hadFirstContact) {
+                this.statusBarEndboss.setPercentage(this.endboss.energy);
+            }
         }, 100);
     }
 
-    checkEndbossContact() {
-        if(this.endboss && !this.endboss.hadFirstContact) {
-            const contactDistance = 500;
-            if(this.character.x + this.character.width > this.endboss.x - contactDistance) {
+     checkEndbossContact() {
+        if (this.endboss && !this.endboss.hadFirstContact) {
+            // Definiere die Linie, bei der der Endboss aktiv wird
+            const activationLine = 2000; // Beispiel: X-Koordinate 2000
+            if (this.character.x + this.character.width > activationLine) {
                 this.endboss.hadFirstContact = true;
-                console.log('Endboss hat den ersten Kontakt'); // Später für Soundabspielen
+                console.log('Endboss hat den ersten Kontakt!');
             }
+        }
+    }
+
+    // Eine Methode, um die Endboss-Lebensleiste anzuzeigen
+    showEndbossHealthBar() {
+        if (this.endboss && this.endboss.hadFirstContact) {
+            this.statusBarEndboss.draw(this.ctx); // Zeichne die Statusleiste
         }
     }
 
@@ -98,6 +118,17 @@ class World {
                 }
             }
         });
+
+        // Endboss Kollision und Angriff
+        if (this.endboss && !this.character.isDead() && !this.endboss.isDead()) {
+            if (this.character.isColliding(this.endboss) && this.endboss.currentAnimation === this.endboss.IMAGES_ATTACK) {
+                // Sie könnten eine Abklingzeit für Endboss-Angriffe oder einen bestimmten Punkt in der Animation wünschen
+                if (!this.character.isHurt()) {
+                    this.character.hit(); // Oder eine spezifische 'endbossHit'-Methode
+                    this.statusBar.setPercentage(this.character.energy);
+                }
+            }
+        }
     }
 
     // Neue Methode zum Entfernen von toten Feinden
@@ -137,12 +168,17 @@ class World {
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarCoins); // Coins Statusbar zeichnen
+        this.addToMap(this.statusBarEndboss);
         this.addToMap(this.StatusBarBottles);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
+
+        //  if (this.endboss && this.endboss.hadFirstContact) {
+        //      this.addToMap(this.statusBarEndboss);
+        // }
 
         //draw() wird immer wieder aufgerufen
         let self = this;
@@ -159,17 +195,17 @@ class World {
     }
 
     addToMap(mo) {
-        if (mo.otherDirection) {
-            this.flipImage(mo);
-        }
-
-        mo.draw(this.ctx);
-
-
-        if (mo.otherDirection) {
-            this.flipImageBack(mo);
-        }
+    // Nur Spiegellogik anwenden, wenn das Objekt eine MovableObject-Instanz ist und otherDirection hat
+    if (mo instanceof MovableObject && mo.otherDirection) {
+        this.flipImage(mo);
     }
+
+    mo.draw(this.ctx);
+
+    if (mo instanceof MovableObject && mo.otherDirection) {
+        this.flipImageBack(mo);
+    }
+}
 
     flipImage(mo) {
         this.ctx.save();
