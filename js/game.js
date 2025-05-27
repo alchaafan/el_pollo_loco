@@ -13,7 +13,7 @@ function setStoppableInterval(fn, time) {
 
 function stopGame() { 
     intervalIDS.forEach(clearInterval); 
-    intervalIDS = []; // Optional: Array leeren, wenn du das Spiel neu starten möchtest
+    intervalIDS = []; 
     console.log("All intervals stopped!"); // Zur Überprüfung
 }
 
