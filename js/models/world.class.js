@@ -11,7 +11,7 @@ class World {
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
     bottles = [];
-
+    endboss = this.level.enemies.find(e => e instanceof Endboss);
 
 
     constructor(canvas, keyboard) {
@@ -55,7 +55,18 @@ class World {
             this.checkBottleCollisions();
             this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt.
             this.removeDeadEnemies(); // Füge diese Methode hinzu, um tote Hühner zu entfernen
+            this.checkEndbossContact();
         }, 100);
+    }
+
+    checkEndbossContact() {
+        if(this.endboss && !this.endboss.hadFirstContact) {
+            const contactDistance = 500;
+            if(this.character.x + this.character.width > this.endboss.x - contactDistance) {
+                this.endboss.hadFirstContact = true;
+                console.log('Endboss hat den ersten Kontakt'); // Später für Soundabspielen
+            }
+        }
     }
 
     checkThrowObjects() {
@@ -67,7 +78,7 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy, index) => {
+        this.level.enemies.forEach((enemy) => {
 
             if (!this.character.isDead() && !enemy.isDead() && this.character.isColliding(enemy)) {
 
