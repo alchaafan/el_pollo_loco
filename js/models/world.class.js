@@ -74,7 +74,7 @@ class World {
                 if (this.character.speedY < 0 &&
                     (this.character.y + this.character.height - this.character.offset.bottom) < (enemy.y + enemy.height - enemy.offset.bottom)
                 ) {
-                    if (enemy instanceof Chicken) {
+                    if (enemy instanceof Chicken || enemy instanceof BabyChicken) {
                         enemy.hit(); // Das Huhn stirbt
                         this.character.jump(15); // Kleinerer Sprung als normal
                     }
