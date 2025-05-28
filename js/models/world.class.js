@@ -15,7 +15,7 @@ class World {
     endboss;
 
 
-    constructor(canvas, keyboard) {
+     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -25,13 +25,14 @@ class World {
         this.setWorld();
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
-         this.endboss = this.level.enemies.find(e => e instanceof Endboss); //
+        this.endboss = this.level.enemies.find(e => e instanceof Endboss); //
         if (this.endboss) {
             this.endboss.world = this; //
         }
         this.draw();
 
     }
+
 
     setWorld() {
         this.character.world = this;
@@ -168,17 +169,18 @@ class World {
         // -------------- Space for fixed objects -------------
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarCoins); // Coins Statusbar zeichnen
-        this.addToMap(this.statusBarEndboss);
+        //this.addToMap(this.statusBarEndboss);
         this.addToMap(this.StatusBarBottles);
+         if (this.endboss && this.endboss.hadFirstContact) {
+             this.addToMap(this.statusBarEndboss);
+        }
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
 
-        //  if (this.endboss && this.endboss.hadFirstContact) {
-        //      this.addToMap(this.statusBarEndboss);
-        // }
+        
 
         //draw() wird immer wieder aufgerufen
         let self = this;
