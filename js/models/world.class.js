@@ -64,9 +64,10 @@ class World {
             this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt.
             this.removeDeadEnemies(); // Füge diese Methode hinzu, um tote Hühner zu entfernen
             this.checkEndbossContact();
+            this.checkBottleEndbossCollisions(); 
 
             // Aktualisiere die Endboss-Statusleiste
-            if (this.endboss && this.endboss.hadFirstContact) {
+           if (this.endboss && this.endboss.hadFirstContact) {
                 this.statusBarEndboss.setPercentage(this.endboss.energy);
             }
         }, 100);
@@ -78,7 +79,7 @@ class World {
             const activationLine = 2000; // Beispiel: X-Koordinate 2000
             if (this.character.x + this.character.width > activationLine) {
                 this.endboss.hadFirstContact = true;
-                console.log('Endboss hat den ersten Kontakt!');
+               
             }
         }
     }
@@ -132,10 +133,32 @@ class World {
         }
     }
 
+    checkBottleEndbossCollisions() {
+        if (this.endboss && !this.endboss.isDead()) {
+            this.throwableObjects.forEach((bottle, bottleIndex) => {
+                if (bottle.isColliding(this.endboss)) {
+                    this.endboss.hitByBottle();
+                    this.throwableObjects.splice(bottleIndex, 1);
+                    // Die StatusBar des Endbosses wird bereits in der `run()` Methode aktualisiert.
+                    // Du könntest sie hier auch explizit setzen, aber es ist nicht unbedingt nötig,
+                    // da `run` sehr schnell darauf reagiert.
+                    // this.statusBarEndboss.setPercentage(this.endboss.energy);
+                }
+            });
+        }
+    }
+
     // Neue Methode zum Entfernen von toten Feinden
-    removeDeadEnemies() {
+      removeDeadEnemies() {
         // Filtere alle Feinde heraus, die als entfernbar markiert sind
         this.level.enemies = this.level.enemies.filter(enemy => !enemy.isRemovable);
+
+        // Überprüfe explizit, ob der Endboss entfernt wurde und setze seine Referenz auf null
+        // Dies ist wichtig, da this.endboss eine direkte Referenz ist und nicht automatisch gelöscht wird.
+        if (this.endboss && this.endboss.isRemovable && !this.level.enemies.includes(this.endboss)) {
+             this.endboss = null;
+            
+        }
     }
 
 
