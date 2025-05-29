@@ -243,4 +243,28 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+     handleEnemyCollision(enemy, index) {
+        if (this.character.isAboveGround() && this.character.speedY < 0) { // Pepe springt von oben auf den Gegner
+            this.handleStompEnemy(enemy, index);
+        } else if (!this.character.isAboveGround()) { // Pepe kollidiert seitlich oder von unten mit dem Gegner
+            let damage = (enemy instanceof Endboss) ? 20 : 10;
+            this.character.hit(damage);
+            this.healthbar.setPercentage(this.character.energy);
+
+            // NEUE LOGIK: Wenn der Endboss getroffen wird, stoßen wir Pepe zurück
+            if (enemy instanceof Endboss) {
+                this.knockbackCharacter(this.character, enemy); // Hier rufen wir die neue Funktion auf
+            }
+        }
+    }
+
+     knockbackCharacter(character, enemy) {
+        const knockbackDistance = 50; // Sie können diesen Wert anpassen
+        if (character.x < enemy.x) { // Pepe ist links vom Gegner
+            character.x -= knockbackDistance;
+        } else { // Pepe ist rechts vom Gegner
+            character.x += knockbackDistance;
+        }
+    }
 }

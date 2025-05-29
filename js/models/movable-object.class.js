@@ -21,8 +21,8 @@ class MovableObject extends DrawableObject {
     GRAVITY_GROUND_Y = 440;
 
 
-   applyGravity() {
-         setStoppableInterval(() => {
+    applyGravity() {
+        setStoppableInterval(() => {
             if (!this.isDead()) {
                 if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
@@ -89,29 +89,37 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-     animateOnce(images, duration = 1000) {
-        if (this.currentAnimation !== images) {
-            this.currentAnimation = images;
-            this.currentImage = 0;
-            this.animationFinishTime = new Date().getTime() + duration;
-        }
+   animateOnce(images, duration = 1000) {
+    const now = new Date().getTime();
 
-        this.playAnimation(images);
-
-        if (new Date().getTime() < this.animationFinishTime) {
-            if (images.length > 1 && this.currentImage < images.length - 1) {
-                this.currentImage++;
-            }
-        } else {
-            if (this.isDead() && images === this.IMAGES_DEAD) { // Nur entfernbar setzen, wenn tot und die Todesanimation abgespielt wird
-                this.isRemovable = true; //
-            }
-            this.currentAnimation = null;
-            this.currentImage = images.length - 1;
-        }
+    if (this.currentAnimation !== images) {
+        console.log("Starte einmalige Animation:", images);
+        this.currentAnimation = images;
+        this.currentImage = 0;
+        this.animationFinishTime = now + duration;
     }
 
-      animateLoop(images) {
+    this.playAnimation(images);
+
+    if (now < this.animationFinishTime) {
+        if (images.length > 1 && this.currentImage < images.length - 1) {
+            this.currentImage++;
+        }
+    } else {
+        console.log("Animation fertig:", images);
+        this.currentAnimation = null;
+        this.currentImage = images.length - 1;
+
+        if (this.isDead() && images === this.IMAGES_DEAD) {
+            this.isRemovable = true;
+        }
+    }
+}
+
+
+
+
+    animateLoop(images) {
         // Nur Schleifenanimation abspielen, wenn keine einmalige Animation aktiv ist
         if (this.currentAnimation === null || this.currentAnimation === images) {
             let i = this.currentImage % images.length;
@@ -123,13 +131,13 @@ class MovableObject extends DrawableObject {
 
 
     moveRight() {
-      
+
     }
 
     moveLeft() {
         setStoppableInterval(() => {
             this.x -= this.speed;
-        }, 1000 / 60); 
+        }, 1000 / 60);
     }
 
     jump() {
