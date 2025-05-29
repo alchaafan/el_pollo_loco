@@ -16,16 +16,25 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    isSplashed = false; // Neue Eigenschaft, um zu verfolgen, ob die Flasche gespritzt ist
+    isSplashed = false;
+    throwDirection = 1; // 1 für rechts, -1 für links
 
-    constructor(x, y) {
+    constructor(x, y, otherDirection) { // Neuer Parameter 'otherDirection'
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
         this.x = x;
         this.y = y;
         this.height = 60;
         this.width = 50;
-        this.loadImages(this.IMAGES_ROTATION); // Rotationsbilder laden
-        this.loadImages(this.IMAGES_SPLASH);   // Spritzbilder laden
+        this.loadImages(this.IMAGES_ROTATION);
+        this.loadImages(this.IMAGES_SPLASH);
+
+        // Blickrichtung speichern
+        if (otherDirection) { // Wenn otherDirection true ist, schaut der Charakter nach links
+            this.throwDirection = -1;
+        } else { // Ansonsten schaut er nach rechts
+            this.throwDirection = 1;
+        }
+
         this.throw();
     }
 
@@ -40,7 +49,7 @@ class ThrowableObject extends MovableObject {
         // Intervall für horizontale Bewegung und Rotationsanimation
         setStoppableInterval(() => {
             if (!this.isSplashed) { // Nur bewegen und rotieren, wenn nicht gespritzt
-                this.x += 10; // Flasche horizontal bewegen
+                this.x += (10 * this.throwDirection); // Bewegung basierend auf Wurfrichtung
                 this.animateLoop(this.IMAGES_ROTATION); // Rotationsanimation abspielen
             }
         }, 25);

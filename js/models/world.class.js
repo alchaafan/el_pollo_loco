@@ -97,13 +97,20 @@ class World {
     }
 
     /**
-     * Handhabt das Werfen von Objekten (Flaschen), wenn die Taste 'D' gedrückt wird.
+     * Handhabt das Werfen von Objekten (Flaschen), wenn die 'D' Taste gedrückt wird.
      */
     checkThrowObjects() {
         if (this.keyboard.D && this.StatusBarBottles.percentage > 0) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            let bottleX;
+            if (this.character.otherDirection) { // Wenn der Charakter nach links schaut
+                bottleX = this.character.x - 40; // Startpunkt links vom Charakter
+            } else { // Wenn der Charakter nach rechts schaut
+                bottleX = this.character.x + 100; // Startpunkt rechts vom Charakter
+            }
+
+            let bottle = new ThrowableObject(bottleX, this.character.y + 100, this.character.otherDirection);
             this.throwableObjects.push(bottle);
-            this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Flaschenzahl reduzieren
+            this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Reduziere die Flaschenanzahl
         }
     }
 
@@ -257,16 +264,16 @@ class World {
     }
 
     /**
-     * Fügt ein einzelnes bewegliches Objekt zur Karte hinzu und handhabt bei Bedarf das Spiegeln des Bildes.
+     * Fügt ein einzelnes bewegliches Objekt zur Karte hinzu, handhabt bei Bedarf das Spiegeln des Bildes.
      * @param {MovableObject} mo - Das hinzuzufügende bewegliche Objekt.
      */
     addToMap(mo) {
-        // Nur Spiegellogik anwenden, wenn das Objekt eine MovableObject-Instanz ist und otherDirection hat
+        // Apply mirroring logic only if the object is a MovableObject instance and has otherDirection
         if (mo instanceof MovableObject && mo.otherDirection) {
             this.flipImage(mo);
         }
 
-        mo.draw(this.ctx);
+        mo.draw(this.ctx); // Draw the object
 
         if (mo instanceof MovableObject && mo.otherDirection) {
             this.flipImageBack(mo);
@@ -278,10 +285,10 @@ class World {
      * @param {MovableObject} mo - Das zu spiegelnde bewegliche Objekt.
      */
     flipImage(mo) {
-        this.ctx.save();
-        this.ctx.translate(mo.width, 0);
-        this.ctx.scale(-1, 1);
-        mo.x = mo.x * -1;
+        this.ctx.save(); // Save the current canvas state
+        this.ctx.translate(mo.width, 0); // Translate to the right edge of the object
+        this.ctx.scale(-1, 1); // Scale by -1 on the x-axis to flip
+        mo.x = mo.x * -1; // Adjust the object's x-coordinate for the flip
     }
 
     /**
@@ -289,8 +296,8 @@ class World {
      * @param {MovableObject} mo - Das wiederherzustellende bewegliche Objekt.
      */
     flipImageBack(mo) {
-        mo.x = mo.x * -1;
-        this.ctx.restore();
+        mo.x = mo.x * -1; // Revert the x-coordinate adjustment
+        this.ctx.restore(); // Restore the saved canvas state
     }
 
     /**
@@ -319,10 +326,10 @@ class World {
      * @param {Enemy} enemy - Das Feindobjekt.
      */
     knockbackCharacter(character, enemy) {
-        const knockbackDistance = 50; 
-        if (character.x < enemy.x) { 
+        const knockbackDistance = 50; // Sie können diesen Wert anpassen
+        if (character.x < enemy.x) { // Pepe ist links vom Gegner
             character.x -= knockbackDistance;
-        } else { 
+        } else { // Pepe ist rechts vom Gegner
             character.x += knockbackDistance;
         }
     }
