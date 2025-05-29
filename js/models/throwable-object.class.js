@@ -19,7 +19,7 @@ class ThrowableObject extends MovableObject {
     isSplashed = false;
     throwDirection = 1; // 1 für rechts, -1 für links
 
-    constructor(x, y, otherDirection) { // Neuer Parameter 'otherDirection'
+    constructor(x, y, otherDirection) { 
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
         this.x = x;
         this.y = y;
@@ -29,42 +29,32 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.IMAGES_SPLASH);
 
         // Blickrichtung speichern
-        if (otherDirection) { // Wenn otherDirection true ist, schaut der Charakter nach links
+        if (otherDirection) { 
             this.throwDirection = -1;
-        } else { // Ansonsten schaut er nach rechts
+        } else { 
             this.throwDirection = 1;
         }
 
         this.throw();
     }
 
-    /**
-     * Leitet die Wurfaktion der Flasche ein.
-     * Wendet die Schwerkraft an und richtet die horizontale Bewegung und die Rotationsanimation ein.
-     */
     throw() {
-        this.speedY = 30; // Anfängliche Aufwärtsgeschwindigkeit für den Wurf
-        this.applyGravity(); // Schwerkraft anwenden, damit die Flasche fällt
-
-        // Intervall für horizontale Bewegung und Rotationsanimation
+        this.speedY = 30;
+        this.applyGravity();
         setStoppableInterval(() => {
-            if (!this.isSplashed) { // Nur bewegen und rotieren, wenn nicht gespritzt
-                this.x += (10 * this.throwDirection); // Bewegung basierend auf Wurfrichtung
-                this.animateLoop(this.IMAGES_ROTATION); // Rotationsanimation abspielen
+            if (!this.isSplashed) { 
+                this.x += (10 * this.throwDirection); 
+                this.animateLoop(this.IMAGES_ROTATION); 
             }
         }, 25);
     }
 
-    /**
-     * Löst die Spritzanimation aus und stoppt weitere Bewegung/Rotation.
-     */
     splash() {
-        this.isSplashed = true; // Als gespritzt markieren
+        this.isSplashed = true; 
         this.speedY = 0; // Vertikale Bewegung stoppen
-        this.speed = 0; // Horizontale Bewegung stoppen (falls eine andere Geschwindigkeit eingestellt ist)
-        // Die Spritzanimation einmal abspielen und dann zur Entfernung markieren
+        this.speed = 0; // Horizontale Bewegung stoppen 
         this.animateOnce(this.IMAGES_SPLASH, 400, () => {
-            this.isRemovable = true; // Die Flasche zur Entfernung markieren, nachdem die Spritzanimation beendet ist
+            this.isRemovable = true; 
         });
     }
 }

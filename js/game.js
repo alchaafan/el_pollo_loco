@@ -34,13 +34,6 @@ function startGame() {
     init();
 }
 
-// setInterval(() => {
-//     if (gameStarted) {  // Prüft, ob das Spiel gestartet wurde
-//         this.x -= this.speed; // Bewegung nur, wenn das Spiel läuft
-//     }
-// }, 1000 / 60);
-
-
 
 window.addEventListener('keydown', (e) => {
     if (e.keyCode == 39) {
