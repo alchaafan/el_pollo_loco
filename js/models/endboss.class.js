@@ -74,22 +74,26 @@ class Endboss extends MovableObject {
             const now = new Date().getTime();
 
             if (this.isDead()) {
-                this.animateOnce(this.IMAGES_DEAD, 500);
-                this.stopAllEndbossIntervals();
-                this.isRemovable = true;
-           } else if (this.isHurt() && this.currentAnimation !== this.IMAGES_HURT) {
-    this.animateOnce(this.IMAGES_HURT, 400);
+                // Die Gesamtdauer für 3 Bilder mit je 1 Sekunde ist 3000 ms
+                this.animateOnce(this.IMAGES_DEAD, 2000, () => {
+                    this.stopAllEndbossIntervals(); 
+                    this.isRemovable = true; 
+                });
+               
+            } else if (this.isHurt() && this.currentAnimation !== this.IMAGES_HURT) {
+                this.animateOnce(this.IMAGES_HURT, 400);
 
-    setTimeout(() => {
-        if (this.currentAnimation === this.IMAGES_HURT) {
-            this.currentAnimation = null; // Erzwinge Freigabe nach Ablauf
-        }
-    }, 450); // Etwas länger als die Animation
-}
- else if (this.hadFirstContact && (!this.currentAnimation || this.currentAnimation === this.IMAGES_WALKING || this.currentAnimation === this.IMAGES_ATTACK)) {
+                setTimeout(() => {
+                    if (this.currentAnimation === this.IMAGES_HURT) {
+                        this.currentAnimation = null; 
+                    }
+                }, 450); 
 
+               
+            }
+            
+            else if (this.hadFirstContact && (!this.currentAnimation || this.currentAnimation === this.IMAGES_WALKING || this.currentAnimation === this.IMAGES_ATTACK)) {
                 this.world.showEndbossHealthBar();
-
                 const characterX = this.world.character.x;
                 const attackRange = 300;
 

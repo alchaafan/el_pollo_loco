@@ -38,8 +38,6 @@ class MovableObject extends DrawableObject {
                 this.speedY = 0;
                 if (this.y >= this.GRAVITY_GROUND_Y) {
                     this.y = this.GRAVITY_GROUND_Y;
-                    // Wenn ein totes Objekt den Boden erreicht, kann es als entfernbar markiert werden
-                    // Oder das wird durch die animateOnce() Methode der Todesanimation gesteuert.
                 }
             }
         }, 1000 / 25);
@@ -47,7 +45,7 @@ class MovableObject extends DrawableObject {
 
 
     isAboveGround() {
-        if (this instanceof ThrowableObject) { //throwable objekts soll always fall
+        if (this instanceof ThrowableObject) {
             return true;
         } else {
             return this.y + this.height < this.GRAVITY_GROUND_Y;
@@ -89,29 +87,37 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-   animateOnce(images, duration = 1000) {
-    const now = new Date().getTime();
+    animateOnce(images, duration = 1000, onFinish = () => {}) {
+        const now = new Date().getTime();
 
-    if (this.currentAnimation !== images) {
-        console.log("Starte einmalige Animation:", images);
-        this.currentAnimation = images;
-        this.currentImage = 0;
-        this.animationFinishTime = now + duration;
-    }
-
-    this.playAnimation(images);
-
-    if (now < this.animationFinishTime) {
-        if (images.length > 1 && this.currentImage < images.length - 1) {
-            this.currentImage++;
+        if (this.currentAnimation !== images) {
+            this.currentAnimation = images;
+            this.currentImage = 0;
+            this.animationStartTime = now; 
+            this.animationFinishTime = now + duration;
         }
-    } else {
-        console.log("Animation fertig:", images);
-        this.currentAnimation = null;
-        this.currentImage = images.length - 1;
 
-        if (this.isDead() && images === this.IMAGES_DEAD) {
-            this.isRemovable = true;
+   
+        const timePerImage = duration / images.length;
+        const timeElapsedSinceStart = now - this.animationStartTime;
+        let targetImageIndex = Math.floor(timeElapsedSinceStart / timePerImage);
+
+        if (targetImageIndex < images.length) {
+            this.currentImage = targetImageIndex;
+        } else {
+            this.currentImage = images.length - 1;
+        }
+
+        this.playAnimation(images);
+
+        if (now >= this.animationFinishTime) {
+            if (this.currentAnimation !== null) {
+                this.currentAnimation = null;
+                this.currentImage = images.length - 1;
+                if (this.isDead() && images === this.IMAGES_DEAD) {
+                    this.isRemovable = true;
+                }
+                onFinish();
         }
     }
 }
