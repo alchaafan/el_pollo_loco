@@ -18,6 +18,7 @@ class ThrowableObject extends MovableObject {
 
     isSplashed = false;
     throwDirection = 1; // 1 für rechts, -1 für links
+    splashSound = new Audio('audio/tomato.mp3');
 
     constructor(x, y, otherDirection) { 
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
@@ -53,6 +54,7 @@ class ThrowableObject extends MovableObject {
         this.isSplashed = true; 
         this.speedY = 0; // Vertikale Bewegung stoppen
         this.speed = 0; // Horizontale Bewegung stoppen 
+        this.splashSound.play();
         this.animateOnce(this.IMAGES_SPLASH, 400, () => {
             this.isRemovable = true; 
         });

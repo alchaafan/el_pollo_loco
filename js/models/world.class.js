@@ -14,6 +14,11 @@ class World {
     statusBarEndboss;
     endboss;
 
+    // Sounds
+    throwSound = new Audio('audio/throw.mp3');
+    coinsSound = new Audio('audio/coin.mp3');
+    bottlesSound = new Audio('audio/bottle.mp3');
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -99,6 +104,7 @@ class World {
             let bottle = new ThrowableObject(bottleX, this.character.y + 100, this.character.otherDirection);
             this.throwableObjects.push(bottle);
             this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Reduziere die Flaschenanzahl
+            this.throwSound.play(); // Sound abspielen wenn die Flasche geworfen wird
         }
     }
 
@@ -144,6 +150,7 @@ class World {
                 if (bottle.isColliding(this.endboss) && !bottle.isSplashed) { 
                     this.endboss.hitByBottle();
                     bottle.splash(); 
+                    //this.endbossHitSound.play(); // Sound abspielen wenn Endboss getroffen wird
                  
                 }
             });
@@ -166,8 +173,10 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.coins.splice(index, 1); // entfernt Coin aus dem Array
                 this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
+                 this.coinsSound.play();
             }
         });
+       
     }
 
   
@@ -176,6 +185,7 @@ class World {
             if (this.character.isColliding(bottle)) {
                 this.bottles.splice(index, 1);
                 this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
+                this.bottlesSound.play();
             }
         })
     }

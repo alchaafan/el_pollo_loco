@@ -82,6 +82,8 @@ class Character extends MovableObject {
 
     world;
     lastActionTime = 0;
+    jumpSound = new Audio('audio/jump.mp3');
+    hurtSound = new Audio('audio/hurt.mp3');
 
 
 
@@ -144,6 +146,7 @@ class Character extends MovableObject {
             } else if (this.isHurt()) {
                 nextAnimation = this.IMAGES_HURT;
                 this.lastActionTime = new Date().getTime();
+                this.hurtSound.play();
 
             } else if (this.isAboveGround()) {
                 nextAnimation = this.IMAGES_JUMPING;
@@ -186,5 +189,6 @@ class Character extends MovableObject {
 
     jump() {
         this.speedY = 30;
+        this.jumpSound.play();
     }
 }
