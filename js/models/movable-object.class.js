@@ -10,7 +10,6 @@ class MovableObject extends DrawableObject {
     isRemovable = false;
     currentAnimation = null;
 
-
     offset = {
         top: 0,
         bottom: 0,
@@ -19,7 +18,6 @@ class MovableObject extends DrawableObject {
     };
 
     GRAVITY_GROUND_Y = 440;
-
 
     applyGravity() {
         setStoppableInterval(() => {
@@ -87,17 +85,17 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-    animateOnce(images, duration = 1000, onFinish = () => {}) {
+    animateOnce(images, duration = 1000, onFinish = () => { }) {
         const now = new Date().getTime();
 
         if (this.currentAnimation !== images) {
             this.currentAnimation = images;
             this.currentImage = 0;
-            this.animationStartTime = now; 
+            this.animationStartTime = now;
             this.animationFinishTime = now + duration;
         }
 
-   
+
         const timePerImage = duration / images.length;
         const timeElapsedSinceStart = now - this.animationStartTime;
         let targetImageIndex = Math.floor(timeElapsedSinceStart / timePerImage);
@@ -118,9 +116,9 @@ class MovableObject extends DrawableObject {
                     this.isRemovable = true;
                 }
                 onFinish();
+            }
         }
     }
-}
 
 
 
@@ -134,7 +132,6 @@ class MovableObject extends DrawableObject {
             this.currentImage++;
         }
     }
-
 
     moveRight() {
 

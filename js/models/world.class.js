@@ -11,31 +11,29 @@ class World {
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
     bottles = [];
-   statusBarEndboss;
+    statusBarEndboss;
     endboss;
 
 
-     constructor(canvas, keyboard) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.addCoins();
         this.addBottles();
-        //this.draw();
         this.setWorld();
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
-        this.endboss = this.level.enemies.find(e => e instanceof Endboss); //
+        this.endboss = this.level.enemies.find(e => e instanceof Endboss); // Den Endboss im Level finden
         if (this.endboss) {
-            this.endboss.world = this; //
+            this.endboss.world = this; // Diese Welt dem Endboss zuweisen
         }
-        this.draw();
-
+        this.draw(); // Die Zeichenschleife starten
     }
 
 
     setWorld() {
-        this.character.world = this;
+        this.character.world = this; // Diese Welt dem Charakter zuweisen
     }
 
     addCoins() {
@@ -55,50 +53,63 @@ class World {
         this.bottles.push(new Bottles(1000, 350));
     }
 
+    /**
+     * Hauptspielschleife, überprüft Kollisionen und aktualisiert den Spielstatus.
+     */
     run() {
         setStoppableInterval(() => {
 
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkBottleCollisions();
-            this.checkCoinCollisions(); //Prüft, ob der Charakter Coins berührt.
+            this.checkCoinCollisions(); // Prüft, ob der Charakter Coins berührt.
             this.removeDeadEnemies(); // Füge diese Methode hinzu, um tote Hühner zu entfernen
             this.checkEndbossContact();
-            this.checkBottleEndbossCollisions(); 
+            this.checkBottleEndbossCollisions();
 
             // Aktualisiere die Endboss-Statusleiste
-           if (this.endboss && this.endboss.hadFirstContact) {
+            if (this.endboss && this.endboss.hadFirstContact) {
                 this.statusBarEndboss.setPercentage(this.endboss.energy);
             }
         }, 100);
     }
 
-     checkEndbossContact() {
+    /**
+     * Überprüft, ob der Charakter den ersten Kontakt mit dem Endboss hatte.
+     */
+    checkEndbossContact() {
         if (this.endboss && !this.endboss.hadFirstContact) {
             // Definiere die Linie, bei der der Endboss aktiv wird
             const activationLine = 2000; // Beispiel: X-Koordinate 2000
             if (this.character.x + this.character.width > activationLine) {
                 this.endboss.hadFirstContact = true;
-               
             }
         }
     }
 
-    // Eine Methode, um die Endboss-Lebensleiste anzuzeigen
+    /**
+     * Zeigt die Lebensleiste des Endbosses an, wenn Kontakt hergestellt wurde.
+     */
     showEndbossHealthBar() {
         if (this.endboss && this.endboss.hadFirstContact) {
             this.statusBarEndboss.draw(this.ctx); // Zeichne die Statusleiste
         }
     }
 
+    /**
+     * Handhabt das Werfen von Objekten (Flaschen), wenn die Taste 'D' gedrückt wird.
+     */
     checkThrowObjects() {
         if (this.keyboard.D && this.StatusBarBottles.percentage > 0) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
-            this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20));//Flaschenzahl reduzieren
+            this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Flaschenzahl reduzieren
         }
     }
 
+    /**
+     * Überprüft Kollisionen zwischen dem Charakter und Feinden.
+     */
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
 
@@ -133,12 +144,15 @@ class World {
         }
     }
 
+    /**
+     * Überprüft Kollisionen zwischen geworfenen Flaschen und dem Endboss.
+     */
     checkBottleEndbossCollisions() {
         if (this.endboss && !this.endboss.isDead()) {
             this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if (bottle.isColliding(this.endboss)) {
+                if (bottle.isColliding(this.endboss) && !bottle.isSplashed) { // Überprüfen, ob die Flasche nicht bereits gespritzt ist
                     this.endboss.hitByBottle();
-                    this.throwableObjects.splice(bottleIndex, 1);
+                    bottle.splash(); // Spritzanimation abspielen
                     // Die StatusBar des Endbosses wird bereits in der `run()` Methode aktualisiert.
                     // Du könntest sie hier auch explizit setzen, aber es ist nicht unbedingt nötig,
                     // da `run` sehr schnell darauf reagiert.
@@ -146,22 +160,28 @@ class World {
                 }
             });
         }
+        // Flaschen herausfiltern, die gespritzt sind und zur Entfernung markiert wurden
+        this.throwableObjects = this.throwableObjects.filter(bottle => !bottle.isRemovable);
     }
 
-    // Neue Methode zum Entfernen von toten Feinden
-      removeDeadEnemies() {
+    /**
+     * Entfernt tote Feinde aus dem Level.
+     */
+    removeDeadEnemies() {
         // Filtere alle Feinde heraus, die als entfernbar markiert sind
         this.level.enemies = this.level.enemies.filter(enemy => !enemy.isRemovable);
 
         // Überprüfe explizit, ob der Endboss entfernt wurde und setze seine Referenz auf null
         // Dies ist wichtig, da this.endboss eine direkte Referenz ist und nicht automatisch gelöscht wird.
         if (this.endboss && this.endboss.isRemovable && !this.level.enemies.includes(this.endboss)) {
-             this.endboss = null;
-            
+            this.endboss = null;
         }
     }
 
 
+    /**
+     * Überprüft Kollisionen zwischen dem Charakter und Münzen.
+     */
     checkCoinCollisions() {
         this.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
@@ -171,6 +191,9 @@ class World {
         });
     }
 
+    /**
+     * Überprüft Kollisionen zwischen dem Charakter und Flaschen.
+     */
     checkBottleCollisions() {
         this.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
@@ -181,29 +204,39 @@ class World {
     }
 
 
+    /**
+     * Zeichnet alle Spielobjekte auf den Canvas.
+     */
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Den Canvas leeren
+        this.ctx.translate(this.camera_x, 0); // Kamera-Translation anwenden
+
+        // Hintergrundobjekte, Charakter, Münzen und Flaschen hinzufügen
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.coins);
-        this.addObjectsToMap(this.bottles);// coins zum Spiel hinzufügen
-        this.ctx.translate(-this.camera_x, 0);
-        // -------------- Space for fixed objects -------------
+        this.addObjectsToMap(this.bottles);
+
+        this.ctx.translate(-this.camera_x, 0); // Kamera-Translation für feste Objekte zurücksetzen
+
+        // Feste Objekte (Statusleisten) hinzufügen
         this.addToMap(this.statusBar);
-        this.addToMap(this.statusBarCoins); // Coins Statusbar zeichnen
-        //this.addToMap(this.statusBarEndboss);
+        this.addToMap(this.statusBarCoins); // Münz-Statusleiste zeichnen
         this.addToMap(this.StatusBarBottles);
-         if (this.endboss && this.endboss.hadFirstContact) {
-             this.addToMap(this.statusBarEndboss);
+        if (this.endboss && this.endboss.hadFirstContact) {
+            this.addToMap(this.statusBarEndboss); // Endboss-Statusleiste zeichnen, wenn Kontakt hergestellt wurde
         }
-        this.ctx.translate(this.camera_x, 0);
+
+        this.ctx.translate(this.camera_x, 0); // Kamera-Translation erneut anwenden
+
+        // Wolken, Feinde und werfbare Objekte hinzufügen
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
-        this.ctx.translate(-this.camera_x, 0);
 
-        
+        this.ctx.translate(-this.camera_x, 0); // Kamera-Translation zurücksetzen
+
+
 
         //draw() wird immer wieder aufgerufen
         let self = this;
@@ -213,25 +246,37 @@ class World {
 
     }
 
+    /**
+     * Fügt ein Array von Objekten zur Karte hinzu.
+     * @param {Array<MovableObject>} objects - Das Array der hinzuzufügenden Objekte.
+     */
     addObjectsToMap(objects) {
         objects.forEach(o => {
             this.addToMap(o);
         });
     }
 
+    /**
+     * Fügt ein einzelnes bewegliches Objekt zur Karte hinzu und handhabt bei Bedarf das Spiegeln des Bildes.
+     * @param {MovableObject} mo - Das hinzuzufügende bewegliche Objekt.
+     */
     addToMap(mo) {
-    // Nur Spiegellogik anwenden, wenn das Objekt eine MovableObject-Instanz ist und otherDirection hat
-    if (mo instanceof MovableObject && mo.otherDirection) {
-        this.flipImage(mo);
+        // Nur Spiegellogik anwenden, wenn das Objekt eine MovableObject-Instanz ist und otherDirection hat
+        if (mo instanceof MovableObject && mo.otherDirection) {
+            this.flipImage(mo);
+        }
+
+        mo.draw(this.ctx);
+
+        if (mo instanceof MovableObject && mo.otherDirection) {
+            this.flipImageBack(mo);
+        }
     }
 
-    mo.draw(this.ctx);
-
-    if (mo instanceof MovableObject && mo.otherDirection) {
-        this.flipImageBack(mo);
-    }
-}
-
+    /**
+     * Spiegelt das Bild eines beweglichen Objekts horizontal.
+     * @param {MovableObject} mo - Das zu spiegelnde bewegliche Objekt.
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -239,12 +284,21 @@ class World {
         mo.x = mo.x * -1;
     }
 
+    /**
+     * Stellt das Bild eines beweglichen Objekts nach dem Spiegeln wieder her.
+     * @param {MovableObject} mo - Das wiederherzustellende bewegliche Objekt.
+     */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
 
-     handleEnemyCollision(enemy, index) {
+    /**
+     * Handhabt Kollisionen zwischen dem Charakter und Feinden.
+     * @param {Enemy} enemy - Der an der Kollision beteiligte Feind.
+     * @param {number} index - Der Index des Feindes im Feind-Array.
+     */
+    handleEnemyCollision(enemy, index) {
         if (this.character.isAboveGround() && this.character.speedY < 0) { // Pepe springt von oben auf den Gegner
             this.handleStompEnemy(enemy, index);
         } else if (!this.character.isAboveGround()) { // Pepe kollidiert seitlich oder von unten mit dem Gegner
@@ -259,11 +313,16 @@ class World {
         }
     }
 
-     knockbackCharacter(character, enemy) {
-        const knockbackDistance = 50; // Sie können diesen Wert anpassen
-        if (character.x < enemy.x) { // Pepe ist links vom Gegner
+    /**
+     * Stößt den Charakter nach einer Kollision mit einem Feind zurück.
+     * @param {Character} character - Das Charakterobjekt.
+     * @param {Enemy} enemy - Das Feindobjekt.
+     */
+    knockbackCharacter(character, enemy) {
+        const knockbackDistance = 50; 
+        if (character.x < enemy.x) { 
             character.x -= knockbackDistance;
-        } else { // Pepe ist rechts vom Gegner
+        } else { 
             character.x += knockbackDistance;
         }
     }
