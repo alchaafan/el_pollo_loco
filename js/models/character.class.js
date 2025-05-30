@@ -84,6 +84,9 @@ class Character extends MovableObject {
     lastActionTime = 0;
     jumpSound = new Audio('audio/jump.mp3');
     hurtSound = new Audio('audio/hurt.mp3');
+    deadSound = new Audio('audio/dead.mp3');
+    walkSound = new Audio('audio/walk.mp3');
+    snoreSound = new Audio('audio/snore.mp3');
 
 
 
@@ -141,6 +144,7 @@ class Character extends MovableObject {
                 nextAnimation = this.IMAGES_DEAD;
                 this.speed = 0;
                 this.speedY = 0;
+                this.deadSound.play();
 
 
             } else if (this.isHurt()) {
@@ -159,9 +163,11 @@ class Character extends MovableObject {
 
                     //walk animation
                     nextAnimation = this.IMAGES_WALKING;
+                    this.walkSound.play();
                 } else {
                     if (timepassedSinceLastAction > 15000) {
                         nextAnimation = this.IMAGES_LONGIDLE;
+                        this.snoreSound.play();
                     } else {
                         nextAnimation = this.IMAGES_IDLE;
                     }

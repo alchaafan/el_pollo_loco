@@ -18,6 +18,9 @@ class World {
     throwSound = new Audio('audio/throw.mp3');
     coinsSound = new Audio('audio/coin.mp3');
     bottlesSound = new Audio('audio/bottle.mp3');
+    chickenSound = new Audio('audio/chicken.wav');
+    endbossSound = new Audio('audio/babyChicken.wav');
+    endbossKilledSound = new Audio('audio/endboss-killed.mp3');
 
 
     constructor(canvas, keyboard) {
@@ -119,6 +122,8 @@ class World {
                 ) {
                     if (enemy instanceof Chicken || enemy instanceof BabyChicken) {
                         enemy.hit(); // Das Huhn stirbt
+                        this.chickenSound.play();
+
                         this.character.jump(15); // Kleinerer Sprung als normal
                     }
                 } else {
@@ -150,7 +155,7 @@ class World {
                 if (bottle.isColliding(this.endboss) && !bottle.isSplashed) { 
                     this.endboss.hitByBottle();
                     bottle.splash(); 
-                    //this.endbossHitSound.play(); // Sound abspielen wenn Endboss getroffen wird
+                    this.endbossSound.play();
                  
                 }
             });
@@ -164,6 +169,7 @@ class World {
 
         if (this.endboss && this.endboss.isRemovable && !this.level.enemies.includes(this.endboss)) {
             this.endboss = null;
+            this.endbossKilledSound.play();
         }
     }
 
