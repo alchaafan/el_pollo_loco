@@ -81,10 +81,17 @@ class World {
             if (!this.gameEnded) {
                 if (this.character.isDead()) {
                     this.gameEnded = true;
-                    showGameOverScreen();
+                    setStoppableInterval(() => {
+                        showGameOverScreen();
+                    }, 2000);
+                    
                 } else if (this.endboss && this.endboss.isRemovable) {
                     this.gameEnded = true;
-                    showYouWinScreen();
+
+                    setStoppableInterval(() => {
+                         showYouWinScreen();
+                    }, 2000);
+                   
                 }
             }
             if (this.endboss) {

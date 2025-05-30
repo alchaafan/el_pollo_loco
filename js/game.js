@@ -8,23 +8,24 @@ let youWinScreen = new Image();
 youWinScreen.src = 'img/You won, you lost/YouWinA.png';
 gameOverScreen.src = 'img/9_intro_outro_screens/game_over/game over.png';
 gameOverSound = new Audio('audio/gameover.mp3');
+youWinSound = new Audio('audio/win.mp3');
 
-let intervalIDS = []; 
+let intervalIDS = [];
 
-function setStoppableInterval(fn, time) { 
-    let id = setInterval(fn, time); 
-    intervalIDS.push(id); 
-} 
+function setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    intervalIDS.push(id);
+}
 
-function stopGame() { 
-    intervalIDS.forEach(clearInterval); 
-    intervalIDS = []; 
+function stopGame() {
+    intervalIDS.forEach(clearInterval);
+    intervalIDS = [];
     console.log("All intervals stopped!"); // Zur Überprüfung
 }
 
 
 function init() {
-      keyboard = new Keyboard()
+    keyboard = new Keyboard()
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 
@@ -40,10 +41,10 @@ function startGame() {
 }
 
 function showGameOverScreen() {
-    stopGame(); // Stop all game intervals
-    document.getElementById('canvas').style.display = 'none'; // Hide the game canvas
-    let gameOverDiv = document.getElementById('gameOverScreen'); // Get the div for game over screen
-    if (!gameOverDiv) { // Create the div if it doesn't exist
+    stopGame();
+    document.getElementById('canvas').style.display = 'none';
+    let gameOverDiv = document.getElementById('gameOverScreen');
+    if (!gameOverDiv) {
         gameOverDiv = document.createElement('div');
         gameOverDiv.id = 'gameOverScreen';
         gameOverDiv.style.position = 'absolute';
@@ -54,36 +55,50 @@ function showGameOverScreen() {
         gameOverDiv.style.display = 'flex';
         gameOverDiv.style.justifyContent = 'center';
         gameOverDiv.style.alignItems = 'center';
-        gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; 
+        gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
         document.body.appendChild(gameOverDiv);
     }
     gameOverDiv.innerHTML = `<img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 100%;">`;
-    gameOverDiv.style.display = 'flex'; 
+    gameOverDiv.style.display = 'flex';
     gameOverSound.play();
 }
 
 
-function showYouWinScreen() { //
+function showYouWinScreen() {
     stopGame(); // Alle Spielintervalle stoppen
-    document.getElementById('canvas').style.display = 'none'; // Verstecke das Spiel-Canvas
-    let youWinDiv = document.getElementById('youWinScreen'); // Div für den "You Win"-Bildschirm holen
-    if (!youWinDiv) { // Div erstellen, falls er nicht existiert
-        youWinDiv = document.createElement('div'); //
-        youWinDiv.id = 'youWinScreen'; //
-        youWinDiv.style.position = 'absolute'; //
-        youWinDiv.style.top = '0'; //
-        youWinDiv.style.left = '0'; //
-        youWinDiv.style.width = '100%'; //
-        youWinDiv.style.height = '100%'; //
-        youWinDiv.style.display = 'flex'; //
-        youWinDiv.style.justifyContent = 'center'; //
-        youWinDiv.style.alignItems = 'center'; //
-        youWinDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; //
-        document.body.appendChild(youWinDiv); //
+    document.getElementById('canvas').style.display = 'none'; // Canvas ausblenden
+    let youWinDiv = document.getElementById('youWinScreen');
+
+    if (!youWinDiv) {
+        youWinDiv = document.createElement('div');
+        youWinDiv.id = 'youWinScreen';
+        youWinDiv.style.position = 'absolute';
+        youWinDiv.style.top = '0';
+        youWinDiv.style.left = '0';
+        youWinDiv.style.width = '100%';
+        youWinDiv.style.height = '100%';
+        youWinDiv.style.display = 'flex';
+        youWinDiv.style.flexDirection = 'column';
+        youWinDiv.style.justifyContent = 'center';
+        youWinDiv.style.alignItems = 'center';
+        youWinDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        document.body.appendChild(youWinDiv);
     }
-    youWinDiv.innerHTML = `<img src="${youWinScreen.src}" style="max-width: 100%; max-height: 100%;">`; //
-    youWinDiv.style.display = 'flex'; //
+
+    youWinDiv.innerHTML = `
+    <img src="${youWinScreen.src}" style="max-width: 100%; max-height: 70%;">
+    <button id="playAgainBtn" class="play-again-button">Play Again</button>
+`;
+
+    youWinDiv.style.display = 'flex';
+    youWinSound.play();
+
+    // ⏪ Event Listener zum Neustarten
+    document.getElementById('playAgainBtn').addEventListener('click', () => {
+        location.reload(); // Seite neu laden = Spiel neu starten
+    });
 }
+
 
 
 window.addEventListener('keydown', (e) => {
@@ -96,7 +111,7 @@ window.addEventListener('keydown', (e) => {
     }
 
 
-       if (e.keyCode == 38) {
+    if (e.keyCode == 38) {
         keyboard.UP = true;
     }
 
@@ -104,11 +119,11 @@ window.addEventListener('keydown', (e) => {
         keyboard.DOWN = true;
     }
 
-     if (e.keyCode == 32) {
+    if (e.keyCode == 32) {
         keyboard.SPACE = true;
     }
 
-     if (e.keyCode == 68) {
+    if (e.keyCode == 68) {
         keyboard.D = true;
     }
 
@@ -125,7 +140,7 @@ window.addEventListener('keyup', (e) => {
     }
 
 
-       if (e.keyCode == 38) {
+    if (e.keyCode == 38) {
         keyboard.UP = false;
     }
 
@@ -133,11 +148,11 @@ window.addEventListener('keyup', (e) => {
         keyboard.DOWN = false;
     }
 
-     if (e.keyCode == 32) {
+    if (e.keyCode == 32) {
         keyboard.SPACE = false;
     }
 
-     if (e.keyCode == 68) {
+    if (e.keyCode == 68) {
         keyboard.D = false;
     }
 
