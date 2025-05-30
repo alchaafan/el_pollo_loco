@@ -3,6 +3,9 @@ let world;
 let keyboard;
 let startScreen;
 let gameStarted = false;
+let gameOverScreen = new Image();
+gameOverScreen.src = 'img/9_intro_outro_screens/game_over/game over.png';
+gameOverSound = new Audio('audio/gameover.mp3');
 
 let intervalIDS = []; 
 
@@ -32,6 +35,29 @@ function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     init();
+}
+
+function showGameOverScreen() {
+    stopGame(); // Stop all game intervals
+    document.getElementById('canvas').style.display = 'none'; // Hide the game canvas
+    let gameOverDiv = document.getElementById('gameOverScreen'); // Get the div for game over screen
+    if (!gameOverDiv) { // Create the div if it doesn't exist
+        gameOverDiv = document.createElement('div');
+        gameOverDiv.id = 'gameOverScreen';
+        gameOverDiv.style.position = 'absolute';
+        gameOverDiv.style.top = '0';
+        gameOverDiv.style.left = '0';
+        gameOverDiv.style.width = '100%';
+        gameOverDiv.style.height = '100%';
+        gameOverDiv.style.display = 'flex';
+        gameOverDiv.style.justifyContent = 'center';
+        gameOverDiv.style.alignItems = 'center';
+        gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; 
+        document.body.appendChild(gameOverDiv);
+    }
+    gameOverDiv.innerHTML = `<img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 100%;">`;
+    gameOverDiv.style.display = 'flex'; 
+    gameOverSound.play();
 }
 
 

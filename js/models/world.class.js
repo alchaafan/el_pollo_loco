@@ -32,9 +32,9 @@ class World {
         this.setWorld();
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
-        this.endboss = this.level.enemies.find(e => e instanceof Endboss); 
+        this.endboss = this.level.enemies.find(e => e instanceof Endboss);
         if (this.endboss) {
-            this.endboss.world = this; 
+            this.endboss.world = this;
         }
         this.draw(); // Die Zeichenschleife starten
     }
@@ -61,37 +61,42 @@ class World {
         this.bottles.push(new Bottles(1000, 350));
     }
 
-  
-    run() {
+
+     run() {
         setStoppableInterval(() => {
 
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkBottleCollisions();
-            this.checkCoinCollisions(); 
-            this.removeDeadEnemies(); 
+            this.checkCoinCollisions();
+            this.removeDeadEnemies();
             this.checkEndbossContact();
             this.checkBottleEndbossCollisions();
             if (this.endboss && this.endboss.hadFirstContact) {
                 this.statusBarEndboss.setPercentage(this.endboss.energy);
             }
+
+            // Add this check for game over
+            if (this.character.isDead()) {
+                showGameOverScreen(); // Call the function to display game over
+            }
         }, 100);
     }
 
- 
+
     checkEndbossContact() {
         if (this.endboss && !this.endboss.hadFirstContact) {
-            const activationLine = 2000; 
+            const activationLine = 2000;
             if (this.character.x + this.character.width > activationLine) {
                 this.endboss.hadFirstContact = true;
             }
         }
     }
 
- 
+
     showEndbossHealthBar() {
         if (this.endboss && this.endboss.hadFirstContact) {
-            this.statusBarEndboss.draw(this.ctx); 
+            this.statusBarEndboss.draw(this.ctx);
         }
     }
 
@@ -111,7 +116,7 @@ class World {
         }
     }
 
- 
+
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
 
@@ -139,9 +144,9 @@ class World {
         // Endboss Kollision und Angriff
         if (this.endboss && !this.character.isDead() && !this.endboss.isDead()) {
             if (this.character.isColliding(this.endboss) && this.endboss.currentAnimation === this.endboss.IMAGES_ATTACK) {
-             
+
                 if (!this.character.isHurt()) {
-                    this.character.hit(); 
+                    this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);
                 }
             }
@@ -152,18 +157,18 @@ class World {
     checkBottleEndbossCollisions() {
         if (this.endboss && !this.endboss.isDead()) {
             this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if (bottle.isColliding(this.endboss) && !bottle.isSplashed) { 
+                if (bottle.isColliding(this.endboss) && !bottle.isSplashed) {
                     this.endboss.hitByBottle();
-                    bottle.splash(); 
+                    bottle.splash();
                     this.endbossSound.play();
-                 
+
                 }
             });
         }
         this.throwableObjects = this.throwableObjects.filter(bottle => !bottle.isRemovable);
     }
 
- 
+
     removeDeadEnemies() {
         this.level.enemies = this.level.enemies.filter(enemy => !enemy.isRemovable);
 
@@ -179,13 +184,13 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.coins.splice(index, 1); // entfernt Coin aus dem Array
                 this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
-                 this.coinsSound.play();
+                this.coinsSound.play();
             }
         });
-       
+
     }
 
-  
+
     checkBottleCollisions() {
         this.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
@@ -198,8 +203,8 @@ class World {
 
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
-        this.ctx.translate(this.camera_x, 0); 
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.coins);
@@ -207,7 +212,7 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
-        this.addToMap(this.statusBarCoins); 
+        this.addToMap(this.statusBarCoins);
         this.addToMap(this.StatusBarBottles);
         if (this.endboss && this.endboss.hadFirstContact) {
             this.addToMap(this.statusBarEndboss);
@@ -218,7 +223,7 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
 
-        this.ctx.translate(-this.camera_x, 0); 
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {
@@ -233,13 +238,13 @@ class World {
         });
     }
 
-  
+
     addToMap(mo) {
         if (mo instanceof MovableObject && mo.otherDirection) {
             this.flipImage(mo);
         }
 
-        mo.draw(this.ctx); 
+        mo.draw(this.ctx);
 
         if (mo instanceof MovableObject && mo.otherDirection) {
             this.flipImageBack(mo);
@@ -247,16 +252,16 @@ class World {
     }
 
     flipImage(mo) {
-        this.ctx.save(); 
-        this.ctx.translate(mo.width, 0); 
-        this.ctx.scale(-1, 1); 
-        mo.x = mo.x * -1; 
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
     }
 
-   
+
     flipImageBack(mo) {
-        mo.x = mo.x * -1; 
-        this.ctx.restore(); 
+        mo.x = mo.x * -1;
+        this.ctx.restore();
     }
 
 
@@ -269,15 +274,15 @@ class World {
             this.healthbar.setPercentage(this.character.energy);
 
             if (enemy instanceof Endboss) {
-                this.knockbackCharacter(this.character, enemy); 
+                this.knockbackCharacter(this.character, enemy);
             }
         }
     }
 
-   
+
     knockbackCharacter(character, enemy) {
-        const knockbackDistance = 50; 
-        if (character.x < enemy.x) { 
+        const knockbackDistance = 50;
+        if (character.x < enemy.x) {
             character.x -= knockbackDistance;
         } else {
             character.x += knockbackDistance;

@@ -4,7 +4,7 @@ class Character extends MovableObject {
     speed = 10;
 
     offset = {
-        top: 100, 
+        top: 100,
         bottom: 15,
         left: 30,
         right: 30
@@ -108,8 +108,8 @@ class Character extends MovableObject {
     animate() {
 
         //Intervall für Bewegung und Kamera
-            setStoppableInterval(() => {
-           
+        setStoppableInterval(() => {
+
             if (!this.isDead()) {
                 let moved = false;
 
@@ -132,7 +132,7 @@ class Character extends MovableObject {
                 if (moved) {
                     this.lastActionTime = new Date().getTime();
                 }
-            } 
+            }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
