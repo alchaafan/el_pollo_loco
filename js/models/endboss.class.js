@@ -47,6 +47,8 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
+
+
     currentAnimation = null;
     hadFirstContact = false;
     world;
@@ -69,6 +71,11 @@ class Endboss extends MovableObject {
         this.startEndbossBehavior();
     }
 
+    isDead() {
+    return this.energy <= 0;
+}
+
+
     startEndbossBehavior() {
         this.animationInterval = setStoppableInterval(() => {
             const now = new Date().getTime();
@@ -76,22 +83,22 @@ class Endboss extends MovableObject {
             if (this.isDead()) {
                 // Die Gesamtdauer für 3 Bilder mit je 1 Sekunde ist 3000 ms
                 this.animateOnce(this.IMAGES_DEAD, 2000, () => {
-                    this.stopAllEndbossIntervals(); 
-                    this.isRemovable = true; 
+                    this.stopAllEndbossIntervals();
+                    this.isRemovable = true;
                 });
-               
+
             } else if (this.isHurt() && this.currentAnimation !== this.IMAGES_HURT) {
                 this.animateOnce(this.IMAGES_HURT, 400);
 
                 setTimeout(() => {
                     if (this.currentAnimation === this.IMAGES_HURT) {
-                        this.currentAnimation = null; 
+                        this.currentAnimation = null;
                     }
-                }, 450); 
+                }, 450);
 
-               
+
             }
-            
+
             else if (this.hadFirstContact && (!this.currentAnimation || this.currentAnimation === this.IMAGES_WALKING || this.currentAnimation === this.IMAGES_ATTACK)) {
                 this.world.showEndbossHealthBar();
                 const characterX = this.world.character.x;
@@ -157,21 +164,26 @@ class Endboss extends MovableObject {
         }
     }
 
-    hit() {
-        this.energy -= 20;
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
+hitByBottle() {
+    this.energy -= 20;
+    if (this.energy <= 0) {
+        this.energy = 0;
+        this.isRemovable = true;
+    } else {
+        this.lastHit = new Date().getTime();
     }
+}
 
-    hitByBottle() {
-        this.energy -= 20;
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
+    
+
+    hit() {
+    this.energy -= 20;
+    if (this.energy <= 0) {
+        this.energy = 0;
+        this.isRemovable = true; 
+    } else {
+        this.lastHit = new Date().getTime();
     }
+}
+
 }

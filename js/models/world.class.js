@@ -23,6 +23,7 @@ class World {
     endbossKilledSound = new Audio('audio/endboss-killed.mp3');
 
 
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -33,6 +34,7 @@ class World {
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
         this.endboss = this.level.enemies.find(e => e instanceof Endboss);
+        this.gameEnded = false;
         if (this.endboss) {
             this.endboss.world = this;
         }
@@ -62,9 +64,8 @@ class World {
     }
 
 
-     run() {
+    run() {
         setStoppableInterval(() => {
-
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkBottleCollisions();
@@ -72,14 +73,24 @@ class World {
             this.removeDeadEnemies();
             this.checkEndbossContact();
             this.checkBottleEndbossCollisions();
+
             if (this.endboss && this.endboss.hadFirstContact) {
                 this.statusBarEndboss.setPercentage(this.endboss.energy);
             }
 
-            // Add this check for game over
-            if (this.character.isDead()) {
-                showGameOverScreen(); // Call the function to display game over
+            if (!this.gameEnded) {
+                if (this.character.isDead()) {
+                    this.gameEnded = true;
+                    showGameOverScreen();
+                } else if (this.endboss && this.endboss.isRemovable) {
+                    this.gameEnded = true;
+                    showYouWinScreen();
+                }
             }
+            if (this.endboss) {
+}
+
+
         }, 100);
     }
 

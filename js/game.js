@@ -4,6 +4,8 @@ let keyboard;
 let startScreen;
 let gameStarted = false;
 let gameOverScreen = new Image();
+let youWinScreen = new Image();
+youWinScreen.src = 'img/You won, you lost/YouWinA.png';
 gameOverScreen.src = 'img/9_intro_outro_screens/game_over/game over.png';
 gameOverSound = new Audio('audio/gameover.mp3');
 
@@ -58,6 +60,29 @@ function showGameOverScreen() {
     gameOverDiv.innerHTML = `<img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 100%;">`;
     gameOverDiv.style.display = 'flex'; 
     gameOverSound.play();
+}
+
+
+function showYouWinScreen() { //
+    stopGame(); // Alle Spielintervalle stoppen
+    document.getElementById('canvas').style.display = 'none'; // Verstecke das Spiel-Canvas
+    let youWinDiv = document.getElementById('youWinScreen'); // Div für den "You Win"-Bildschirm holen
+    if (!youWinDiv) { // Div erstellen, falls er nicht existiert
+        youWinDiv = document.createElement('div'); //
+        youWinDiv.id = 'youWinScreen'; //
+        youWinDiv.style.position = 'absolute'; //
+        youWinDiv.style.top = '0'; //
+        youWinDiv.style.left = '0'; //
+        youWinDiv.style.width = '100%'; //
+        youWinDiv.style.height = '100%'; //
+        youWinDiv.style.display = 'flex'; //
+        youWinDiv.style.justifyContent = 'center'; //
+        youWinDiv.style.alignItems = 'center'; //
+        youWinDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; //
+        document.body.appendChild(youWinDiv); //
+    }
+    youWinDiv.innerHTML = `<img src="${youWinScreen.src}" style="max-width: 100%; max-height: 100%;">`; //
+    youWinDiv.style.display = 'flex'; //
 }
 
 
