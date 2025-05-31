@@ -3,6 +3,8 @@ let world;
 let keyboard;
 let startScreen;
 let gameStarted = false;
+let gamePaused = false;
+
 let gameOverScreen = new Image();
 let youWinScreen = new Image();
 youWinScreen.src = 'img/You won, you lost/YouWinA.png';
@@ -36,6 +38,8 @@ function startGame() {
     gameStarted = true;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
+
+
     init();
 }
 
@@ -109,6 +113,38 @@ function showYouWinScreen() {
     });
 
 }
+
+function togglePause() {
+    const btn = document.getElementById('pauseResumeBtn');
+
+    if (!gamePaused) {
+        pauseGame();
+        btn.innerText = '⏸ Pause';
+    } else {
+        resumeGame();
+        btn.innerText = '⏸ Pause';
+    }
+}
+
+
+function pauseGame() {
+    stopGame();
+    gamePaused = true;
+    document.getElementById('pauseOverlay').style.display = 'flex';
+    console.log("Spiel pausiert.");
+}
+
+function resumeGame() {
+    if (gameStarted && gamePaused) {
+        gamePaused = false;
+        document.getElementById('pauseOverlay').style.display = 'none';
+        world = new World(canvas, keyboard);
+        console.log("Spiel fortgesetzt.");
+    }
+}
+
+
+
 
 
 
