@@ -28,7 +28,6 @@ function init() {
     keyboard = new Keyboard()
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
 }
 
 
@@ -87,16 +86,28 @@ function showYouWinScreen() {
 
     youWinDiv.innerHTML = `
     <img src="${youWinScreen.src}" style="max-width: 100%; max-height: 70%;">
-    <button id="playAgainBtn" class="play-again-button">Play Again</button>
+    <div class="button-container">
+        <button id="homeBtn" class="home-button">Home</button>
+        <button id="restartBtn" class="restart-button">play again</button>
+    </div>
 `;
+
 
     youWinDiv.style.display = 'flex';
     youWinSound.play();
 
     // ⏪ Event Listener zum Neustarten
-    document.getElementById('playAgainBtn').addEventListener('click', () => {
+    document.getElementById('homeBtn').addEventListener('click', () => {
         location.reload(); // Seite neu laden = Spiel neu starten
     });
+
+    document.getElementById('restartBtn').addEventListener('click', () => {
+        document.getElementById('youWinScreen').remove(); // You-Win-Screen ausblenden
+        gameStarted = false;
+        init();
+        startGame(); // Spiel frisch starten
+    });
+
 }
 
 

@@ -1,6 +1,6 @@
 class World {
-    character = new Character();
-    level = level1;
+    character;
+    level;
     canvas;
     ctx;
     keyboard;
@@ -13,6 +13,7 @@ class World {
     bottles = [];
     statusBarEndboss;
     endboss;
+    gameEnded = false;
 
     // Sounds
     throwSound = new Audio('audio/throw.mp3');
@@ -28,6 +29,8 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = createLevel1();
+        this.character = new Character()
         this.addCoins();
         this.addBottles();
         this.setWorld();
@@ -84,18 +87,18 @@ class World {
                     setStoppableInterval(() => {
                         showGameOverScreen();
                     }, 2000);
-                    
+
                 } else if (this.endboss && this.endboss.isRemovable) {
                     this.gameEnded = true;
 
                     setStoppableInterval(() => {
-                         showYouWinScreen();
+                        showYouWinScreen();
                     }, 2000);
-                   
+
                 }
             }
             if (this.endboss) {
-}
+            }
 
 
         }, 100);
