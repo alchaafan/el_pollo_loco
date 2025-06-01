@@ -24,6 +24,8 @@ youWinSound = new Audio('audio/win.mp3');
 backgroundSound = new Audio('audio/background.mp3');
 backgroundSound.volume = 0.1; 
 
+let introSound;
+
 let intervalIDS = [];
 
 function setStoppableInterval(fn, time) {
@@ -42,6 +44,7 @@ function init() {
     keyboard = new Keyboard()
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    
 }
 
 
@@ -50,11 +53,60 @@ function startGame() {
     gameStarted = true;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
+    introSound.pause();
+    introSound.currentTime = 0;
     backgroundSound.play();
 
 
     init();
 }
+
+// In game.js, außerhalb jeder Funktion
+// In game.js, nach den Sound-Deklarationen
+// Deklariere es hier, aber initialisiere es später
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const soundPrompt = document.getElementById('soundPrompt');
+    if (soundPrompt) {
+        soundPrompt.addEventListener('click', () => {
+            introSound = new Audio('audio/intro.mp3');
+            introSound.volume = 0.1;
+            introSound.loop = true;
+            introSound.play()
+                .then(() => {
+                    soundPrompt.style.display = 'none'; // Overlay ausblenden, wenn Sound spielt
+                })
+                .catch(error => {
+                    console.error("Autoplay wurde blockiert:", error);
+                    // Hier könntest du eine alternative Nachricht anzeigen oder den Sound stummschalten
+                    soundPrompt.innerText = "Sound konnte nicht automatisch abgespielt werden. Klicke, um fortzufahren (ohne Sound).";
+                    soundPrompt.addEventListener('click', () => {
+                        soundPrompt.style.display = 'none';
+                    }, { once: true });
+                });
+        }, { once: true }); // Event-Listener nach dem ersten Klick entfernen
+    } else {
+        // Fallback, falls kein Prompt vorhanden ist (weniger ideal für Autoplay)
+        introSound = new Audio('audio/intro.mp3');
+        introSound.volume = 0.1;
+        introSound.loop = true;
+        introSound.play().catch(error => console.log("Autoplay blockiert (kein Prompt):", error));
+    }
+});
+
+
+
+function startGame() {
+    gameStarted = true;
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('canvas').style.display = 'block';
+    introSound.pause();
+    introSound.currentTime = 0;
+    backgroundSound.play();
+    init();
+    updateCharacterSoundMuteStatus();
+}
+
 
  // Eine Variable, um den aktuellen Stumm-Status zu verfolgen
 

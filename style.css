@@ -29,6 +29,14 @@ canvas {
     background-color: black;
 }
 
+#soundPrompt{
+    position: fixed;
+     top: 0; left: 0; width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.8); 
+    color: white;
+     display: flex;
+     justify-content: center; align-items: center; cursor: pointer; z-index: 9999;
+}
 
 #startScreen {
     background-image: url(img/9_intro_outro_screens/start/startscreen_1.png);

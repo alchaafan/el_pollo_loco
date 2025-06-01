@@ -22,7 +22,8 @@ class World {
     chickenSound = new Audio('audio/chicken.wav');
     endbossSound = new Audio('audio/babyChicken.wav');
     endbossKilledSound = new Audio('audio/endboss-killed.mp3');
-
+    
+   
 
 
     constructor(canvas, keyboard) {
@@ -47,6 +48,7 @@ class World {
 
     setWorld() {
         this.character.world = this; // Diese Welt dem Charakter zuweisen
+
     }
 
     addCoins() {
