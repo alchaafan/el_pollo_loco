@@ -48,6 +48,16 @@ canvas {
     padding-top: 50px;
     
 }
+.pauseImg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.muteImg{
+     width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 #startScreen img {
     width: 100%;
 }

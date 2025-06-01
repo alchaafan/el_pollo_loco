@@ -39,8 +39,9 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
 
     <div class="control-buttons">
-        <button id="pauseResumeBtn" onclick="togglePause()">⏸ Pause</button>
-        <button id="muteButton" onclick="toggleMute()">🎵 Mute</button>
+        <img id="pauseResumeBtn" class="pauseImg" src="./img/pause.png" alt="" onclick="togglePause()">
+        <img id="muteButton" class="muteImg" src="img/volume.png" alt="" onclick="toggleMute()">
+        
 
     </div>
     <div id="pauseOverlay" class="pause-overlay" style="display: none;">

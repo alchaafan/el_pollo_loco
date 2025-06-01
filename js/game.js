@@ -61,9 +61,6 @@ function startGame() {
     init();
 }
 
-// In game.js, außerhalb jeder Funktion
-// In game.js, nach den Sound-Deklarationen
-// Deklariere es hier, aber initialisiere es später
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const soundPrompt = document.getElementById('soundPrompt');
@@ -74,11 +71,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             introSound.loop = true;
             introSound.play()
                 .then(() => {
-                    soundPrompt.style.display = 'none'; // Overlay ausblenden, wenn Sound spielt
+                    soundPrompt.style.display = 'none'; 
                 })
                 .catch(error => {
                     console.error("Autoplay wurde blockiert:", error);
-                    // Hier könntest du eine alternative Nachricht anzeigen oder den Sound stummschalten
+                   
                     soundPrompt.innerText = "Sound konnte nicht automatisch abgespielt werden. Klicke, um fortzufahren (ohne Sound).";
                     soundPrompt.addEventListener('click', () => {
                         soundPrompt.style.display = 'none';
@@ -86,7 +83,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 });
         }, { once: true }); // Event-Listener nach dem ersten Klick entfernen
     } else {
-        // Fallback, falls kein Prompt vorhanden ist (weniger ideal für Autoplay)
+        
         introSound = new Audio('audio/intro.mp3');
         introSound.volume = 0.1;
         introSound.loop = true;
@@ -111,16 +108,18 @@ function startGame() {
  // Eine Variable, um den aktuellen Stumm-Status zu verfolgen
 
 function toggleMute() {
-    const muteBtn = document.getElementById('muteButton');
+    const muteButtonImg = document.getElementById('muteButton'); // Holen Sie das <img>-Element
 
     if (backgroundSound) { // Stelle sicher, dass der Sound geladen ist
         if (isMuted) {
             backgroundSound.volume = 0.2; // Oder die gewünschte Startlautstärke
-            muteBtn.innerText = '🎵 Mute';
+            muteButtonImg.src = './img/volume.png'; // Zeige das Volume-Bild an
+            muteButtonImg.alt = 'Mute'; // Update des Alt-Textes
             isMuted = false;
         } else {
             backgroundSound.volume = 0;
-            muteBtn.innerText = '🔊 Unmute';
+            muteButtonImg.src = './img/mute.png'; // Zeige das Mute-Bild an
+            muteButtonImg.alt = 'Unmute'; // Update des Alt-Textes
             isMuted = true;
         }
     }
@@ -248,6 +247,7 @@ function togglePause() {
         btn.innerText = '⏸ Pause';
     } else {
         resumeGame();
+      
         btn.innerText = '⏸ Pause';
     }
 }
@@ -255,6 +255,7 @@ function togglePause() {
 
 function pauseGame() {
     stopGame(); // Stoppe alle Intervalls
+    backgroundSound.pause();
     gamePaused = true;
 
     // ⏸ Charakter-Zustand speichern
@@ -303,6 +304,7 @@ function pauseGame() {
 function resumeGame() {
     if (gameStarted && gamePaused) {
         gamePaused = false;
+        backgroundSound.play();
 
         // Neue Welt erzeugen
         world = new World(canvas, keyboard);
