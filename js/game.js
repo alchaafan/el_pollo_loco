@@ -5,6 +5,16 @@ let startScreen;
 let gameStarted = false;
 let gamePaused = false;
 
+let savedCharacterX = 0;
+let savedCharacterY = 0;
+
+let savedCharacterState = {};
+let savedCameraX = 0;
+let savedEnemiesState = [];
+
+
+
+
 let gameOverScreen = new Image();
 let youWinScreen = new Image();
 youWinScreen.src = 'img/You won, you lost/YouWinA.png';
@@ -128,20 +138,107 @@ function togglePause() {
 
 
 function pauseGame() {
-    stopGame();
+    stopGame(); // Stoppe alle Intervalls
     gamePaused = true;
+
+    // ⏸ Charakter-Zustand speichern
+    if (world && world.character) {
+        savedCharacterState = {
+            x: world.character.x,
+            y: world.character.y,
+            speedY: world.character.speedY,
+            otherDirection: world.character.otherDirection,
+            energy: world.character.energy,
+            currentImage: world.character.currentImage,
+            currentAnimation: world.character.currentAnimation
+        };
+    }
+
+    // ⏸ Kamera speichern
+    if (world) {
+        savedCameraX = world.camera_x;
+    }
+
+    // ⏸ Gegner-Zustand speichern
+    if (world && world.level && world.level.enemies) {
+        savedEnemiesState = world.level.enemies.map(enemy => ({
+            type: enemy.constructor.name,  // z. B. "Chicken"
+            x: enemy.x,
+            y: enemy.y,
+            energy: enemy.energy,
+            otherDirection: enemy.otherDirection,
+            isDead: enemy.isDead()
+        }));
+    }
+
+    // ⏸ Overlay anzeigen
     document.getElementById('pauseOverlay').style.display = 'flex';
+
+    // Button-Text ändern, falls du das nicht in togglePause machst
+    const btn = document.getElementById('pauseResumeBtn');
+    if (btn) btn.innerText = '▶ Fortsetzen';
+
     console.log("Spiel pausiert.");
 }
+
+
+
 
 function resumeGame() {
     if (gameStarted && gamePaused) {
         gamePaused = false;
-        document.getElementById('pauseOverlay').style.display = 'none';
+
+        // Neue Welt erzeugen
         world = new World(canvas, keyboard);
+
+        // 🔁 Charakter-Zustand wiederherstellen
+        if (world && world.character && savedCharacterState) {
+            const char = world.character;
+
+            char.x = savedCharacterState.x;
+            char.y = savedCharacterState.y;
+            char.speedY = savedCharacterState.speedY;
+            char.otherDirection = savedCharacterState.otherDirection;
+            char.energy = savedCharacterState.energy;
+            char.currentImage = savedCharacterState.currentImage;
+            char.currentAnimation = savedCharacterState.currentAnimation;
+
+            world.statusBar.setPercentage(char.energy);
+        }
+
+        // 🔁 Kamera-Position wiederherstellen
+        world.camera_x = savedCameraX;
+
+        // 🔁 Gegner-Zustand wiederherstellen
+        if (world.level && world.level.enemies && savedEnemiesState.length > 0) {
+            world.level.enemies.forEach((enemy, index) => {
+                const saved = savedEnemiesState[index];
+                if (saved) {
+                    enemy.x = saved.x;
+                    enemy.y = saved.y;
+                    enemy.energy = saved.energy;
+                    enemy.otherDirection = saved.otherDirection;
+
+                    if (saved.isDead) {
+                        enemy.energy = 0; // Gegner bleibt tot
+                    }
+                }
+            });
+        }
+
+        // Overlay ausblenden
+        document.getElementById('pauseOverlay').style.display = 'none';
+
+        // Button-Text zurücksetzen
+        const btn = document.getElementById('pauseResumeBtn');
+        if (btn) btn.innerText = '⏸ Pause';
+
         console.log("Spiel fortgesetzt.");
     }
 }
+
+
+
 
 
 

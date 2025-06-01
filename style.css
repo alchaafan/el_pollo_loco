@@ -47,7 +47,7 @@ canvas {
 #startScreen button {
     border: none;
     color: rgb(252, 149, 2);
-    font-family: "RebellionSquad-ZpprZ", sans-serif;
+   
     font-weight: lighter;
     font-size: 24px;
     padding: 10px;
@@ -91,7 +91,7 @@ canvas {
     font-size: 20px;
    border: none;
     color: rgb(252, 149, 2);
-    font-family: "RebellionSquad-ZpprZ", sans-serif;
+   
     font-weight: lighter;
     font-size: 24px;
     padding: 10px;
