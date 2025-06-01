@@ -56,7 +56,9 @@ function startGame() {
 function showGameOverScreen() {
     stopGame();
     document.getElementById('canvas').style.display = 'none';
+
     let gameOverDiv = document.getElementById('gameOverScreen');
+
     if (!gameOverDiv) {
         gameOverDiv = document.createElement('div');
         gameOverDiv.id = 'gameOverScreen';
@@ -66,15 +68,42 @@ function showGameOverScreen() {
         gameOverDiv.style.width = '100%';
         gameOverDiv.style.height = '100%';
         gameOverDiv.style.display = 'flex';
+        gameOverDiv.style.flexDirection = 'column';
         gameOverDiv.style.justifyContent = 'center';
         gameOverDiv.style.alignItems = 'center';
         gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
         document.body.appendChild(gameOverDiv);
     }
-    gameOverDiv.innerHTML = `<img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 100%;">`;
+
+    gameOverDiv.innerHTML = `
+        <img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 70%;">
+        <div class="button-container">
+            <button id="homeBtn" class="home-button">Home</button>
+            <button id="restartBtn" class="restart-button">Play Again</button>
+        </div>
+    `;
+
     gameOverDiv.style.display = 'flex';
     gameOverSound.play();
+
+    // Event Listener
+    document.getElementById('homeBtn').addEventListener('click', () => {
+        location.reload(); // Seite neu laden = alles neu starten
+    });
+
+   document.getElementById('restartBtn').addEventListener('click', () => {
+    // Musik stoppen und zurücksetzen
+    gameOverSound.pause();
+    gameOverSound.currentTime = 0;
+
+    document.getElementById('gameOverScreen').remove(); // GameOverScreen ausblenden
+    gameStarted = false;
+    init();
+    startGame(); // Spiel frisch starten
+});
+
 }
+
 
 
 function showYouWinScreen() {
