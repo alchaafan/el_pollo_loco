@@ -4,7 +4,7 @@ let keyboard;
 let startScreen;
 let gameStarted = false;
 let gamePaused = false;
-
+let isMuted = false;
 let savedCharacterX = 0;
 let savedCharacterY = 0;
 
@@ -21,6 +21,8 @@ youWinScreen.src = 'img/You won, you lost/YouWinA.png';
 gameOverScreen.src = 'img/9_intro_outro_screens/game_over/game over.png';
 gameOverSound = new Audio('audio/gameover.mp3');
 youWinSound = new Audio('audio/win.mp3');
+backgroundSound = new Audio('audio/background.mp3');
+backgroundSound.volume = 0.1; 
 
 let intervalIDS = [];
 
@@ -48,13 +50,45 @@ function startGame() {
     gameStarted = true;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
+    backgroundSound.play();
 
 
     init();
 }
 
+ // Eine Variable, um den aktuellen Stumm-Status zu verfolgen
+
+function toggleMute() {
+    const muteBtn = document.getElementById('muteButton');
+
+    if (backgroundSound) { // Stelle sicher, dass der Sound geladen ist
+        if (isMuted) {
+            backgroundSound.volume = 0.2; // Oder die gewünschte Startlautstärke
+            muteBtn.innerText = '🎵 Mute';
+            isMuted = false;
+        } else {
+            backgroundSound.volume = 0;
+            muteBtn.innerText = '🔊 Unmute';
+            isMuted = true;
+        }
+    }
+    updateCharacterSoundMuteStatus();
+}
+
+// In game.js
+function updateCharacterSoundMuteStatus() {
+    if (world && world.character) { // Prüfen, ob world und character existieren
+        world.character.jumpSound.volume = isMuted ? 0 : 1; // 1 ist volle Lautstärke
+        world.character.hurtSound.volume = isMuted ? 0 : 1;
+        world.character.deadSound.volume = isMuted ? 0 : 1;
+        world.character.walkSound.volume = isMuted ? 0 : 1;
+        world.character.snoreSound.volume = isMuted ? 0 : 1;
+    }
+}
+
 function showGameOverScreen() {
     stopGame();
+    backgroundSound.pause(); 
     document.getElementById('canvas').style.display = 'none';
 
     let gameOverDiv = document.getElementById('gameOverScreen');
@@ -108,6 +142,7 @@ function showGameOverScreen() {
 
 function showYouWinScreen() {
     stopGame(); // Alle Spielintervalle stoppen
+    backgroundSound.pause(); 
     document.getElementById('canvas').style.display = 'none'; // Canvas ausblenden
     let youWinDiv = document.getElementById('youWinScreen');
 
