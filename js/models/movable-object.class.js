@@ -140,7 +140,7 @@ class MovableObject extends DrawableObject {
     moveLeft() {
         setStoppableInterval(() => {
             this.x -= this.speed;
-        }, 1000 / 60);
+        }, 1000 / 30);
     }
 
     jump() {

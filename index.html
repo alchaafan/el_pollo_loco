@@ -22,16 +22,16 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 <body>
     <div id="soundPrompt">
         <p id="klicke">
-            Klicke, um das Spiel zu starten
+            Klick to start
         </p>
     </div>
     <div id="startScreen">
         <button onclick="startGame()">Start</button>
 
         <div id="instructurs">
-            <p>move right and left: arrows </p>
-            <p>Jump: space</p>
-            <p>throw bottle: D </p>
+            <p> Kontrolle: &larr; 	&rarr;</p>
+            <p> Springen: Leertaste </p>
+            <p> Werfen: D </p>
         </div>
 
     </div>
@@ -51,22 +51,28 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
             <div class="control-buttons">
 
             </div>
-
-            <div class="pause-text">⏸ Spiel pausiert</div>
-            <button onclick="resumeGame()" class="resume-button">▶ Fortsetzen</button>
+          
+                <div class="pause-text">⏸️ pause</div>
+                <button onclick="resumeGame()" class="resume-button">▶️ continue</button>
+            
         </div>
     </div>
 
+    <div id="gameOverScreen" class="game-over-screen" style="display: none;">
+        <img src="img/9_intro_outro_screens/game_over/game over.png" alt="Game Over">
+        <div class="button-container">
+            <button id="homeBtnGameOver" class="home-button">Home</button>
+            <button id="restartBtnGameOver" class="restart-button">Play Again</button>
+        </div>
+    </div>
 
-
-
-
-
-
-
-
-
-
+    <div id="youWinScreen" class="you-win-screen" style="display: none;">
+        <img src="img/You won, you lost/YouWinA.png" alt="You Win">
+        <div class="button-container">
+            <button id="homeBtnYouWin" class="home-button">Home</button>
+            <button id="restartBtnYouWin" class="restart-button">play again</button>
+        </div>
+    </div>
 
 
     <script src="./js/models/keyboard.class.js"></script>

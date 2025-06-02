@@ -87,6 +87,7 @@ class Character extends MovableObject {
     deadSound = new Audio('audio/dead.mp3');
     walkSound = new Audio('audio/walk.mp3');
     snoreSound = new Audio('audio/snore.mp3');
+  
 
 
 
@@ -168,6 +169,8 @@ class Character extends MovableObject {
                     if (timepassedSinceLastAction > 15000) {
                         nextAnimation = this.IMAGES_LONGIDLE;
                         this.snoreSound.play();
+                        this.snoreSound.volume = 0.1;
+                        
                     } else {
                         nextAnimation = this.IMAGES_IDLE;
                     }

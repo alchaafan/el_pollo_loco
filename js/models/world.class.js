@@ -1,19 +1,19 @@
 class World {
     character;
-    level;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
-    coins = [];
+    //coins = [];
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
-    bottles = [];
+    //bottles = [];
     statusBarEndboss;
     endboss;
     gameEnded = false;
+
 
     // Sounds
     throwSound = new Audio('audio/throw.mp3');
@@ -22,18 +22,18 @@ class World {
     chickenSound = new Audio('audio/chicken.wav');
     endbossSound = new Audio('audio/babyChicken.wav');
     endbossKilledSound = new Audio('audio/endboss-killed.mp3');
-    
-   
+
+
 
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.level = createLevel1();
+        this.level = initLevel();
         this.character = new Character()
-        this.addCoins();
-        this.addBottles();
+        // this.addCoins();
+        // this.addBottles();
         this.setWorld();
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
@@ -51,25 +51,26 @@ class World {
 
     }
 
-    addCoins() {
-        this.coins.push(new Coins(800, 100)); // Position der coins x, y
-        this.coins.push(new Coins(1500, 100));
-        this.coins.push(new Coins(500, 100));
-        this.coins.push(new Coins(1100, 100));
-        this.coins.push(new Coins(700, 100));
-        this.coins.push(new Coins(900, 100));
-    }
+    // addCoins() {
+    //     this.coins.push(new Coins(800, 100)); // Position der coins x, y
+    //     this.coins.push(new Coins(1500, 100));
+    //     this.coins.push(new Coins(500, 100));
+    //     this.coins.push(new Coins(1100, 100));
+    //     this.coins.push(new Coins(700, 100));
+    //     this.coins.push(new Coins(900, 100));
+    // }
 
-    addBottles() {
-        this.bottles.push(new Bottles(1100, 350));
-        this.bottles.push(new Bottles(1650, 350));
-        this.bottles.push(new Bottles(800, 350));
-        this.bottles.push(new Bottles(650, 350));
-        this.bottles.push(new Bottles(1000, 350));
-    }
+    // addBottles() {
+    //     this.bottles.push(new Bottles(1100, 350));
+    //     this.bottles.push(new Bottles(1650, 350));
+    //     this.bottles.push(new Bottles(800, 350));
+    //     this.bottles.push(new Bottles(650, 350));
+    //     this.bottles.push(new Bottles(1000, 350));
+    // }
 
 
     run() {
+
         setStoppableInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
@@ -104,6 +105,8 @@ class World {
 
 
         }, 100);
+
+
     }
 
 
@@ -135,7 +138,11 @@ class World {
             let bottle = new ThrowableObject(bottleX, this.character.y + 100, this.character.otherDirection);
             this.throwableObjects.push(bottle);
             this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Reduziere die Flaschenanzahl
-            this.throwSound.play(); // Sound abspielen wenn die Flasche geworfen wird
+            this.throwSound.pause();
+            this.throwSound.currentTime = 0;
+            this.throwSound.play();
+
+
         }
     }
 
@@ -201,37 +208,13 @@ class World {
         }
     }
 
-
-    checkCoinCollisions() {
-        this.coins.forEach((coin, index) => {
-            if (this.character.isColliding(coin)) {
-                this.coins.splice(index, 1); // entfernt Coin aus dem Array
-                this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
-                this.coinsSound.play();
-            }
-        });
-
-    }
-
-
-    checkBottleCollisions() {
-        this.bottles.forEach((bottle, index) => {
-            if (this.character.isColliding(bottle)) {
-                this.bottles.splice(index, 1);
-                this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
-                this.bottlesSound.play();
-            }
-        })
-    }
-
-
-    draw() {
+      draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.coins);
-        this.addObjectsToMap(this.bottles);
+         this.addObjectsToMap(this.level.coins); 
+         this.addObjectsToMap(this.level.bottles); 
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
@@ -252,12 +235,45 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
+       
+
 
     }
 
+
+   checkCoinCollisions() {
+    this.level.coins.forEach((coin, index) => { // Hier geändert
+        if (this.character.isColliding(coin)) {
+            this.level.coins.splice(index, 1); // Hier geändert
+            this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
+            this.coinsSound.play();
+        }
+    });
+
+    }
+
+
+   checkBottleCollisions() {
+    this.level.bottles.forEach((bottle, index) => { // Hier geändert
+        if (this.character.isColliding(bottle)) {
+            this.level.bottles.splice(index, 1); // Hier geändert
+            this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
+            this.bottlesSound.play();
+        }
+    })
+    }
+
+
+  
+
+
     addObjectsToMap(objects) {
         objects.forEach(o => {
-            this.addToMap(o);
+            // Wir fügen einen kleinen Puffer hinzu (z.B. o.width), um sicherzustellen, dass Objekte nicht zu früh verschwinden
+
+            if (o.x + o.width > -this.camera_x && o.x < -this.camera_x + this.canvas.width) {
+                this.addToMap(o);
+            }
         });
     }
 

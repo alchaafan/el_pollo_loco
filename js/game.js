@@ -12,17 +12,10 @@ let savedCharacterState = {};
 let savedCameraX = 0;
 let savedEnemiesState = [];
 
-
-
-
-let gameOverScreen = new Image();
-let youWinScreen = new Image();
-youWinScreen.src = 'img/You won, you lost/YouWinA.png';
-gameOverScreen.src = 'img/9_intro_outro_screens/game_over/game over.png';
-gameOverSound = new Audio('audio/gameover.mp3');
-youWinSound = new Audio('audio/win.mp3');
-backgroundSound = new Audio('audio/background.mp3');
-backgroundSound.volume = 0.1; 
+let gameOverSound = new Audio('audio/gameover.mp3');
+let youWinSound = new Audio('audio/win.mp3');
+let backgroundSound = new Audio('audio/background.mp3');
+backgroundSound.volume = 0.1;
 
 let introSound;
 
@@ -36,68 +29,20 @@ function setStoppableInterval(fn, time) {
 function stopGame() {
     intervalIDS.forEach(clearInterval);
     intervalIDS = [];
-    console.log("All intervals stopped!"); // Zur Überprüfung
+    console.log("All intervals stopped!");
 }
-
 
 function init() {
-    keyboard = new Keyboard()
+    keyboard = new Keyboard();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    
 }
-
-
-//stellt sicher, dass das Spiel erst startet, wenn ich auf start klicke
-function startGame() {
-    gameStarted = true;
-    document.getElementById('startScreen').style.display = 'none';
-    document.getElementById('canvas').style.display = 'block';
-    introSound.pause();
-    introSound.currentTime = 0;
-    backgroundSound.play();
-
-
-    init();
-}
-
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const soundPrompt = document.getElementById('soundPrompt');
-    if (soundPrompt) {
-        soundPrompt.addEventListener('click', () => {
-            introSound = new Audio('audio/intro.mp3');
-            introSound.volume = 0.1;
-            introSound.loop = true;
-            introSound.play()
-                .then(() => {
-                    soundPrompt.style.display = 'none'; 
-                })
-                .catch(error => {
-                    console.error("Autoplay wurde blockiert:", error);
-                   
-                    soundPrompt.innerText = "Sound konnte nicht automatisch abgespielt werden. Klicke, um fortzufahren (ohne Sound).";
-                    soundPrompt.addEventListener('click', () => {
-                        soundPrompt.style.display = 'none';
-                    }, { once: true });
-                });
-        }, { once: true }); // Event-Listener nach dem ersten Klick entfernen
-    } else {
-        
-        introSound = new Audio('audio/intro.mp3');
-        introSound.volume = 0.1;
-        introSound.loop = true;
-        introSound.play().catch(error => console.log("Autoplay blockiert (kein Prompt):", error));
-    }
-});
-
-
 
 function startGame() {
     gameStarted = true;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
-    document.querySelector('.control-buttons').style.display = 'flex'; 
+    document.querySelector('.control-buttons').style.display = 'flex';
     introSound.pause();
     introSound.currentTime = 0;
     backgroundSound.play();
@@ -105,32 +50,27 @@ function startGame() {
     updateCharacterSoundMuteStatus();
 }
 
-
- // Eine Variable, um den aktuellen Stumm-Status zu verfolgen
-
 function toggleMute() {
-    const muteButtonImg = document.getElementById('muteButton'); // Holen Sie das <img>-Element
-
-    if (backgroundSound) { // Stelle sicher, dass der Sound geladen ist
+    const muteButtonImg = document.getElementById('muteButton');
+    if (backgroundSound) {
         if (isMuted) {
-            backgroundSound.volume = 0.2; // Oder die gewünschte Startlautstärke
-            muteButtonImg.src = './img/volume.png'; // Zeige das Volume-Bild an
-            muteButtonImg.alt = 'Mute'; // Update des Alt-Textes
+            backgroundSound.volume = 0.2;
+            muteButtonImg.src = './img/volume.png';
+            muteButtonImg.alt = 'Mute';
             isMuted = false;
         } else {
             backgroundSound.volume = 0;
-            muteButtonImg.src = './img/mute.png'; // Zeige das Mute-Bild an
-            muteButtonImg.alt = 'Unmute'; // Update des Alt-Textes
+            muteButtonImg.src = './img/mute.png';
+            muteButtonImg.alt = 'Unmute';
             isMuted = true;
         }
     }
     updateCharacterSoundMuteStatus();
 }
 
-// In game.js
 function updateCharacterSoundMuteStatus() {
-    if (world && world.character) { // Prüfen, ob world und character existieren
-        world.character.jumpSound.volume = isMuted ? 0 : 1; // 1 ist volle Lautstärke
+    if (world && world.character) {
+        world.character.jumpSound.volume = isMuted ? 0 : 1;
         world.character.hurtSound.volume = isMuted ? 0 : 1;
         world.character.deadSound.volume = isMuted ? 0 : 1;
         world.character.walkSound.volume = isMuted ? 0 : 1;
@@ -140,220 +80,114 @@ function updateCharacterSoundMuteStatus() {
 
 function showGameOverScreen() {
     stopGame();
-    backgroundSound.pause(); 
+    backgroundSound.pause();
     document.getElementById('canvas').style.display = 'none';
-
-    let gameOverDiv = document.getElementById('gameOverScreen');
-
-    if (!gameOverDiv) {
-        gameOverDiv = document.createElement('div');
-        gameOverDiv.id = 'gameOverScreen';
-        gameOverDiv.style.position = 'absolute';
-        gameOverDiv.style.top = '0';
-        gameOverDiv.style.left = '0';
-        gameOverDiv.style.width = '100%';
-        gameOverDiv.style.height = '100%';
-        gameOverDiv.style.display = 'flex';
-        gameOverDiv.style.flexDirection = 'column';
-        gameOverDiv.style.justifyContent = 'center';
-        gameOverDiv.style.alignItems = 'center';
-        gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-        document.body.appendChild(gameOverDiv);
-    }
-
-    gameOverDiv.innerHTML = `
-        <img src="${gameOverScreen.src}" style="max-width: 100%; max-height: 70%;">
-        <div class="button-container">
-            <button id="homeBtn" class="home-button">Home</button>
-            <button id="restartBtn" class="restart-button">Play Again</button>
-        </div>
-    `;
-
-    gameOverDiv.style.display = 'flex';
+    document.getElementById('gameOverScreen').style.display = 'flex';
     gameOverSound.play();
-
-    // Event Listener
-    document.getElementById('homeBtn').addEventListener('click', () => {
-        location.reload(); // Seite neu laden = alles neu starten
-    });
-
-   document.getElementById('restartBtn').addEventListener('click', () => {
-    // Musik stoppen und zurücksetzen
-    gameOverSound.pause();
-    gameOverSound.currentTime = 0;
-
-    document.getElementById('gameOverScreen').remove(); // GameOverScreen ausblenden
-    gameStarted = false;
-    init();
-    startGame(); // Spiel frisch starten
-});
-
 }
 
-
-
 function showYouWinScreen() {
-    stopGame(); // Alle Spielintervalle stoppen
-    backgroundSound.pause(); 
-    document.getElementById('canvas').style.display = 'none'; // Canvas ausblenden
-    let youWinDiv = document.getElementById('youWinScreen');
-
-    if (!youWinDiv) {
-        youWinDiv = document.createElement('div');
-        youWinDiv.id = 'youWinScreen';
-        youWinDiv.style.position = 'absolute';
-        youWinDiv.style.top = '0';
-        youWinDiv.style.left = '0';
-        youWinDiv.style.width = '100%';
-        youWinDiv.style.height = '100%';
-        youWinDiv.style.display = 'flex';
-        youWinDiv.style.flexDirection = 'column';
-        youWinDiv.style.justifyContent = 'center';
-        youWinDiv.style.alignItems = 'center';
-        youWinDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-        document.body.appendChild(youWinDiv);
-    }
-
-    youWinDiv.innerHTML = `
-    <img src="${youWinScreen.src}" style="max-width: 100%; max-height: 70%;">
-    <div class="button-container">
-        <button id="homeBtn" class="home-button">Home</button>
-        <button id="restartBtn" class="restart-button">play again</button>
-    </div>
-`;
-
-
-    youWinDiv.style.display = 'flex';
+    stopGame();
+    backgroundSound.pause();
+    document.getElementById('canvas').style.display = 'none';
+    document.getElementById('youWinScreen').style.display = 'flex';
     youWinSound.play();
-
-    // ⏪ Event Listener zum Neustarten
-    document.getElementById('homeBtn').addEventListener('click', () => {
-        location.reload(); // Seite neu laden = Spiel neu starten
-    });
-
-    document.getElementById('restartBtn').addEventListener('click', () => {
-        document.getElementById('youWinScreen').remove(); // You-Win-Screen ausblenden
-        gameStarted = false;
-        init();
-        startGame(); // Spiel frisch starten
-    });
-
 }
 
 function togglePause() {
     const btn = document.getElementById('pauseResumeBtn');
-
     if (!gamePaused) {
         pauseGame();
-        btn.innerText = '⏸ Pause';
+        btn.innerText = '▶ Fortsetzen';
     } else {
         resumeGame();
-      
         btn.innerText = '⏸ Pause';
     }
 }
 
-
 function pauseGame() {
-    stopGame(); // Stoppe alle Intervalls
+    stopGame();
     backgroundSound.pause();
     gamePaused = true;
-
- 
-    if (world && world.character) {
-        savedCharacterState = {
-            x: world.character.x,
-            y: world.character.y,
-            speedY: world.character.speedY,
-            otherDirection: world.character.otherDirection,
-            energy: world.character.energy,
-            currentImage: world.character.currentImage,
-            currentAnimation: world.character.currentAnimation
-        };
-    }
-
    
-    if (world) {
-        savedCameraX = world.camera_x;
-    }
-
-  
-    if (world && world.level && world.level.enemies) {
-        savedEnemiesState = world.level.enemies.map(enemy => ({
-            type: enemy.constructor.name,  
-            x: enemy.x,
-            y: enemy.y,
-            energy: enemy.energy,
-            otherDirection: enemy.otherDirection,
-            isDead: enemy.isDead()
-        }));
-    }
-
-    // ⏸ Overlay anzeigen
-    document.getElementById('pauseOverlay').style.display = 'flex';
-
-    const btn = document.getElementById('pauseResumeBtn');
-    if (btn) btn.innerText = '▶ Fortsetzen';
+    document.getElementById('pauseOverlay').classList.remove('d-none'); // Show pause overlay
 }
-
 
 function resumeGame() {
     if (gameStarted && gamePaused) {
         gamePaused = false;
         backgroundSound.play();
-
-        // Neue Welt erzeugen
-        world = new World(canvas, keyboard);
-
-        if (world && world.character && savedCharacterState) {
-            const char = world.character;
-
-            char.x = savedCharacterState.x;
-            char.y = savedCharacterState.y;
-            char.speedY = savedCharacterState.speedY;
-            char.otherDirection = savedCharacterState.otherDirection;
-            char.energy = savedCharacterState.energy;
-            char.currentImage = savedCharacterState.currentImage;
-            char.currentAnimation = savedCharacterState.currentAnimation;
-
-            world.statusBar.setPercentage(char.energy);
-        }
-        world.camera_x = savedCameraX;
-
+        init();
        
-        if (world.level && world.level.enemies && savedEnemiesState.length > 0) {
-            world.level.enemies.forEach((enemy, index) => {
-                const saved = savedEnemiesState[index];
-                if (saved) {
-                    enemy.x = saved.x;
-                    enemy.y = saved.y;
-                    enemy.energy = saved.energy;
-                    enemy.otherDirection = saved.otherDirection;
-
-                    if (saved.isDead) {
-                        enemy.energy = 0; // Gegner bleibt tot
-                    }
-                }
-            });
-        }
-
-        // Overlay ausblenden
-        document.getElementById('pauseOverlay').style.display = 'none';
-
-        // Button-Text zurücksetzen
-        const btn = document.getElementById('pauseResumeBtn');
-        if (btn) btn.innerText = '⏸ Pause';
-
-       
+        document.getElementById('pauseOverlay').classList.add('d-none'); // Hide pause overlay
     }
 }
 
+function handleSoundPromptClick() {
+    introSound = new Audio('audio/intro.mp3');
+    introSound.volume = 0.1;
+    introSound.loop = true;
+    introSound.play()
+        .then(() => {
+            document.getElementById('soundPrompt').style.display = 'none';
+        })
+        .catch(error => {
+            console.error("Autoplay wurde blockiert:", error);
+            const soundPrompt = document.getElementById('soundPrompt');
+            soundPrompt.innerText = "Sound konnte nicht automatisch abgespielt werden. Klicke, um fortzufahren (ohne Sound).";
+            soundPrompt.addEventListener('click', () => {
+                soundPrompt.style.display = 'none';
+            }, { once: true });
+        });
+}
 
+function initSoundPrompt() {
+    const soundPrompt = document.getElementById('soundPrompt');
+    if (soundPrompt) {
+        soundPrompt.addEventListener('click', handleSoundPromptClick, { once: true });
+    } else {
+        introSound = new Audio('audio/intro.mp3');
+        introSound.volume = 0.1;
+        introSound.loop = true;
+        introSound.play().catch(error => console.log("Autoplay blockiert (kein Prompt):", error));
+    }
+}
 
+function setupGameOverButtons() {
+    document.getElementById('homeBtnGameOver').addEventListener('click', () => {
+        location.reload();
+    });
 
+    document.getElementById('restartBtnGameOver').addEventListener('click', () => {
+        gameOverSound.pause();
+        gameOverSound.currentTime = 0;
+        document.getElementById('gameOverScreen').style.display = 'none';
+        gameStarted = false;
+        init();
+        startGame();
+    });
+}
 
+function setupYouWinButtons() {
+    document.getElementById('homeBtnYouWin').addEventListener('click', () => {
+        location.reload();
+    });
 
+    document.getElementById('restartBtnYouWin').addEventListener('click', () => {
+        youWinSound.pause();
+        youWinSound.currentTime = 0;
+        document.getElementById('youWinScreen').style.display = 'none';
+        gameStarted = false;
+        init();
+        startGame();
+    });
+}
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    initSoundPrompt();
+    setupGameOverButtons();
+    setupYouWinButtons();
+});
 
 
 window.addEventListener('keydown', (e) => {
@@ -364,7 +198,6 @@ window.addEventListener('keydown', (e) => {
     if (e.keyCode == 37) {
         keyboard.LEFT = true;
     }
-
 
     if (e.keyCode == 38) {
         keyboard.UP = true;
@@ -381,7 +214,6 @@ window.addEventListener('keydown', (e) => {
     if (e.keyCode == 68) {
         keyboard.D = true;
     }
-
 });
 
 
@@ -393,7 +225,6 @@ window.addEventListener('keyup', (e) => {
     if (e.keyCode == 37) {
         keyboard.LEFT = false;
     }
-
 
     if (e.keyCode == 38) {
         keyboard.UP = false;
@@ -410,5 +241,4 @@ window.addEventListener('keyup', (e) => {
     if (e.keyCode == 68) {
         keyboard.D = false;
     }
-
 });
