@@ -97,6 +97,7 @@ function startGame() {
     gameStarted = true;
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
+    document.querySelector('.control-buttons').style.display = 'flex'; 
     introSound.pause();
     introSound.currentTime = 0;
     backgroundSound.play();
@@ -258,7 +259,7 @@ function pauseGame() {
     backgroundSound.pause();
     gamePaused = true;
 
-    // ⏸ Charakter-Zustand speichern
+ 
     if (world && world.character) {
         savedCharacterState = {
             x: world.character.x,
@@ -271,15 +272,15 @@ function pauseGame() {
         };
     }
 
-    // ⏸ Kamera speichern
+   
     if (world) {
         savedCameraX = world.camera_x;
     }
 
-    // ⏸ Gegner-Zustand speichern
+  
     if (world && world.level && world.level.enemies) {
         savedEnemiesState = world.level.enemies.map(enemy => ({
-            type: enemy.constructor.name,  // z. B. "Chicken"
+            type: enemy.constructor.name,  
             x: enemy.x,
             y: enemy.y,
             energy: enemy.energy,
@@ -291,14 +292,9 @@ function pauseGame() {
     // ⏸ Overlay anzeigen
     document.getElementById('pauseOverlay').style.display = 'flex';
 
-    // Button-Text ändern, falls du das nicht in togglePause machst
     const btn = document.getElementById('pauseResumeBtn');
     if (btn) btn.innerText = '▶ Fortsetzen';
-
-    console.log("Spiel pausiert.");
 }
-
-
 
 
 function resumeGame() {
@@ -309,7 +305,6 @@ function resumeGame() {
         // Neue Welt erzeugen
         world = new World(canvas, keyboard);
 
-        // 🔁 Charakter-Zustand wiederherstellen
         if (world && world.character && savedCharacterState) {
             const char = world.character;
 
@@ -323,11 +318,9 @@ function resumeGame() {
 
             world.statusBar.setPercentage(char.energy);
         }
-
-        // 🔁 Kamera-Position wiederherstellen
         world.camera_x = savedCameraX;
 
-        // 🔁 Gegner-Zustand wiederherstellen
+       
         if (world.level && world.level.enemies && savedEnemiesState.length > 0) {
             world.level.enemies.forEach((enemy, index) => {
                 const saved = savedEnemiesState[index];
@@ -351,7 +344,7 @@ function resumeGame() {
         const btn = document.getElementById('pauseResumeBtn');
         if (btn) btn.innerText = '⏸ Pause';
 
-        console.log("Spiel fortgesetzt.");
+       
     }
 }
 
