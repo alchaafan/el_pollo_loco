@@ -1,4 +1,4 @@
-// level1.js
+
 let level1;
 
 function initLevel() {

@@ -29,7 +29,7 @@ function setStoppableInterval(fn, time) {
 function stopGame() {
     intervalIDS.forEach(clearInterval);
     intervalIDS = [];
-    console.log("All intervals stopped!");
+    console.log("All intervals stopped!");// zur Prüfung
 }
 
 function init() {
@@ -109,8 +109,8 @@ function pauseGame() {
     stopGame();
     backgroundSound.pause();
     gamePaused = true;
-   
-    document.getElementById('pauseOverlay').classList.remove('d-none'); // Show pause overlay
+    saveGameState();
+    document.getElementById('pauseOverlay').classList.remove('d-none'); 
 }
 
 function resumeGame() {
@@ -118,8 +118,8 @@ function resumeGame() {
         gamePaused = false;
         backgroundSound.play();
         init();
-       
-        document.getElementById('pauseOverlay').classList.add('d-none'); // Hide pause overlay
+        restoreGameState();
+        document.getElementById('pauseOverlay').classList.add('d-none'); 
     }
 }
 
@@ -131,14 +131,7 @@ function handleSoundPromptClick() {
         .then(() => {
             document.getElementById('soundPrompt').style.display = 'none';
         })
-        .catch(error => {
-            console.error("Autoplay wurde blockiert:", error);
-            const soundPrompt = document.getElementById('soundPrompt');
-            soundPrompt.innerText = "Sound konnte nicht automatisch abgespielt werden. Klicke, um fortzufahren (ohne Sound).";
-            soundPrompt.addEventListener('click', () => {
-                soundPrompt.style.display = 'none';
-            }, { once: true });
-        });
+
 }
 
 function initSoundPrompt() {

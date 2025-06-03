@@ -6,46 +6,7 @@ class Endboss extends MovableObject {
     speed = 1;
     energy = 100;
 
-    IMAGES_WALKING = [
-        'img/4_enemie_boss_chicken/1_walk/G1.png',
-        'img/4_enemie_boss_chicken/1_walk/G2.png',
-        'img/4_enemie_boss_chicken/1_walk/G3.png',
-        'img/4_enemie_boss_chicken/1_walk/G4.png'
-    ];
-
-    IMAGES_ALERT = [
-        'img/4_enemie_boss_chicken/2_alert/G5.png',
-        'img/4_enemie_boss_chicken/2_alert/G6.png',
-        'img/4_enemie_boss_chicken/2_alert/G7.png',
-        'img/4_enemie_boss_chicken/2_alert/G8.png',
-        'img/4_enemie_boss_chicken/2_alert/G9.png',
-        'img/4_enemie_boss_chicken/2_alert/G10.png',
-        'img/4_enemie_boss_chicken/2_alert/G11.png',
-        'img/4_enemie_boss_chicken/2_alert/G12.png'
-    ];
-
-    IMAGES_ATTACK = [
-        'img/4_enemie_boss_chicken/3_attack/G13.png',
-        'img/4_enemie_boss_chicken/3_attack/G14.png',
-        'img/4_enemie_boss_chicken/3_attack/G15.png',
-        'img/4_enemie_boss_chicken/3_attack/G16.png',
-        'img/4_enemie_boss_chicken/3_attack/G17.png',
-        'img/4_enemie_boss_chicken/3_attack/G18.png',
-        'img/4_enemie_boss_chicken/3_attack/G19.png',
-        'img/4_enemie_boss_chicken/3_attack/G20.png'
-    ];
-
-    IMAGES_HURT = [
-        'img/4_enemie_boss_chicken/4_hurt/G21.png',
-        'img/4_enemie_boss_chicken/4_hurt/G22.png',
-        'img/4_enemie_boss_chicken/4_hurt/G23.png'
-    ];
-
-    IMAGES_DEAD = [
-        'img/4_enemie_boss_chicken/5_dead/G24.png',
-        'img/4_enemie_boss_chicken/5_dead/G25.png',
-        'img/4_enemie_boss_chicken/5_dead/G26.png'
-    ];
+   
 
 
 
@@ -60,12 +21,12 @@ class Endboss extends MovableObject {
     attackInterval = null;
 
     constructor() {
-        super().loadImage(this.IMAGES_WALKING[0]);
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_ALERT);
-        this.loadImages(this.IMAGES_ATTACK);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEAD);
+        super().loadImage('img/4_enemie_boss_chicken/1_walk/G1.png');
+        this.loadImages(ImageHub.endBoss.IMAGES_WALKING);
+        this.loadImages(ImageHub.endBoss.IMAGES_ALERT);
+        this.loadImages(ImageHub.endBoss.IMAGES_ATTACK);
+        this.loadImages(ImageHub.endBoss.IMAGES_HURT);
+        this.loadImages(ImageHub.endBoss.IMAGES_DEAD);
         this.x = this.endbossX;
         this.applyGravity();
         this.startEndbossBehavior();
@@ -82,16 +43,16 @@ class Endboss extends MovableObject {
 
             if (this.isDead()) {
                 // Die Gesamtdauer für 3 Bilder mit je 1 Sekunde ist 3000 ms
-                this.animateOnce(this.IMAGES_DEAD, 2000, () => {
+                this.animateOnce(ImageHub.endBoss.IMAGES_DEAD, 2000, () => {
                     this.stopAllEndbossIntervals();
                     this.isRemovable = true;
                 });
 
-            } else if (this.isHurt() && this.currentAnimation !== this.IMAGES_HURT) {
-                this.animateOnce(this.IMAGES_HURT, 400);
+            } else if (this.isHurt() && this.currentAnimation !== ImageHub.endBoss.IMAGES_HURT) {
+                this.animateOnce(ImageHub.endBoss.IMAGES_HURT, 400);
 
                 setTimeout(() => {
-                    if (this.currentAnimation === this.IMAGES_HURT) {
+                    if (this.currentAnimation === ImageHub.endBoss.IMAGES_HURT) {
                         this.currentAnimation = null;
                     }
                 }, 450);
@@ -99,13 +60,13 @@ class Endboss extends MovableObject {
 
             }
 
-            else if (this.hadFirstContact && (!this.currentAnimation || this.currentAnimation === this.IMAGES_WALKING || this.currentAnimation === this.IMAGES_ATTACK)) {
+            else if (this.hadFirstContact && (!this.currentAnimation || this.currentAnimation === ImageHub.endBoss.IMAGES_WALKING || this.currentAnimation === ImageHub.endBoss.IMAGES_ATTACK)) {
                 this.world.showEndbossHealthBar();
                 const characterX = this.world.character.x;
                 const attackRange = 300;
 
                 if (Math.abs(characterX - this.x) < attackRange) {
-                    this.animateLoop(this.IMAGES_ATTACK);
+                    this.animateLoop(ImageHub.endBoss.IMAGES_ATTACK);
                     if (this.attackInterval === null) {
                         this.attackInterval = setStoppableInterval(() => {
                             if (this.world.character.isColliding(this)) {
@@ -119,14 +80,14 @@ class Endboss extends MovableObject {
                         clearInterval(this.attackInterval);
                         this.attackInterval = null;
                     }
-                    this.animateLoop(this.IMAGES_WALKING);
+                    this.animateLoop(ImageHub.endBoss.IMAGES_WALKING);
                 }
 
                 if (!this.isAboveGround() && Math.random() < 0.02) {
                     this.jump();
                 }
             } else if (!this.hadFirstContact && this.currentAnimation === null) {
-                this.animateLoop(this.IMAGES_ALERT);
+                this.animateLoop(ImageHub.endBoss.IMAGES_ALERT);
             }
         }, 1000 / 10);
 

@@ -4,15 +4,7 @@ class BabyChicken extends MovableObject {
     y = 350;
     speed = 0.5;
 
-    IMAGES_WALKING = [
-        'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
-        'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
-        'img/3_enemies_chicken/chicken_small/1_walk/3_w.png'
-    ]
-
-    IMAGES_DEAD = [
-        'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
-    ]
+  
 
     offset = {
         top: 0,
@@ -22,9 +14,9 @@ class BabyChicken extends MovableObject {
     };
 
     constructor() {
-         super().loadImage(this.IMAGES_WALKING[0]);
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_DEAD);
+         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
+        this.loadImages(ImageHub.babyChicken.IMAGES_WALKING);
+        this.loadImages(ImageHub.babyChicken.IMAGES_DEAD);
         this.x = 1200 + Math.random() * 500; //Zufällige Startposition
         this.animate();
         this.applyGravity();
@@ -46,10 +38,10 @@ class BabyChicken extends MovableObject {
 
         setStoppableInterval(() => {
             if (this.isDead()) {
-                this.animateOnce(this.IMAGES_DEAD);
+                this.animateOnce(ImageHub.babyChicken.IMAGES_DEAD);
                 this.isRemovable = true;
             } else {
-                this.animateLoop(this.IMAGES_WALKING);
+                this.animateLoop(ImageHub.babyChicken.IMAGES_WALKING);
             }
         }, 150); // Animationsgeschwindigkeit
     }

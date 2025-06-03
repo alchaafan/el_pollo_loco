@@ -120,9 +120,6 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
-
-
     animateLoop(images) {
         // Nur Schleifenanimation abspielen, wenn keine einmalige Animation aktiv ist
         if (this.currentAnimation === null || this.currentAnimation === images) {
