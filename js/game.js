@@ -5,20 +5,12 @@ let startScreen;
 let gameStarted = false;
 let gamePaused = false;
 let isMuted = false;
-let savedCharacterX = 0;
-let savedCharacterY = 0;
-
-let savedCharacterState = {};
-let savedCameraX = 0;
-let savedEnemiesState = [];
 
 let gameOverSound = new Audio('audio/gameover.mp3');
 let youWinSound = new Audio('audio/win.mp3');
 let backgroundSound = new Audio('audio/background.mp3');
-backgroundSound.volume = 0.1;
-
+backgroundSound.volume = 0.1
 let introSound;
-
 let intervalIDS = [];
 
 function setStoppableInterval(fn, time) {
@@ -109,19 +101,20 @@ function pauseGame() {
     stopGame();
     backgroundSound.pause();
     gamePaused = true;
-    saveGameState();
-    document.getElementById('pauseOverlay').classList.remove('d-none'); 
+
+    document.getElementById('pauseOverlay').style.display = "flex";
 }
 
 function resumeGame() {
     if (gameStarted && gamePaused) {
+        stopGame(); // Füge dies hinzu!
         gamePaused = false;
         backgroundSound.play();
-        init();
-        restoreGameState();
-        document.getElementById('pauseOverlay').classList.add('d-none'); 
+        init(); // erzeugt neue Intervalle
+        document.getElementById('pauseOverlay').style.display = "none"
     }
 }
+
 
 function handleSoundPromptClick() {
     introSound = new Audio('audio/intro.mp3');
@@ -176,11 +169,14 @@ function setupYouWinButtons() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
+function initializeGameOnLoad() {
     initSoundPrompt();
     setupGameOverButtons();
     setupYouWinButtons();
-});
+}
+
+document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
+
 
 
 window.addEventListener('keydown', (e) => {

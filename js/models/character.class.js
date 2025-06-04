@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+    //#region attributes
     height = 280;
     y = 160;
     speed = 10;
@@ -17,8 +18,9 @@ class Character extends MovableObject {
     deadSound = new Audio('audio/dead.mp3');
     walkSound = new Audio('audio/walk.mp3');
     snoreSound = new Audio('audio/snore.mp3');
-  
+  //#region 
 
+  //#region constructor
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(ImageHub.Character.IMAGES_WALKING);
@@ -33,7 +35,9 @@ class Character extends MovableObject {
         this.currentAnimation = null;
         this.lastActionTime = new Date().getTime();
     }
+    //#region 
 
+    //#region mothods
     animate() {
 
         //Intervall für Bewegung und Kamera
@@ -128,4 +132,5 @@ class Character extends MovableObject {
         this.speedY = 30;
         this.jumpSound.play();
     }
+    //#region 
 }

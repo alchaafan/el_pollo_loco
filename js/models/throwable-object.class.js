@@ -6,6 +6,7 @@ class ThrowableObject extends MovableObject {
     throwDirection = 1; // 1 für rechts, -1 für links
     splashSound = new Audio('audio/tomato.mp3');
 
+    //#region constructor
     constructor(x, y, otherDirection) { 
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
         this.x = x;
@@ -24,7 +25,9 @@ class ThrowableObject extends MovableObject {
 
         this.throw();
     }
+    //#region 
 
+    //#region methods
     throw() {
         this.speedY = 30;
         this.applyGravity();
@@ -45,4 +48,5 @@ class ThrowableObject extends MovableObject {
             this.isRemovable = true; 
         });
     }
+    //#endregion
 }

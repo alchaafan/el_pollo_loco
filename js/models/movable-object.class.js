@@ -1,5 +1,6 @@
 class MovableObject extends DrawableObject {
 
+//#region attributes
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -16,30 +17,33 @@ class MovableObject extends DrawableObject {
         left: 0,
         right: 0
     };
+    //#region 
 
+    //#region methods
     GRAVITY_GROUND_Y = 440;
 
     applyGravity() {
-        setStoppableInterval(() => {
-            if (!this.isDead()) {
-                if (this.isAboveGround() || this.speedY > 0) {
-                    this.y -= this.speedY;
-                    this.speedY -= this.acceleration;
-                } else {
+    if (this._gravityIntervalId) return; // Schon aktiv? => nichts tun
 
-                    this.y = this.GRAVITY_GROUND_Y - this.height;
-                    this.speedY = 0;
-                }
-            } else if (this.isDead() && this.y < this.GRAVITY_GROUND_Y) {
-
-                this.y += 5; // Lässt tote Objekte fallen
+    this._gravityIntervalId = setStoppableInterval(() => {
+        if (!this.isDead()) {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            } else {
+                this.y = this.GRAVITY_GROUND_Y - this.height;
                 this.speedY = 0;
-                if (this.y >= this.GRAVITY_GROUND_Y) {
-                    this.y = this.GRAVITY_GROUND_Y;
-                }
             }
-        }, 1000 / 25);
-    }
+        } else if (this.y < this.GRAVITY_GROUND_Y) {
+            this.y += 5;
+            this.speedY = 0;
+            if (this.y >= this.GRAVITY_GROUND_Y) {
+                this.y = this.GRAVITY_GROUND_Y;
+            }
+        }
+    }, 1000 / 25);
+}
+
 
 
     isAboveGround() {
@@ -143,4 +147,5 @@ class MovableObject extends DrawableObject {
     jump() {
         this.speedY = 30;
     }
+    //#region 
 }

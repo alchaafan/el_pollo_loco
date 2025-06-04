@@ -1,9 +1,10 @@
 class Chicken extends MovableObject {
+   
     y = 360;
     height = 70;
     width = 130;
    
-
+//#region contructor
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(ImageHub.chicken.IMAGES_WALKING);
@@ -13,7 +14,10 @@ class Chicken extends MovableObject {
         this.applyGravity();
         this.animate();
     }
+    //#region 
 
+
+//#region methods
     hit() {
         this.energy = 0;
         this.speed = 0; // Huhn stoppt sich zu bewegen, sobald es getroffen wird
@@ -37,5 +41,5 @@ class Chicken extends MovableObject {
             }
         }, 200); // Animationsgeschwindigkeit für Laufen
     }
-
+//#region 
 }
