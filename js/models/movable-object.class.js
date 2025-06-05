@@ -23,7 +23,7 @@ class MovableObject extends DrawableObject {
     GRAVITY_GROUND_Y = 440;
 
     applyGravity() {
-    if (this._gravityIntervalId) return; 
+    if (this._gravityIntervalId) return; // Schon aktiv? => nichts tun
 
     this._gravityIntervalId = setStoppableInterval(() => {
         if (!this.isDead()) {
@@ -74,7 +74,7 @@ class MovableObject extends DrawableObject {
     }
 
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
+        let timepassed = new Date().getTime() - this.lastHit; // Differenz in ms
         return timepassed < 200;
     }
 

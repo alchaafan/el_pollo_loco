@@ -21,7 +21,7 @@ class World {
     chickenSound = new Audio('audio/chicken.wav');
     endbossSound = new Audio('audio/babyChicken.wav');
     endbossKilledSound = new Audio('audio/endboss-killed.mp3');
-//#region 
+    //#region 
 
 
     //#region constructor
@@ -40,43 +40,49 @@ class World {
             this.endboss.world = this;
         }
         this.draw(); // Die Zeichenschleife starten
+         this.lastFrameTime = 0;
     }
 
-//#endregion
+    //#endregion
 
-//#region methods
+    //#region methods
     setWorld() {
-        this.character.world = this; 
+        this.character.world = this;
 
     }
 
 
-   run() {
-    if (this._runIntervalId) return; 
-
-    this._runIntervalId = setStoppableInterval(() => {
-        this.checkCollisions();
-        this.checkThrowObjects();
-        this.checkBottleCollisions();
-        this.checkCoinCollisions();
-        this.removeDeadEnemies();
-        this.checkEndbossContact();
-        this.checkBottleEndbossCollisions();
-
-        if (this.endboss && this.endboss.hadFirstContact) {
-            this.statusBarEndboss.setPercentage(this.endboss.energy);
-        }
-
-        if (!this.gameEnded) {
-            if (this.character.isDead()) {
-                this.gameEnded = true;
-                setTimeout(() => showGameOverScreen(), 2000); 
-            } else if (this.endboss && this.endboss.isRemovable) {
-                this.gameEnded = true;
-                setTimeout(() => showYouWinScreen(), 2000); 
+    run() {
+    const now = performance.now();
+    const deltaTime = now - this.lastFrameTime;
+    
+    if (deltaTime > 100) { // Max. 10 FPS für Logik
+        if (!gamePaused) {
+            this.checkCollisions();
+            this.checkThrowObjects();
+            this.checkBottleCollisions();
+            this.checkCoinCollisions();
+            this.removeDeadEnemies();
+            this.checkEndbossContact();
+            this.checkBottleEndbossCollisions();
+            
+            if (this.endboss && this.endboss.hadFirstContact) {
+                this.statusBarEndboss.setPercentage(this.endboss.energy);
+            }
+            
+            if (!this.gameEnded) {
+                if (this.character.isDead()) {
+                    this.gameEnded = true;
+                    setTimeout(() => showGameOverScreen(), 2000);
+                } else if (this.endboss && this.endboss.isRemovable) {
+                    this.gameEnded = true;
+                    setTimeout(() => showYouWinScreen(), 2000);
+                }
             }
         }
-    }, 100);
+        this.lastFrameTime = now - (deltaTime % 100);
+    }
+    requestAnimationFrame(() => this.run());
 }
 
 
@@ -179,13 +185,13 @@ class World {
         }
     }
 
-      draw() {
+    draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
-         this.addObjectsToMap(this.level.coins); 
-         this.addObjectsToMap(this.level.bottles); 
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.bottles);
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarCoins);
@@ -202,30 +208,30 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
-       
-    }
-
-
-   checkCoinCollisions() {
-    this.level.coins.forEach((coin, index) => { 
-        if (this.character.isColliding(coin)) {
-            this.level.coins.splice(index, 1); 
-            this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
-            this.coinsSound.play();
-        }
-    });
 
     }
 
 
-   checkBottleCollisions() {
-    this.level.bottles.forEach((bottle, index) => { 
-        if (this.character.isColliding(bottle)) {
-            this.level.bottles.splice(index, 1); 
-            this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
-            this.bottlesSound.play();
-        }
-    })
+    checkCoinCollisions() {
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.level.coins.splice(index, 1);
+                this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
+                this.coinsSound.play();
+            }
+        });
+
+    }
+
+
+    checkBottleCollisions() {
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                this.level.bottles.splice(index, 1);
+                this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
+                this.bottlesSound.play();
+            }
+        })
     }
 
 

@@ -25,11 +25,16 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
             Klick to start
         </p>
     </div>
+
+    <div id="rotateMsg" class="rotateMsg">
+        <p>please turn your device to langscape mode</p>
+        <img src="./img/landscape.png" alt="">
+    </div>
     <div id="startScreen">
         <button onclick="startGame()">Start</button>
 
         <div id="instructurs">
-            <p> Kontrolle: &larr; 	&rarr;</p>
+            <p> Kontrolle: &larr; &rarr;</p>
             <p> Springen: Leertaste </p>
             <p> Werfen: D </p>
         </div>
@@ -51,10 +56,17 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
             <div class="control-buttons">
 
             </div>
-          
-                <div class="pause-text">⏸️ pause</div>
-                <button onclick="resumeGame()" class="resume-button">▶️ continue</button>
-            
+
+            <div class="pause-text">⏸️ pause</div>
+            <button onclick="resumeGame()" class="resume-button">▶️ continue</button>
+
+        </div>
+    </div>
+
+    <div id="mobileBtns" class="mobileBtnsContainer d-none">
+        <div id="navBtns">
+            <img src="./img/right.png" alt="">
+            <img src="./img/left.png" alt="">
         </div>
     </div>
 

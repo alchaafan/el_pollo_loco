@@ -2,7 +2,7 @@ class Chicken extends MovableObject {
    
     y = 360;
     height = 70;
-    width = 130;
+    width = 90;
    
 //#region contructor
     constructor() {

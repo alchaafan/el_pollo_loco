@@ -4,8 +4,8 @@
     box-sizing: border-box;
 }
 
-@font-face { 
-    font-family: "RebellionSquad-ZpprZ"; 
+@font-face {
+    font-family: "RebellionSquad-ZpprZ";
     src: url("./js/fonts/RebellionSquad-ZpprZ.ttf");
 }
 
@@ -29,13 +29,19 @@ canvas {
     background-color: black;
 }
 
-#soundPrompt{
+#soundPrompt {
     position: fixed;
-     top: 0; left: 0; width: 100%; height: 100%; 
-    background-color: rgba(0,0,0,0.8); 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
-     display: flex;
-     justify-content: center; align-items: center; cursor: pointer; z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
 }
 
 #startScreen {
@@ -46,61 +52,67 @@ canvas {
     background-color: rgba(0, 0, 0, 0.8);
     text-align: center;
     padding-top: 50px;
-    
+
 }
+
 #klicke {
-      color: rgb(252, 149, 2);
-      font-family: "Kanit", sans-serif;
-   
+    color: rgb(252, 149, 2);
+    font-family: "Kanit", sans-serif;
+
     font-size: 25px;
 }
+
 .pauseImg {
     width: 30px;
     height: 30px;
     cursor: pointer;
 }
-.muteImg{
-     width: 30px;
+
+.muteImg {
+    width: 30px;
     height: 30px;
     cursor: pointer;
 }
+
 #startScreen img {
     width: 100%;
 }
 
 #startScreen button {
     background-color: #ff5733;
-            border: none;
-            padding: 15px 30px;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.3s;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.3s;
 
 }
+
 #startScreen button:hover {
-  background-color: #ff2e00;
+    background-color: #ff2e00;
 
     transform: scale(1.05);
 }
-#startScreen button:active{
-     transform: scale(0.98);
+
+#startScreen button:active {
+    transform: scale(0.98);
 }
 
 #how {
-      color: rgb(252, 149, 2);
-      font-family: "Kanit", sans-serif;
-   
+    color: rgb(252, 149, 2);
+    font-family: "Kanit", sans-serif;
+
     font-size: 25px;
 }
 
 #instructurs {
-     color: rgb(252, 149, 2);
-     font-family: "Kanit", sans-serif;
-   font-style: normal;
+    color: rgb(252, 149, 2);
+    font-family: "Kanit", sans-serif;
+    font-style: normal;
     font-size: 25px;
-   background: rgba(29, 21, 21, 0.418);
+    background: rgba(29, 21, 21, 0.418);
 
     display: flex;
     justify-content: center;
@@ -117,7 +129,7 @@ canvas {
 .restart-button {
     padding: 10px 20px;
     font-size: 20px;
-   border: none;
+    border: none;
     color: rgb(252, 149, 2);
     font-weight: lighter;
     font-size: 24px;
@@ -138,29 +150,30 @@ canvas {
 }
 
 .pause-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pause-content {
-  text-align: center;
+    text-align: center;
 }
 
 .pause-text {
-  color: rgb(252, 149, 2);
-     font-family: "Kanit", sans-serif;
-   font-style: normal;
+    color: rgb(252, 149, 2);
+    font-family: "Kanit", sans-serif;
+    font-style: normal;
     font-size: 25px;
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
+
 .you-win-screen {
     position: absolute;
     top: 0;
@@ -172,8 +185,9 @@ canvas {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10; 
+    z-index: 10;
 }
+
 .you-win-screen img {
     max-width: 100%;
     max-height: 70%;
@@ -205,17 +219,17 @@ canvas {
 
 
 .resume-button {
-  font-size: 24px;
-  padding: 10px 20px;
-  color: rgb(252, 149, 2);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    font-size: 24px;
+    padding: 10px 20px;
+    color: rgb(252, 149, 2);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .resume-button:hover {
-  background-color: #dddddd;
+    background-color: #dddddd;
 }
 
 .control-buttons {
@@ -226,19 +240,44 @@ canvas {
 }
 
 .d-none {
-    display: none !important;
-    
+    display: none;
+
 }
 
+.rotateMsg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 20;
+    text-align: center;
+
+    @media(max-width: 1050px) {
+        display: block;
+    }
+   
+   
+}
+
+.rotateMsg img {
+    width: 500px;
+}
+
+@media(max-width:1050px) {
+    .mobileBtnsContainer {
+        display: flex;
+        position: absolute;
 
 
-
-
-
-
-
-
-
-
-
-
+    }
+    #navBtns img {
+        width: 40px;
+        height: 40px;
+    }
+}
