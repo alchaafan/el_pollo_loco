@@ -14,8 +14,11 @@ let introSound;
 let intervalIDS = [];
 
 function setStoppableInterval(fn, time) {
-    let id = setInterval(fn, time);
+    let id = setInterval(() => {
+        if (!gamePaused) fn(); 
+    }, time);
     intervalIDS.push(id);
+    return id;
 }
 
 function stopGame() {
@@ -98,20 +101,17 @@ function togglePause() {
 }
 
 function pauseGame() {
-    stopGame();
-    backgroundSound.pause();
     gamePaused = true;
-
+    backgroundSound.pause();
     document.getElementById('pauseOverlay').style.display = "flex";
+
 }
 
 function resumeGame() {
     if (gameStarted && gamePaused) {
-        stopGame(); // Füge dies hinzu!
         gamePaused = false;
         backgroundSound.play();
-        init(); // erzeugt neue Intervalle
-        document.getElementById('pauseOverlay').style.display = "none"
+        document.getElementById('pauseOverlay').style.display = "none";
     }
 }
 

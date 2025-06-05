@@ -7,10 +7,8 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
-    //coins = [];
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
-    //bottles = [];
     statusBarEndboss;
     endboss;
     gameEnded = false;
@@ -33,8 +31,6 @@ class World {
         this.keyboard = keyboard;
         this.level = initLevel();
         this.character = new Character()
-        // this.addCoins();
-        // this.addBottles();
         this.setWorld();
         this.statusBarEndboss = new StatusBarEndboss();
         this.run();
@@ -50,13 +46,13 @@ class World {
 
 //#region methods
     setWorld() {
-        this.character.world = this; // Diese Welt dem Charakter zuweisen
+        this.character.world = this; 
 
     }
 
 
    run() {
-    if (this._runIntervalId) return; // Schon aktiv? => abbrechen
+    if (this._runIntervalId) return; 
 
     this._runIntervalId = setStoppableInterval(() => {
         this.checkCollisions();
@@ -74,10 +70,10 @@ class World {
         if (!this.gameEnded) {
             if (this.character.isDead()) {
                 this.gameEnded = true;
-                setTimeout(() => showGameOverScreen(), 2000); // Kein extra Intervall!
+                setTimeout(() => showGameOverScreen(), 2000); 
             } else if (this.endboss && this.endboss.isRemovable) {
                 this.gameEnded = true;
-                setTimeout(() => showYouWinScreen(), 2000); // Kein extra Intervall!
+                setTimeout(() => showYouWinScreen(), 2000); 
             }
         }
     }, 100);

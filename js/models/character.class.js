@@ -116,11 +116,11 @@ class Character extends MovableObject {
                     this.currentAnimation = nextAnimation;
                 }
 
-                // Hier entscheiden wir, ob die Animation einmalig oder in Schleife abgespielt wird
+               
                 if (this.currentAnimation === ImageHub.Character.IMAGES_DEAD || this.currentAnimation === ImageHub.Character.IMAGES_HURT) {
-                    this.animateOnce(this.currentAnimation); // Einmalige Animation
+                    this.animateOnce(this.currentAnimation);
                 } else {
-                    this.animateLoop(this.currentAnimation); // Schleifen-Animation
+                    this.animateLoop(this.currentAnimation);
                 }
             }
         }, 50);

@@ -23,7 +23,7 @@ class MovableObject extends DrawableObject {
     GRAVITY_GROUND_Y = 440;
 
     applyGravity() {
-    if (this._gravityIntervalId) return; // Schon aktiv? => nichts tun
+    if (this._gravityIntervalId) return; 
 
     this._gravityIntervalId = setStoppableInterval(() => {
         if (!this.isDead()) {
@@ -74,7 +74,7 @@ class MovableObject extends DrawableObject {
     }
 
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit; // Differenz in ms
+        let timepassed = new Date().getTime() - this.lastHit;
         return timepassed < 200;
     }
 
@@ -125,7 +125,6 @@ class MovableObject extends DrawableObject {
     }
 
     animateLoop(images) {
-        // Nur Schleifenanimation abspielen, wenn keine einmalige Animation aktiv ist
         if (this.currentAnimation === null || this.currentAnimation === images) {
             let i = this.currentImage % images.length;
             this.currentImage = i;
