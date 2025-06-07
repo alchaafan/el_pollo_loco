@@ -38,6 +38,7 @@ function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.control-buttons').style.display = 'flex';
+    //document.getElementById('mobileBtns').classList.remove('d-none'); // Mobile Buttons einblenden wenn das Spiel startet
     introSound.pause();
     introSound.currentTime = 0;
     backgroundSound.play();
@@ -177,6 +178,13 @@ function initializeGameOnLoad() {
 
 document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
 
+//#region mobile
+
+
+    
+   
+
+//#region 
 
 
 window.addEventListener('keydown', (e) => {
