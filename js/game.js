@@ -15,7 +15,7 @@ let intervalIDS = [];
 
 function setStoppableInterval(fn, time) {
     let id = setInterval(() => {
-        if (!gamePaused) fn(); 
+        if (!gamePaused) fn();
     }, time);
     intervalIDS.push(id);
     return id;
@@ -168,23 +168,61 @@ function setupYouWinButtons() {
         startGame();
     });
 }
-
 function initializeGameOnLoad() {
     initSoundPrompt();
     setupGameOverButtons();
     setupYouWinButtons();
+    touchLeft();
+    touchRight();
+    touchJump();
+    touchThrow();
 }
 
+
 //#region mobile
+function touchLeft() {
+    document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = true;
+    }, { passive: false });
+    document.getElementById('leftBtn').addEventListener('touchend', (e) => {
+        keyboard.LEFT = false;
+    });
+}
+
+function touchRight() {
+    document.getElementById('rightBtn').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = true;
+    }, { passive: false });
+    document.getElementById('rightBtn').addEventListener('touchend', (e) => {
+        keyboard.RIGHT = false;
+    });
+}
+
+function touchJump() {
+    document.getElementById('jumpBtn').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.SPACE = true;
+    }, { passive: false });
+    document.getElementById('jumpBtn').addEventListener('touchend', (e) => {
+        keyboard.SPACE = false;
+    });
+}
+
+function touchThrow() {
+    document.getElementById('throwBtn').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.D = true;
+    }, { passive: false });
+    document.getElementById('throwBtn').addEventListener('touchend', (e) => {
+        keyboard.D = false;
+    });
+}
+
 
 //Handysteuerung
-document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.LEFT = true;
-}, { passive: false });
-document.getElementById('leftBtn').addEventListener('touchend', (e) => {
-    keyboard.LEFT = false;
-});
+
 
 document.getElementById('rightBtn').addEventListener('touchstart', (e) => {
     e.preventDefault();
