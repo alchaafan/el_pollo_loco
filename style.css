@@ -22,7 +22,7 @@ body {
     flex-direction: column;
     align-items: center;
     background-image: url(./img/background.jpg);
-   background-size: cover;
+    background-size: cover;
     height: 100dvh;
     margin: 0;
     position: relative;
@@ -59,21 +59,21 @@ canvas {
 #startScreen {
     background-image: url(img/9_intro_outro_screens/start/startscreen_1.png);
     background-size: cover;
-     background-position: center; 
+    background-position: center;
     position: absolute;
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
     text-align: center;
-
-      display: flex;
+z-index: 6;
+    display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
+   
+    gap: 20px;
+    padding: 11px;
 
-      gap: 20px;
-    padding: 20px;
-  
 
 }
 
@@ -258,7 +258,7 @@ canvas {
 .control-buttons {
     position: fixed;
     gap: 10px;
-    z-index: 10;
+    z-index: 5;
     display: none;
 }
 
@@ -284,39 +284,50 @@ canvas {
 
 .mobile-buttons-container {
     position: fixed;
-    bottom: 10px; /* Am unteren Rand des Bildschirms */
+    bottom: 10px;
+    /* Am unteren Rand des Bildschirms */
     left: 0;
     right: 0;
     display: flex;
-    justify-content: space-between; /* Links und Rechts gruppieren */
-    align-items: flex-end; /* Buttons am unteren Rand ausrichten */
-    padding: 0 10px; /* Innenabstand links und rechts */
-    z-index: 10; /* Über dem Canvas, aber unter Game Over / You Win */
-    gap: 20px; /* Abstand zwischen den Button-Gruppen */
+    justify-content: space-between;
+    /* Links und Rechts gruppieren */
+    align-items: flex-end;
+    /* Buttons am unteren Rand ausrichten */
+    padding: 0 10px;
+    /* Innenabstand links und rechts */
+    z-index: 5;
+    /* Über dem Canvas, aber unter Game Over / You Win */
+    gap: 20px;
+    /* Abstand zwischen den Button-Gruppen */
 }
 
 .left-right-buttons,
 .action-buttons {
     display: flex;
-    gap: 10px; /* Abstand zwischen den einzelnen Buttons */
+    gap: 10px;
+    /* Abstand zwischen den einzelnen Buttons */
 }
 
 .mobile-btn {
     background-color: rgba(255, 255, 255, 0.2);
     border: none;
-    border-radius: 50%; /* Runde Buttons */
-    width: 60px; /* Größe der Buttons */
+    border-radius: 50%;
+    /* Runde Buttons */
+    width: 60px;
+    /* Größe der Buttons */
     height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.1s ease;
-    padding: 0; /* Kein Padding im Button selbst, da Bild die Größe füllt */
+    padding: 0;
+    /* Kein Padding im Button selbst, da Bild die Größe füllt */
 }
 
 .mobile-btn img {
-    width: 80%; /* Bildgröße innerhalb des Buttons */
+    width: 80%;
+    /* Bildgröße innerhalb des Buttons */
     height: 80%;
     object-fit: contain;
 }
@@ -327,7 +338,7 @@ canvas {
 
 
 @media (orientation: portrait) and (max-width: 1050px) {
-        
+
     .rotateMsg {
         display: flex;
     }
@@ -352,46 +363,64 @@ canvas {
         align-items: center;
         padding: 0%;
         gap: 5;
-        
+
     }
-    #instructurs{
+
+    #instructurs {
         font-size: 20px;
-       
+
     }
 
     #startScreen button {
         padding: 10px;
     }
 
-       canvas {
+    canvas {
         /* Canvas wird sichtbar und skaliert im JS */
     }
 
     .control-buttons {
-        display: flex; /* Steuerbuttons im Querformat anzeigen */
-        top: 10px; /* Oben rechts positionieren */
+        display: flex;
+        /* Steuerbuttons im Querformat anzeigen */
+        top: 10px;
+        /* Oben rechts positionieren */
         right: 10px;
-        left: unset; /* Left-Eigenschaft aufheben */
-        transform: unset; /* Transform-Eigenschaft aufheben */
+        left: unset;
+        /* Left-Eigenschaft aufheben */
+        transform: unset;
+        /* Transform-Eigenschaft aufheben */
     }
-    .mobile-buttons-container { /* Hier einblenden */
-        display: flex; /* Flexbox, um die Buttons zu layouten */
+
+    .mobile-buttons-container {
+        /* Hier einblenden */
+        display: flex;
+        /* Flexbox, um die Buttons zu layouten */
     }
 }
 
 @media (min-width: 1051px) {
-    .rotateMsg, .mobile-buttons-container { /* mobile-buttons-container hier ausblenden */
+
+    .rotateMsg,
+    .mobile-buttons-container {
+        /* mobile-buttons-container hier ausblenden */
         display: none !important;
     }
+
     canvas {
         display: block;
     }
+
     .control-buttons {
-        display: flex; /* Auch auf großen Bildschirmen anzeigen */
-        top: 10px; /* Oben rechts positionieren */
+        display: flex;
+        /* Auch auf großen Bildschirmen anzeigen */
+        top: 10px;
+        /* Oben rechts positionieren */
         right: 10px;
-        left: unset; /* Left-Eigenschaft aufheben */
-        transform: unset; /* Transform-Eigenschaft aufheben */
+        left: unset;
+        /* Left-Eigenschaft aufheben */
+        transform: unset;
+        /* Transform-Eigenschaft aufheben */
     }
+
     /* #startScreen, canvas, etc. haben ihre Standardeinstellungen */
 }
