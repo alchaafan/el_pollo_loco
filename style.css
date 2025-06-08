@@ -65,12 +65,12 @@ canvas {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
     text-align: center;
-z-index: 6;
+    z-index: 6;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
-   
+
     gap: 20px;
     padding: 11px;
 
@@ -88,12 +88,14 @@ z-index: 6;
     width: 30px;
     height: 30px;
     cursor: pointer;
+    z-index: 5;
 }
 
 .muteImg {
     width: 30px;
     height: 30px;
     cursor: pointer;
+    z-index: 5;
 }
 
 #startScreen img {
@@ -375,26 +377,18 @@ z-index: 6;
         padding: 10px;
     }
 
-    canvas {
-        /* Canvas wird sichtbar und skaliert im JS */
-    }
+
 
     .control-buttons {
         display: flex;
-        /* Steuerbuttons im Querformat anzeigen */
         top: 10px;
-        /* Oben rechts positionieren */
         right: 10px;
         left: unset;
-        /* Left-Eigenschaft aufheben */
         transform: unset;
-        /* Transform-Eigenschaft aufheben */
     }
 
     .mobile-buttons-container {
-        /* Hier einblenden */
         display: flex;
-        /* Flexbox, um die Buttons zu layouten */
     }
 }
 
@@ -402,7 +396,6 @@ z-index: 6;
 
     .rotateMsg,
     .mobile-buttons-container {
-        /* mobile-buttons-container hier ausblenden */
         display: none !important;
     }
 
@@ -412,15 +405,10 @@ z-index: 6;
 
     .control-buttons {
         display: flex;
-        /* Auch auf großen Bildschirmen anzeigen */
         top: 10px;
-        /* Oben rechts positionieren */
         right: 10px;
         left: unset;
-        /* Left-Eigenschaft aufheben */
         transform: unset;
-        /* Transform-Eigenschaft aufheben */
     }
 
-    /* #startScreen, canvas, etc. haben ihre Standardeinstellungen */
 }
