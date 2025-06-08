@@ -38,7 +38,6 @@ function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.control-buttons').style.display = 'flex';
-    //document.getElementById('mobileBtns').classList.remove('d-none'); // Mobile Buttons einblenden wenn das Spiel startet
     introSound.pause();
     introSound.currentTime = 0;
     backgroundSound.play();
@@ -176,15 +175,46 @@ function initializeGameOnLoad() {
     setupYouWinButtons();
 }
 
-document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
-
 //#region mobile
 
+//Handysteuerung
+document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+}, { passive: false });
+document.getElementById('leftBtn').addEventListener('touchend', (e) => {
+    keyboard.LEFT = false;
+});
 
-    
-   
+document.getElementById('rightBtn').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = true;
+}, { passive: false });
+document.getElementById('rightBtn').addEventListener('touchend', (e) => {
+    keyboard.RIGHT = false;
+});
+
+document.getElementById('jumpBtn').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.SPACE = true;
+}, { passive: false });
+document.getElementById('jumpBtn').addEventListener('touchend', (e) => {
+    keyboard.SPACE = false;
+});
+
+document.getElementById('throwBtn').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.D = true;
+}, { passive: false });
+document.getElementById('throwBtn').addEventListener('touchend', (e) => {
+    keyboard.D = false;
+});
+
 
 //#region 
+
+document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
+
 
 
 window.addEventListener('keydown', (e) => {

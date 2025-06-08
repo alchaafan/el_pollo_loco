@@ -20,10 +20,10 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 </head>
 
 <body>
-<div id="rotateMsg" class="rotateMsg">
-    <p>Please rotate your mobile</p>
-    <img src="./img/landscape.png" alt="">
-</div>
+    <div id="rotateMsg" class="rotateMsg">
+        <p>Please rotate your mobile</p>
+        <img src="./img/landscape.png" alt="">
+    </div>
 
     <div id="soundPrompt">
         <p id="klicke">
@@ -31,7 +31,7 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         </p>
     </div>
 
-    
+
     <div id="startScreen">
         <button onclick="startGame()">Start</button>
         <div id="instructurs">
@@ -42,9 +42,9 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
     </div>
 
-   
-        <canvas width="720px" height="480px" id="canvas"> </canvas>
-    
+
+    <canvas width="720px" height="480px" id="canvas"> </canvas>
+
 
 
     <div class="control-buttons">
@@ -62,6 +62,17 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
             <div class="pause-text">⏸️ pause</div>
             <button onclick="resumeGame()" class="resume-button">▶️ continue</button>
 
+        </div>
+    </div>
+
+    <div id="mobileBtns" class="mobile-buttons-container d-none">
+        <div class="left-right-buttons">
+            <button id="leftBtn" class="mobile-btn"><img src="./img/left.png" alt="Left"></button>
+            <button id="rightBtn" class="mobile-btn"><img src="./img/right.png" alt="Right"></button>
+        </div>
+        <div class="action-buttons">
+            <button id="jumpBtn" class="mobile-btn"><img src="./img/up.png" alt="Jump"></button>
+            <button id="throwBtn" class="mobile-btn"><img src="img/6_salsa_bottle/salsa_bottle.png" alt="Throw"></button>
         </div>
     </div>
 

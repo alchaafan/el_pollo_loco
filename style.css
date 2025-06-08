@@ -135,10 +135,11 @@ canvas {
     font-style: normal;
     font-size: 25px;
     background: rgba(29, 21, 21, 0.418);
-
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 50px;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 .button-container {
@@ -228,7 +229,7 @@ canvas {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    z-index: 10;
 }
 
 
@@ -281,6 +282,50 @@ canvas {
     text-align: center;
 }
 
+.mobile-buttons-container {
+    position: fixed;
+    bottom: 10px; /* Am unteren Rand des Bildschirms */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between; /* Links und Rechts gruppieren */
+    align-items: flex-end; /* Buttons am unteren Rand ausrichten */
+    padding: 0 10px; /* Innenabstand links und rechts */
+    z-index: 10; /* Über dem Canvas, aber unter Game Over / You Win */
+    gap: 20px; /* Abstand zwischen den Button-Gruppen */
+}
+
+.left-right-buttons,
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Abstand zwischen den einzelnen Buttons */
+}
+
+.mobile-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%; /* Runde Buttons */
+    width: 60px; /* Größe der Buttons */
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    padding: 0; /* Kein Padding im Button selbst, da Bild die Größe füllt */
+}
+
+.mobile-btn img {
+    width: 80%; /* Bildgröße innerhalb des Buttons */
+    height: 80%;
+    object-fit: contain;
+}
+
+.mobile-btn:active {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+
 @media (orientation: portrait) and (max-width: 1050px) {
         
     .rotateMsg {
@@ -311,9 +356,42 @@ canvas {
     }
     #instructurs{
         font-size: 20px;
+       
     }
 
     #startScreen button {
         padding: 10px;
     }
+
+       canvas {
+        /* Canvas wird sichtbar und skaliert im JS */
+    }
+
+    .control-buttons {
+        display: flex; /* Steuerbuttons im Querformat anzeigen */
+        top: 10px; /* Oben rechts positionieren */
+        right: 10px;
+        left: unset; /* Left-Eigenschaft aufheben */
+        transform: unset; /* Transform-Eigenschaft aufheben */
+    }
+    .mobile-buttons-container { /* Hier einblenden */
+        display: flex; /* Flexbox, um die Buttons zu layouten */
+    }
+}
+
+@media (min-width: 1051px) {
+    .rotateMsg, .mobile-buttons-container { /* mobile-buttons-container hier ausblenden */
+        display: none !important;
+    }
+    canvas {
+        display: block;
+    }
+    .control-buttons {
+        display: flex; /* Auch auf großen Bildschirmen anzeigen */
+        top: 10px; /* Oben rechts positionieren */
+        right: 10px;
+        left: unset; /* Left-Eigenschaft aufheben */
+        transform: unset; /* Transform-Eigenschaft aufheben */
+    }
+    /* #startScreen, canvas, etc. haben ihre Standardeinstellungen */
 }
