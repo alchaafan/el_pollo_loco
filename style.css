@@ -65,7 +65,7 @@ canvas {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
     text-align: center;
-    z-index: 6;
+    z-index: 7;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -264,10 +264,7 @@ canvas {
     display: none;
 }
 
-.d-none {
-    display: none;
 
-}
 
 .rotateMsg {
     position: fixed;
@@ -287,36 +284,29 @@ canvas {
 .mobile-buttons-container {
     position: fixed;
     bottom: 10px;
-    /* Am unteren Rand des Bildschirms */
     left: 0;
     right: 0;
     display: flex;
     justify-content: space-between;
-    /* Links und Rechts gruppieren */
     align-items: flex-end;
-    /* Buttons am unteren Rand ausrichten */
     padding: 0 10px;
-    /* Innenabstand links und rechts */
     z-index: 5;
-    /* Über dem Canvas, aber unter Game Over / You Win */
     gap: 20px;
-    /* Abstand zwischen den Button-Gruppen */
+
 }
 
 .left-right-buttons,
 .action-buttons {
     display: flex;
     gap: 10px;
-    /* Abstand zwischen den einzelnen Buttons */
+
 }
 
 .mobile-btn {
     background-color: rgba(255, 255, 255, 0.2);
     border: none;
     border-radius: 50%;
-    /* Runde Buttons */
     width: 60px;
-    /* Größe der Buttons */
     height: 60px;
     display: flex;
     justify-content: center;
@@ -324,12 +314,11 @@ canvas {
     cursor: pointer;
     transition: background-color 0.1s ease;
     padding: 0;
-    /* Kein Padding im Button selbst, da Bild die Größe füllt */
+
 }
 
 .mobile-btn img {
     width: 80%;
-    /* Bildgröße innerhalb des Buttons */
     height: 80%;
     object-fit: contain;
 }
@@ -411,4 +400,54 @@ canvas {
         transform: unset;
     }
 
+}
+
+.infoOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 7;
+}
+
+.infoContent {
+     background-color: #fff;
+    color: rgb(50, 49, 49);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    text-align: center;
+    color: black;
+}
+
+.infoContent h2 {
+    margin-bottom: 20px;
+}
+
+.infoContent ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.infoContent ul li {
+    font-size: 18px;
+    margin: 8px 0;
+}
+
+
+h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 60px;
+    color: rgb(50, 49, 49);
+
+}
+
+.d-none {
+    display: none;
 }

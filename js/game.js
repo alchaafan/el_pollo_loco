@@ -24,7 +24,6 @@ function setStoppableInterval(fn, time) {
 function stopGame() {
     intervalIDS.forEach(clearInterval);
     intervalIDS = [];
-    console.log("All intervals stopped!");// zur Prüfung
 }
 
 function init() {
@@ -115,7 +114,6 @@ function resumeGame() {
     }
 }
 
-
 function handleSoundPromptClick() {
     introSound = new Audio('audio/intro.mp3');
     introSound.volume = 0.1;
@@ -124,7 +122,6 @@ function handleSoundPromptClick() {
         .then(() => {
             document.getElementById('soundPrompt').style.display = 'none';
         })
-
 }
 
 function initSoundPrompt() {
@@ -168,6 +165,7 @@ function setupYouWinButtons() {
         startGame();
     });
 }
+
 function initializeGameOnLoad() {
     initSoundPrompt();
     setupGameOverButtons();
@@ -178,8 +176,12 @@ function initializeGameOnLoad() {
     touchThrow();
 }
 
+function registerDOMContentLoadedListener() {
+    document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
+}
 
 //#region mobile
+
 function touchLeft() {
     document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -220,40 +222,9 @@ function touchThrow() {
     });
 }
 
-
-//Handysteuerung
-
-
-document.getElementById('rightBtn').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.RIGHT = true;
-}, { passive: false });
-document.getElementById('rightBtn').addEventListener('touchend', (e) => {
-    keyboard.RIGHT = false;
-});
-
-document.getElementById('jumpBtn').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.SPACE = true;
-}, { passive: false });
-document.getElementById('jumpBtn').addEventListener('touchend', (e) => {
-    keyboard.SPACE = false;
-});
-
-document.getElementById('throwBtn').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.D = true;
-}, { passive: false });
-document.getElementById('throwBtn').addEventListener('touchend', (e) => {
-    keyboard.D = false;
-});
-
-
 //#region 
 
-document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
-
-
+registerDOMContentLoadedListener();
 
 window.addEventListener('keydown', (e) => {
     if (e.keyCode == 39) {
@@ -281,7 +252,6 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-
 window.addEventListener('keyup', (e) => {
     if (e.keyCode == 39) {
         keyboard.RIGHT = false;
@@ -307,3 +277,11 @@ window.addEventListener('keyup', (e) => {
         keyboard.D = false;
     }
 });
+
+function openImpressum() {
+    document.getElementById('impressumOverlay').classList.remove('d-none');
+}
+
+function closeImpressum() {
+    document.getElementById('impressumOverlay').classList.add('d-none');
+}

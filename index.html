@@ -20,6 +20,7 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 </head>
 
 <body>
+   
     <div id="rotateMsg" class="rotateMsg">
         <p>Please rotate your mobile</p>
         <img src="./img/landscape.png" alt="">
@@ -33,7 +34,10 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
 
     <div id="startScreen">
+        <div>
         <button onclick="startGame()">Start</button>
+           <button onclick="openImpressum()">impressum</button>
+           </div>
         <div id="instructurs">
             <p> Move: &larr; &rarr;</p>
             <p> Jump: space </p>
@@ -42,9 +46,19 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
     </div>
 
+    <div id="impressumOverlay" class="infoOverlay d-none">
+        <div class="infoContent">
+            <h2>impressum</h2>
+            <p>Name: Muhammad Al Chaafan</p>
+            <p>phone: 015731999353</p>
+            <p>e-mail: m.shaafan@gmail.com</p>
+            <button onclick="closeImpressum()">back</button>
+        </div>
+      
+    </div>
+
 
     <canvas width="720px" height="480px" id="canvas"> </canvas>
-
 
 
     <div class="control-buttons">
