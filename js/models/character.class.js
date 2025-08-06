@@ -129,7 +129,7 @@ class Character extends MovableObject {
 
 
     jump() {
-        this.speedY = 30;
+        this.speedY = 20;
         this.jumpSound.play();
     }
     //#region 

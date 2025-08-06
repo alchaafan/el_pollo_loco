@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Gloria+Hallelujah&family=Kanit:ital,
 wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Karla:ital,wght@0,200..800;1,200..800&family=National+Park:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL POLLO LOCO</title>
@@ -21,7 +21,7 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 </head>
 
 <body>
-   
+
     <div id="rotateMsg" class="rotateMsg">
         <p>Please rotate your mobile</p>
         <img src="./img/landscape.png" alt="">
@@ -36,9 +36,9 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
     <div id="startScreen">
         <div>
-        <button onclick="startGame()">Start</button>
-           <button onclick="openImpressum()">impressum</button>
-           </div>
+            <button onclick="startGame()">Start</button>
+            <button onclick="openImpressum()">impressum</button>
+        </div>
         <div id="instructurs">
             <p> Move: &larr; &rarr;</p>
             <p> Jump: space </p>
@@ -51,23 +51,25 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         <div class="infoContent">
             <h2>impressum</h2>
             <p>Name: Muhammad Al Chaafan</p>
-            <p>phone: 015731999353</p>
-            <p>e-mail: m.shaafan@gmail.com</p>
+            <p>e-mail: info at muhammad-alchaafan.de</p>
             <button onclick="closeImpressum()">back</button>
         </div>
-      
-    </div>
-
-
-    <canvas width="720px" height="480px" id="canvas"> </canvas>
-
-
-    <div class="control-buttons">
-        <img id="pauseResumeBtn" class="pauseImg" src="./img/pause.png" alt="" onclick="togglePause()">
-        <img id="muteButton" class="muteImg" src="img/volume.png" alt="" onclick="toggleMute()">
-
 
     </div>
+
+    <div id="gameContainer">
+
+        <canvas width="720px" height="480px" id="canvas"> </canvas>
+
+        <div class="control-buttons">
+            <img id="pauseResumeBtn" class="pauseImg" src="./img/pause.png" alt="" onclick="togglePause()">
+            <img id="muteButton" class="muteImg" src="img/volume.png" alt="" onclick="toggleMute()">
+
+
+        </div>
+
+    </div>
+
     <div id="pauseOverlay" class="pause-overlay" style="display: none;">
         <div class="pause-content">
             <div class="control-buttons">
@@ -87,7 +89,8 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         </div>
         <div class="action-buttons">
             <button id="jumpBtn" class="mobile-btn"><img src="./img/up.png" alt="Jump"></button>
-            <button id="throwBtn" class="mobile-btn"><img src="img/6_salsa_bottle/salsa_bottle.png" alt="Throw"></button>
+            <button id="throwBtn" class="mobile-btn"><img src="img/6_salsa_bottle/salsa_bottle.png"
+                    alt="Throw"></button>
         </div>
     </div>
 
