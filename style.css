@@ -31,23 +31,20 @@ body {
 }
 
 
-/* canvas {
-    background-color: black;
-    display: none;
+canvas {
     max-width: 100vw;
     max-height: 100vh;
-    object-fit: contain;
-    margin-top: 10%;
-
-} */
+    z-index: 1;
+}
 
 #gameContainer {
-    position: absolute;
-    width: 720px;
-    height: 480px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    height: 100%;
+    max-height: 480px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 #soundPrompt {
@@ -268,11 +265,14 @@ body {
 
 .control-buttons {
     position: absolute;
-    top: 2px;
-    right: 1px;
-    gap: 10px;
+    top: 15px;
+    right: 15px;
+    gap: 12px;
     z-index: 5;
-    display: none;
+    display: flex;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px;
+    border-radius: 25px;
 }
 
 
@@ -293,16 +293,15 @@ body {
 }
 
 .mobile-buttons-container {
-    position: fixed;
-    bottom: 10px;
-    left: 80px;
-    right: 80px;
+     position: absolute;
+    bottom: 25px;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 10px;
+    padding: 0 20px;
     z-index: 5;
-    gap: 20px;
+    gap: 15px;
 
 }
 
@@ -326,6 +325,25 @@ body {
     transition: background-color 0.1s ease;
     padding: 0;
 
+   
+}
+
+@media(max-width:500px) {
+    .mobile-btn {
+        width: 55px;
+        height: 55px;
+    }
+
+      .control-buttons {
+        top: 10px;
+        right: 10px;
+        padding: 6px;
+    }
+    
+    .pauseImg, .muteImg {
+        width: 25px;
+        height: 25px;
+    }
 }
 
 .mobile-btn img {
@@ -370,6 +388,7 @@ body {
 
     #instructurs {
         font-size: 20px;
+        flex-wrap: wrap;
 
     }
 
@@ -379,7 +398,13 @@ body {
 
 
     .mobile-buttons-container {
-        display: flex;
+        bottom: 5px;
+        padding: 0 8px;
+    }
+
+    .mobile-btn {
+        width: 45px;
+        height: 45px;
     }
 }
 
