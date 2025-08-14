@@ -92,6 +92,7 @@ function showGameOverScreen() {
     backgroundSound.pause();
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('gameOverScreen').style.display = 'flex';
+     this.gameOverSound.volume = isMuted ? 0 : 1;
     gameOverSound.play();
 }
 
@@ -100,6 +101,7 @@ function showYouWinScreen() {
     backgroundSound.pause();
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('youWinScreen').style.display = 'flex';
+     this.youWinSound.volume = isMuted ? 0 : 1;
     youWinSound.play();
 }
 

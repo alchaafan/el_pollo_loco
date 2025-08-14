@@ -1,3 +1,5 @@
+
+
 class World {
     //#region attributes
     character;
@@ -117,6 +119,7 @@ class World {
             this.StatusBarBottles.setPercentage(Math.max(0, this.StatusBarBottles.percentage - 20)); // Reduziere die Flaschenanzahl
             this.throwSound.pause();
             this.throwSound.currentTime = 0;
+             this.throwSound.volume = isMuted ? 0 : 1;
             this.throwSound.play();
 
 
@@ -134,6 +137,7 @@ class World {
                 ) {
                     if (enemy instanceof Chicken || enemy instanceof BabyChicken) {
                         enemy.hit(); // Das Huhn stirbt
+                         this.chickenSound.volume = isMuted ? 0 : 1;
                         this.chickenSound.play();
 
                         this.character.jump(15); // Kleinerer Sprung als normal
@@ -167,6 +171,7 @@ class World {
                 if (bottle.isColliding(this.endboss) && !bottle.isSplashed) {
                     this.endboss.hitByBottle();
                     bottle.splash();
+                     this.endbossSound.volume = isMuted ? 0 : 1;
                     this.endbossSound.play();
 
                 }
@@ -181,6 +186,7 @@ class World {
 
         if (this.endboss && this.endboss.isRemovable && !this.level.enemies.includes(this.endboss)) {
             this.endboss = null;
+             this.endbossKilledSound.volume = isMuted ? 0 : 1;
             this.endbossKilledSound.play();
         }
     }
@@ -217,6 +223,8 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.level.coins.splice(index, 1);
                 this.statusBarCoins.setPercentage(this.statusBarCoins.percentage + 20);
+                
+                 this.coinsSound.volume = isMuted ? 0 : 1;
                 this.coinsSound.play();
             }
         });
@@ -229,6 +237,8 @@ class World {
             if (this.character.isColliding(bottle)) {
                 this.level.bottles.splice(index, 1);
                 this.StatusBarBottles.setPercentage(Math.min(100, this.StatusBarBottles.percentage + 20));
+                
+                this.bottlesSound.volume = isMuted ? 0 : 1;
                 this.bottlesSound.play();
             }
         })

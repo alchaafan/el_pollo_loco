@@ -1,3 +1,5 @@
+
+
 class ThrowableObject extends MovableObject {
 
 
@@ -43,6 +45,7 @@ class ThrowableObject extends MovableObject {
         this.isSplashed = true; 
         this.speedY = 0; // Vertikale Bewegung stoppen
         this.speed = 0; // Horizontale Bewegung stoppen 
+         this.splashSound.volume = isMuted ? 0 : 1;
         this.splashSound.play();
         this.animateOnce(ImageHub.salsa.splash, 400, () => {
             this.isRemovable = true; 

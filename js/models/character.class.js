@@ -100,8 +100,9 @@ class Character extends MovableObject {
                 } else {
                     if (timepassedSinceLastAction > 15000) {
                         nextAnimation = ImageHub.Character.IMAGES_LONGIDLE;
+                         this.snoreSound.volume = isMuted ? 0 : 1;
                         this.snoreSound.play();
-                        this.snoreSound.volume = 0.1;
+                        this.snoreSound.volume = 0.001;
                         
                     } else {
                         nextAnimation = ImageHub.Character.IMAGES_IDLE;

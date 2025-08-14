@@ -392,6 +392,7 @@ canvas {
     #instructurs {
         font-size: 20px;
         flex-wrap: wrap;
+        display: none;
 
     }
 
