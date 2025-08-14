@@ -4,7 +4,7 @@ let keyboard;
 let startScreen;
 let gameStarted = false;
 let gamePaused = false;
-let isMuted = false;
+let isMuted = true;
 
 let gameOverSound = new Audio('audio/gameover.mp3');
 let youWinSound = new Audio('audio/win.mp3');
@@ -37,27 +37,42 @@ function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.control-buttons').style.display = 'flex';
-    introSound.pause();
-    introSound.currentTime = 0;
+    if (introSound) {
+        introSound.pause();
+        introSound.currentTime = 0;
+    }
+    backgroundSound.volume = isMuted ? 0 : 0.2;
     backgroundSound.play();
-    init();
+    init()
     updateCharacterSoundMuteStatus();
 }
 
 function toggleMute() {
-    const muteButtonImg = document.getElementById('muteButton');
-    if (backgroundSound) {
-        if (isMuted) {
-            backgroundSound.volume = 0.2;
-            muteButtonImg.src = './img/volume.png';
-            muteButtonImg.alt = 'Mute';
-            isMuted = false;
+    const muteButtonStart = document.getElementById('muteButtonStart');
+    const muteButtonGame = document.getElementById('muteButtonGame');
+
+    if (isMuted) {
+
+        if (gameStarted) {
+            if (backgroundSound) backgroundSound.volume = 0.2;
         } else {
-            backgroundSound.volume = 0;
-            muteButtonImg.src = './img/mute.png';
-            muteButtonImg.alt = 'Unmute';
-            isMuted = true;
+            if (introSound) {
+                introSound.volume = 0.1;
+                introSound.play().catch(error => console.log("Abspiel-Fehler:", error));
+            }
         }
+        muteButtonStart.src = './img/volume.png';
+        muteButtonGame.src = './img/volume.png';
+        muteButtonStart.alt = muteButtonGame.alt = 'Mute';
+        isMuted = false;
+    } else {
+        // Stummschalten
+        if (backgroundSound) backgroundSound.volume = 0;
+        if (introSound) introSound.volume = 0;
+        muteButtonStart.src = './img/mute.png';
+        muteButtonGame.src = './img/mute.png';
+        muteButtonStart.alt = muteButtonGame.alt = 'Unmute';
+        isMuted = true;
     }
     updateCharacterSoundMuteStatus();
 }
@@ -114,26 +129,20 @@ function resumeGame() {
     }
 }
 
-function handleSoundPromptClick() {
-    introSound = new Audio('audio/intro.mp3');
-    introSound.volume = 0.1;
-    introSound.loop = true;
-    introSound.play()
-        .then(() => {
-            document.getElementById('soundPrompt').style.display = 'none';
-        })
-}
+// function handleSoundPromptClick() {
+//     introSound = new Audio('audio/intro.mp3');
+//     introSound.volume = 0.1;
+//     introSound.loop = true;
+//     introSound.play()
+//         .then(() => {
+//             document.getElementById('soundPrompt').style.display = 'none';
+//         })
+// }
 
 function initSoundPrompt() {
-    const soundPrompt = document.getElementById('soundPrompt');
-    if (soundPrompt) {
-        soundPrompt.addEventListener('click', handleSoundPromptClick, { once: true });
-    } else {
-        introSound = new Audio('audio/intro.mp3');
-        introSound.volume = 0.1;
-        introSound.loop = true;
-        introSound.play().catch(error => console.log("Autoplay blockiert (kein Prompt):", error));
-    }
+    introSound = new Audio('audio/intro.mp3');
+    introSound.volume = 0; // Lautstärke auf 0 setzen
+    introSound.loop = true;
 }
 
 function setupGameOverButtons() {
@@ -174,6 +183,8 @@ function initializeGameOnLoad() {
     touchRight();
     touchJump();
     touchThrow();
+    document.getElementById('muteButtonStart').src = isMuted ? './img/mute.png' : './img/volume.png';
+    document.getElementById('muteButtonGame').src = isMuted ? './img/mute.png' : './img/volume.png';
 }
 
 function registerDOMContentLoadedListener() {

@@ -38,16 +38,13 @@ canvas {
 }
 
 #gameContainer {
-    position: relative;
-    width: 100%;
-    max-width: 720px;
-    height: 100%;
-    max-height: 480px;
-    margin: 0 auto;
-    overflow: hidden;
+     position: relative;
+    width: 720px;
+    height: 480px;
+    margin-top: 10%;
 }
 
-#soundPrompt {
+/* #soundPrompt {
     position: fixed;
     top: 0;
     left: 0;
@@ -60,7 +57,7 @@ canvas {
     align-items: center;
     cursor: pointer;
     z-index: 9;
-}
+} */
 
 #startScreen {
     background-image: url(img/9_intro_outro_screens/start/startscreen_1.png);
@@ -80,6 +77,13 @@ canvas {
     gap: 20px;
     padding: 11px;
 
+    .muteImg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 5;
+}
+
 
 }
 
@@ -96,6 +100,7 @@ canvas {
     cursor: pointer;
     z-index: 5;
 }
+
 
 .muteImg {
     width: 30px;
@@ -265,14 +270,12 @@ canvas {
 
 .control-buttons {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    gap: 12px;
+    top: 1px;
+    right: 1px;
+    gap: 2px;
     z-index: 5;
     display: flex;
-    background: rgba(0, 0, 0, 0.6);
     padding: 8px;
-    border-radius: 25px;
 }
 
 

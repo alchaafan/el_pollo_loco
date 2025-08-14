@@ -27,11 +27,11 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         <img src="./img/landscape.png" alt="">
     </div>
 
-    <div id="soundPrompt">
+    <!-- <div id="soundPrompt">
         <p id="klicke">
             Klick to start
         </p>
-    </div>
+    </div> -->
 
 
     <div id="startScreen">
@@ -45,7 +45,9 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
             <p> throw: D </p>
         </div>
 
+        <img id="muteButtonStart" class="muteImg" src="img/mute.png" alt="" onclick="toggleMute()">
     </div>
+
 
     <div id="impressumOverlay" class="infoOverlay d-none">
         <div class="infoContent">
@@ -63,22 +65,20 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
         <div class="control-buttons">
             <img id="pauseResumeBtn" class="pauseImg" src="./img/pause.png" alt="" onclick="togglePause()">
-            <img id="muteButton" class="muteImg" src="img/volume.png" alt="" onclick="toggleMute()">
-
-
+            <img id="muteButtonGame" class="muteImg" src="img/mute.png" alt="" onclick="toggleMute()">
         </div>
 
         <div id="mobileBtns" class="mobile-buttons-container ">
-        <div class="left-right-buttons">
-            <button id="leftBtn" class="mobile-btn"><img src="./img/left.png" alt="Left"></button>
-            <button id="rightBtn" class="mobile-btn"><img src="./img/right.png" alt="Right"></button>
+            <div class="left-right-buttons">
+                <button id="leftBtn" class="mobile-btn"><img src="./img/left.png" alt="Left"></button>
+                <button id="rightBtn" class="mobile-btn"><img src="./img/right.png" alt="Right"></button>
+            </div>
+            <div class="action-buttons">
+                <button id="jumpBtn" class="mobile-btn"><img src="./img/up.png" alt="Jump"></button>
+                <button id="throwBtn" class="mobile-btn"><img src="img/6_salsa_bottle/salsa_bottle.png"
+                        alt="Throw"></button>
+            </div>
         </div>
-        <div class="action-buttons">
-            <button id="jumpBtn" class="mobile-btn"><img src="./img/up.png" alt="Jump"></button>
-            <button id="throwBtn" class="mobile-btn"><img src="img/6_salsa_bottle/salsa_bottle.png"
-                    alt="Throw"></button>
-        </div>
-    </div>
 
     </div>
 
@@ -94,7 +94,7 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         </div>
     </div>
 
-    
+
 
     <div id="gameOverScreen" class="game-over-screen" style="display: none;">
         <img src="img/9_intro_outro_screens/game_over/game over.png" alt="Game Over">

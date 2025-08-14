@@ -10,7 +10,7 @@ class World {
     statusBarCoins = new StatusBarCoins();
     StatusBarBottles = new StatusBarBottles();
     statusBarEndboss;
-    endboss;
+    // endboss;
     gameEnded = false;
 
 
