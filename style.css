@@ -44,21 +44,6 @@ canvas {
     margin-top: 10%;
 }
 
-/* #soundPrompt {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 9;
-} */
-
 #startScreen {
     background-image: url(img/9_intro_outro_screens/start/startscreen_1.png);
     background-size: cover;
@@ -66,12 +51,12 @@ canvas {
     position: absolute;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
+  
     text-align: center;
     z-index: 7;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center; 
     align-items: center;
 
     gap: 20px;
@@ -82,10 +67,11 @@ canvas {
     height: 30px;
     cursor: pointer;
     z-index: 5;
+    }
 }
 
 
-}
+
 
 #klicke {
     color: rgb(252, 149, 2);
@@ -211,46 +197,73 @@ canvas {
 }
 
 .you-win-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: 0, 0, 0, 0.3; 
+  z-index: 20; 
+  animation: fadeIn 0.5s ease;
 }
 
 .you-win-screen img {
-    max-width: 100%;
-    max-height: 70%;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  max-width: 100%;
+  max-height: 100%; 
+  object-fit: contain; 
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .game-over-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black; 
+  z-index: 20; 
+  animation: fadeIn 0.5s ease;
+}
+
+.game-over-screen img {
+  max-width: 100%;
+  max-height: 100%; 
+  object-fit: contain; 
 }
 
 
-.game-over-screen img {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.game-over-screen .button-container,
+.you-win-screen .button-container {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 21; 
+}
+
+.game-over-screen img,
+.you-win-screen img {
     max-width: 100%;
-    max-height: 70%;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    max-height: 80vh; 
+    object-fit: contain;
 }
 
 

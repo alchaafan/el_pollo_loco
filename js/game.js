@@ -6,10 +6,23 @@ let gameStarted = false;
 let gamePaused = false;
 let isMuted = true;
 
+// Funktion zum Laden der Stummschalteinstellung
+function loadMuteSetting() {
+    const savedMute = localStorage.getItem('isMuted');
+    if (savedMute !== null) {
+        isMuted = JSON.parse(savedMute);
+    }
+}
+
+// Funktion zum Speichern der Stummschalteinstellung
+function saveMuteSetting() {
+    localStorage.setItem('isMuted', JSON.stringify(isMuted));
+}
+
 let gameOverSound = new Audio('audio/gameover.mp3');
 let youWinSound = new Audio('audio/win.mp3');
 let backgroundSound = new Audio('audio/background.mp3');
-backgroundSound.volume = 0.1
+backgroundSound.volume = 0.1;
 let introSound;
 let intervalIDS = [];
 
@@ -37,13 +50,17 @@ function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     document.querySelector('.control-buttons').style.display = 'flex';
+    
     if (introSound) {
         introSound.pause();
         introSound.currentTime = 0;
     }
+    
+  
     backgroundSound.volume = isMuted ? 0 : 0.2;
     backgroundSound.play();
-    init()
+    
+    init();
     updateCharacterSoundMuteStatus();
 }
 
@@ -66,7 +83,6 @@ function toggleMute() {
         muteButtonStart.alt = muteButtonGame.alt = 'Mute';
         isMuted = false;
     } else {
-        // Stummschalten
         if (backgroundSound) backgroundSound.volume = 0;
         if (introSound) introSound.volume = 0;
         muteButtonStart.src = './img/mute.png';
@@ -74,6 +90,8 @@ function toggleMute() {
         muteButtonStart.alt = muteButtonGame.alt = 'Unmute';
         isMuted = true;
     }
+    
+    saveMuteSetting();
     updateCharacterSoundMuteStatus();
 }
 
@@ -92,7 +110,7 @@ function showGameOverScreen() {
     backgroundSound.pause();
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('gameOverScreen').style.display = 'flex';
-     this.gameOverSound.volume = isMuted ? 0 : 1;
+    gameOverSound.volume = isMuted ? 0 : 1;
     gameOverSound.play();
 }
 
@@ -101,7 +119,7 @@ function showYouWinScreen() {
     backgroundSound.pause();
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('youWinScreen').style.display = 'flex';
-     this.youWinSound.volume = isMuted ? 0 : 1;
+    youWinSound.volume = isMuted ? 0 : 1;
     youWinSound.play();
 }
 
@@ -120,7 +138,6 @@ function pauseGame() {
     gamePaused = true;
     backgroundSound.pause();
     document.getElementById('pauseOverlay').style.display = "flex";
-
 }
 
 function resumeGame() {
@@ -131,19 +148,9 @@ function resumeGame() {
     }
 }
 
-// function handleSoundPromptClick() {
-//     introSound = new Audio('audio/intro.mp3');
-//     introSound.volume = 0.1;
-//     introSound.loop = true;
-//     introSound.play()
-//         .then(() => {
-//             document.getElementById('soundPrompt').style.display = 'none';
-//         })
-// }
-
 function initSoundPrompt() {
     introSound = new Audio('audio/intro.mp3');
-    introSound.volume = 0; // Lautstärke auf 0 setzen
+    introSound.volume = isMuted ? 0 : 0.1;
     introSound.loop = true;
 }
 
@@ -153,9 +160,10 @@ function setupGameOverButtons() {
     });
 
     document.getElementById('restartBtnGameOver').addEventListener('click', () => {
+        document.getElementById('gameOverScreen').style.display = 'none';
         gameOverSound.pause();
         gameOverSound.currentTime = 0;
-        document.getElementById('gameOverScreen').style.display = 'none';
+        document.getElementById('canvas').style.display = 'block';
         gameStarted = false;
         init();
         startGame();
@@ -178,6 +186,8 @@ function setupYouWinButtons() {
 }
 
 function initializeGameOnLoad() {
+    loadMuteSetting();
+    
     initSoundPrompt();
     setupGameOverButtons();
     setupYouWinButtons();
@@ -185,6 +195,7 @@ function initializeGameOnLoad() {
     touchRight();
     touchJump();
     touchThrow();
+    
     document.getElementById('muteButtonStart').src = isMuted ? './img/mute.png' : './img/volume.png';
     document.getElementById('muteButtonGame').src = isMuted ? './img/mute.png' : './img/volume.png';
 }
@@ -193,8 +204,7 @@ function registerDOMContentLoadedListener() {
     document.addEventListener('DOMContentLoaded', initializeGameOnLoad);
 }
 
-//#region mobile
-
+// Mobile Steuerung
 function touchLeft() {
     document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -235,60 +245,25 @@ function touchThrow() {
     });
 }
 
-//#region 
-
 registerDOMContentLoadedListener();
 
+// Tastatur-Ereignisse
 window.addEventListener('keydown', (e) => {
-    if (e.keyCode == 39) {
-        keyboard.RIGHT = true;
-    }
-
-    if (e.keyCode == 37) {
-        keyboard.LEFT = true;
-    }
-
-    if (e.keyCode == 38) {
-        keyboard.UP = true;
-    }
-
-    if (e.keyCode == 40) {
-        keyboard.DOWN = true;
-    }
-
-    if (e.keyCode == 32) {
-        keyboard.SPACE = true;
-    }
-
-    if (e.keyCode == 68) {
-        keyboard.D = true;
-    }
+    if (e.keyCode == 39) keyboard.RIGHT = true;
+    if (e.keyCode == 37) keyboard.LEFT = true;
+    if (e.keyCode == 38) keyboard.UP = true;
+    if (e.keyCode == 40) keyboard.DOWN = true;
+    if (e.keyCode == 32) keyboard.SPACE = true;
+    if (e.keyCode == 68) keyboard.D = true;
 });
 
 window.addEventListener('keyup', (e) => {
-    if (e.keyCode == 39) {
-        keyboard.RIGHT = false;
-    }
-
-    if (e.keyCode == 37) {
-        keyboard.LEFT = false;
-    }
-
-    if (e.keyCode == 38) {
-        keyboard.UP = false;
-    }
-
-    if (e.keyCode == 40) {
-        keyboard.DOWN = false;
-    }
-
-    if (e.keyCode == 32) {
-        keyboard.SPACE = false;
-    }
-
-    if (e.keyCode == 68) {
-        keyboard.D = false;
-    }
+    if (e.keyCode == 39) keyboard.RIGHT = false;
+    if (e.keyCode == 37) keyboard.LEFT = false;
+    if (e.keyCode == 38) keyboard.UP = false;
+    if (e.keyCode == 40) keyboard.DOWN = false;
+    if (e.keyCode == 32) keyboard.SPACE = false;
+    if (e.keyCode == 68) keyboard.D = false;
 });
 
 function openImpressum() {

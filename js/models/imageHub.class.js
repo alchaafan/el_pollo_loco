@@ -143,6 +143,7 @@ class ImageHub {
         IMAGES_DEAD: [
             'img/4_enemie_boss_chicken/5_dead/G24.png',
             'img/4_enemie_boss_chicken/5_dead/G25.png',
+            'img/4_enemie_boss_chicken/5_dead/G26.png',
             'img/4_enemie_boss_chicken/5_dead/G26.png'
         ]
     }
@@ -190,7 +191,7 @@ class ImageHub {
     }
     //#endregion
 
-//#region salsa
+    //#region salsa
     static salsa = {
         rotation: [
             'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',

@@ -39,7 +39,7 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
         <div>
             <button onclick="startGame()">Start</button>
             <button onclick="openImpressum()">impressum</button>
-            
+
         </div>
     </div>
 
@@ -74,7 +74,22 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
                         alt="Throw"></button>
             </div>
         </div>
+        <div id="gameOverScreen" class="game-over-screen" style="display: none;">
+            <img src="img/9_intro_outro_screens/game_over/game over.png" alt="Game Over">
+            <div class="button-container">
+                <button id="homeBtnGameOver" class="home-button">Home</button>
+                <button id="restartBtnGameOver" class="restart-button">Play Again</button>
+            </div>
 
+        </div>
+
+        <div id="youWinScreen" class="you-win-screen" style="display: none;">
+            <img src="img/You won, you lost/YouWinA.png" alt="You Win">
+            <div class="button-container">
+                <button id="homeBtnYouWin" class="home-button">Home</button>
+                <button id="restartBtnYouWin" class="restart-button">play again</button>
+            </div>
+        </div>
     </div>
 
     <div id="pauseOverlay" class="pause-overlay" style="display: none;">
@@ -91,21 +106,9 @@ wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,4
 
 
 
-    <div id="gameOverScreen" class="game-over-screen" style="display: none;">
-        <img src="img/9_intro_outro_screens/game_over/game over.png" alt="Game Over">
-        <div class="button-container">
-            <button id="homeBtnGameOver" class="home-button">Home</button>
-            <button id="restartBtnGameOver" class="restart-button">Play Again</button>
-        </div>
-    </div>
 
-    <div id="youWinScreen" class="you-win-screen" style="display: none;">
-        <img src="img/You won, you lost/YouWinA.png" alt="You Win">
-        <div class="button-container">
-            <button id="homeBtnYouWin" class="home-button">Home</button>
-            <button id="restartBtnYouWin" class="restart-button">play again</button>
-        </div>
-    </div>
+
+
 
     <script src="./js/models/imageHub.class.js"></script>
     <script src="./js/models/keyboard.class.js"></script>
